@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -33,7 +34,8 @@ public class ProductController {
 
     //display navbar of products type and the search field
     @RequestMapping("")
-    public String searchProduct(Model model) {
+    public String searchProduct(Model model, HttpSession session) {
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         model.addAttribute("productType", productCategoryRepository.findAll());
         return "farmer/products";
     }
