@@ -66,6 +66,10 @@ public class Product extends AbstractEntity {
         return productDetails;
     }
 
+    public void setProductDetails(ProductDetails productDetails) {
+        this.productDetails = productDetails;
+    }
+
     public MeasurementCategory getMeasurementcategory() {
         return measurementcategory;
     }

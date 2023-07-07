@@ -14,6 +14,17 @@
 <!--Logo should go here and it should link to the dashboard-->
 <h1 th:fragment="bannerFarmerLoggedIn" th:text="${(title != null)? 'STLF-'+title : 'Saint Louis Farms'}">Saint Louis Farms</h1>
 
+
+<nav th:fragment="navigation">
+    <ul class="nav" >
+<!--        <li class="nav-item"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>-->
+        <li class="nav-item"><a class="nav-link" href="/farmer/products">Store</a></li>
+        <li class="nav-item"><a class="nav-link" href="/farmer/add">Products</a></li>
+<!--        <li class="nav-item"><a class="nav-link" href="/farmer/profile">Profile</a></li>-->
+        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
 <body>
 
 </body>

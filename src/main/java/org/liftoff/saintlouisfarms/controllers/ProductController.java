@@ -30,7 +30,7 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-
+//I think we need a method for farmer/store which displays products currently available
 
     //display navbar of products type and the search field
     @RequestMapping("")
@@ -50,7 +50,7 @@ public class ProductController {
         }
         model.addAttribute("productType", productCategoryRepository.findAll());
         model.addAttribute("title", "Products in " + productCategoryRepository.findByName(searchType) + ": " + searchTerm);
-        model.addAttribute("Products", products);
+        model.addAttribute("products", productRepository.findAll());
 
         return "redirect:";
     }
@@ -61,7 +61,8 @@ public class ProductController {
         model.addAttribute("productType", productCategoryRepository.findAll());
         model.addAttribute("Measurement", measurementCategoryRepository.findAll());
         model.addAttribute(new Product());
-        return "add";
+        model.addAttribute("products", productRepository.findAll());
+        return "farmer/add";
     }
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
@@ -70,7 +71,7 @@ public class ProductController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Product");
-            return "add";
+            return "farmer/add";
         }
 
         ProductCategory newProductType = productCategoryRepository.findById(productTypeId).orElse(new ProductCategory());

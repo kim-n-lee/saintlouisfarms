@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
+<head th:replace="fragments :: head">
 </head>
-<body>
+<body class="container">
+
+<h1 th:replace="fragments :: bannerFarmerLoggedIn"></h1>
+<nav th:replace="fragments :: navigation" ></nav>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Product Category</th>
+        <th>Product Details</th>
+        <th>Price</th>
+        <th>Current Availability</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tr th:each="product : ${products}" th:object="product">
+        <td th:text="*{ProductDetails.picture}"></td>
+        <td th:text="*{name}"></td>
+        <td th:text="$*{ProductDetails.price}"></td>
+        <!--    <td th:text="$*{ProductDetails.amount+" "+measurementcategory}"></td>-->
+        <td th:text="$*{ProductDetails.status}"></td>
+        <td>
+            <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>
+        </td>
+
+    </tr>
+</table>
 
 </body>
 </html>
