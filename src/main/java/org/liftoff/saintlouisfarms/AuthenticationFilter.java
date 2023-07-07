@@ -21,6 +21,8 @@ public class AuthenticationFilter implements HandlerInterceptor {
     AuthenticationController authenticationController;
 
     // Allow certain pages and static resources to be seen by the public (not logged in)
+
+
     private static final List<String> whitelist = Arrays.asList( "/register","/index", "/login", "/css", "/images");
 
     // Check all pages and static resources against blacklist
@@ -30,7 +32,10 @@ public class AuthenticationFilter implements HandlerInterceptor {
                 return true;
             }
         }
-        return false;
+        /*
+  Whitelisted everything until we know we can create users-Tudor
+    */
+        return true;
     }
 
     @Override
