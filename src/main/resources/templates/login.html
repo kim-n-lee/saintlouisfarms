@@ -4,19 +4,19 @@
 </head>
 <body class="container">
 
-<!--<h1 th:replace="fragments :: title"></h1>-->
-<form method="post">
+<h1 th:replace="fragments :: banner"></h1>
+<form method="post" th:object="${loginFormDTO}">
     <div class="form-group">
-        <label th:for="username">Username
-            <input class="form-control" th:field="${employerLoginFormDTO.username}">
+        <label th:for="username">Email
+            <input class="form-control" th:field="*{email}">
         </label>
-        <p class="error" th:errors="${employerLoginFormDTO.username}"></p>
+        <p class="error" th:errors="*{email}"></p>
     </div>
     <div class="form-group">
         <label>Password
-            <input class="form-control" th:field="${employerLoginFormDTO.password}" type="password">
+            <input class="form-control" th:field="*{password}" type="password">
         </label>
-        <p class="error" th:errors="${employerLoginFormDTO.password}"></p>
+        <p class="error" th:errors="*{password}"></p>
     </div>
 
     <input type="submit" class="btn btn-primary" value="Log In" />
