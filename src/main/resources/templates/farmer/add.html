@@ -7,6 +7,8 @@
 <h1 th:replace="fragments :: bannerFarmerLoggedIn"></h1>
 <nav th:replace="fragments :: navigation" ></nav>
 
+<!--Success banner here for when product added successfully-->
+
 <form method="post" th:object="${product}">
     <div class="form-group">
         <label th:for="name">Name
@@ -16,12 +18,13 @@
     </div>
     <div class="form-group">
         <label th:for="productCategory">Product Category
-            <input class="form-control" th:field="*{productCategory}">
-            <option th:each="category : ${productType}"
-                    th:value="${category.id}"
-                    th:text="${category.name}">
-            </option>
-                <a th:href="@{/productType/add}">Add More Categories</a>
+            <select class="form-control" th:field="*{productCategory}">
+                <option th:each="category : ${productType}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+            </select>
+            <a th:href="@{/productType/add}">Add More Categories</a>
         </label>
         <p class="error" th:errors="*{productCategory}"></p>
     </div>
@@ -31,7 +34,13 @@
 <!--        </label>-->
 <!--        <p class="error" th:errors="*{productDetails.amount}"></p>-->
         <label th:for="measurementcategory">Measurement
-            <input class="form-control" th:field="*{measurementcategory}" type="number">
+            <select class="form-control" th:field="*{measurementcategory}">
+                <option th:each="measurement : ${measurements}"
+                        th:value="${measurement.id}"
+                        th:text="${measurement.name}">
+                </option>
+            </select>
+            <a th:href="@{/measurements/add}">Add Custom Measurements</a>
         </label>
         <p class="error" th:errors="*{measurementcategory}"></p>
     </div>
@@ -56,10 +65,11 @@
 <!--    </div>-->
     <div class="form-group">
         <label th:for="status">Currently Available
-            <input class="form-control" th:field="*{productDetails.status}" type="checkbox">
+            <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox">
         </label>
         <p class="error" th:errors="*{productDetails.status}"></p>
     </div>
+        <br>
     <input type="submit" class="btn btn-primary" value="Add Product" />
 </form>
 
@@ -69,21 +79,23 @@
     <th></th>
     <th>Name</th>
     <th>Product Category</th>
-    <th>Product Details</th>
     <th>Price</th>
+    <th>Amount Available</th>
     <th>Current Availability</th>
     <th>Edit</th>
 </tr>
 
 <!--Would be nice to organize these by category-->
 </thead>
-<tr th:each="product : ${products}" th:object="product">
+<!--    Should have a navbar here that will stick to the top of the page and allows for searching through products-->
+<tr th:each="product : ${products}" th:object="${product}">
     <td th:text="*{ProductDetails.picture}"></td>
     <td th:text="*{name}"></td>
     <td th:text="*{productCategory}"></td>
-    <td th:text="$*{ProductDetails.price}"></td>
-<!--    <td th:text="$*{ProductDetails.amount+" "+measurementcategory}"></td>-->
-    <td th:text="$*{ProductDetails.status}"></td>
+    <td th:text="'$'+*{ProductDetails.price}"></td>
+    <td>Placeholder</td>
+<!--    <td th:text="*{ProductDetails.amount+" "+measurementcategory}"></td>-->
+    <td th:text="*{ProductDetails.status}"></td>
     <td>
         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>
     </td>

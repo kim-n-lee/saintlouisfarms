@@ -59,28 +59,30 @@ public class ProductController {
     public String displayAddProductForm(Model model) {
         model.addAttribute("title", "Add Product");
         model.addAttribute("productType", productCategoryRepository.findAll());
-        model.addAttribute("Measurement", measurementCategoryRepository.findAll());
+        model.addAttribute("measurements", measurementCategoryRepository.findAll());
         model.addAttribute(new Product());
         model.addAttribute("products", productRepository.findAll());
         return "farmer/add";
     }
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                        Errors errors, Model model,
-                                        @RequestParam int productTypeId, @RequestParam int  measurmentId) {
+                                        Errors errors, Model model)
+//                                        @RequestParam int productTypeId, @RequestParam int  measurmentId)
+    {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Product");
             return "farmer/add";
         }
 
-        ProductCategory newProductType = productCategoryRepository.findById(productTypeId).orElse(new ProductCategory());
-        newProduct.setProductCategory(newProductType);
-        MeasurementCategory newMeasurment =  measurementCategoryRepository.findById(measurmentId).orElse(new MeasurementCategory());;
-        newProduct.setMeasurementcategory(newMeasurment);
+//        ProductCategory newProductType = productCategoryRepository.findById(productTypeId).orElse(new ProductCategory());
+//        newProduct.setProductCategory(newProductType);
+//        MeasurementCategory newMeasurment =  measurementCategoryRepository.findById(measurmentId).orElse(new MeasurementCategory());;
+//        newProduct.setMeasurementcategory(newMeasurment);
         productRepository.save(newProduct);
+//        Should also set userid to user logged in
         model.addAttribute("product", productRepository.findAll());
-        return "redirect:";
+        return "redirect:add";
     }
 
 }
