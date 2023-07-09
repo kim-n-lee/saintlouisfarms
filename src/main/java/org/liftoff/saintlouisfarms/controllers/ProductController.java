@@ -2,23 +2,22 @@ package org.liftoff.saintlouisfarms.controllers;
 
 
 import org.liftoff.saintlouisfarms.data.*;
-import org.liftoff.saintlouisfarms.models.MeasurementCategory;
-import org.liftoff.saintlouisfarms.models.Product;
-import org.liftoff.saintlouisfarms.models.ProductCategory;
-import org.liftoff.saintlouisfarms.models.ProductData;
+import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("farmer")
 public class ProductController {
-
+    @Autowired
+    private AuthenticationController authenticationController;
     @Autowired
     private MeasurementCategoryRepository measurementCategoryRepository;
     @Autowired
@@ -56,7 +55,11 @@ public class ProductController {
     }
     // add new product
     @GetMapping("add")
-    public String displayAddProductForm(Model model) {
+    public String displayAddProductForm(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        System.out.println(user.getId());
+
         model.addAttribute("title", "Add Product");
         model.addAttribute("productType", productCategoryRepository.findAll());
         model.addAttribute("measurements", measurementCategoryRepository.findAll());
