@@ -55,10 +55,8 @@ public class ProductController {
     }
     // add new product
     @GetMapping("add")
-    public String displayAddProductForm(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
-        System.out.println(user.getId());
+    public String displayAddProductForm(Model model) {
+
 
         model.addAttribute("title", "Add Product");
         model.addAttribute("productType", productCategoryRepository.findAll());
@@ -69,7 +67,7 @@ public class ProductController {
     }
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                        Errors errors, Model model)
+                                        Errors errors, Model model, HttpServletRequest request)
 //                                        @RequestParam int productTypeId, @RequestParam int  measurmentId)
     {
 
@@ -82,6 +80,9 @@ public class ProductController {
 //        newProduct.setProductCategory(newProductType);
 //        MeasurementCategory newMeasurment =  measurementCategoryRepository.findById(measurmentId).orElse(new MeasurementCategory());;
 //        newProduct.setMeasurementcategory(newMeasurment);
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        newProduct.setUser(user);
         productRepository.save(newProduct);
 //        Should also set userid to user logged in
         model.addAttribute("product", productRepository.findAll());
