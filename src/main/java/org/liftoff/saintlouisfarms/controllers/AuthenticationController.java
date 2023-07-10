@@ -92,7 +92,7 @@ public class AuthenticationController {
         setUserInSession(request.getSession(), newUser);
         
 
-        return "redirect";
+        return "redirect:farmer/add";
     }
     // Handlers for login form
     @GetMapping("/login")
@@ -132,7 +132,7 @@ public class AuthenticationController {
         // OTHERWISE, create a new session for the user and take them to the home page
         setUserInSession(request.getSession(), theUser);
 
-        return "redirect:";
+        return "redirect:farmer/add";
     }
     // Handler for logout
     @GetMapping("/logout")
