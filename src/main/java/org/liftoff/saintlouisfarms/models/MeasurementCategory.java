@@ -1,6 +1,7 @@
 package org.liftoff.saintlouisfarms.models;
 
 
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -13,10 +14,21 @@ public class MeasurementCategory extends AbstractEntity{
     @NotBlank
     @Size(min = 3, max = 45, message="name must be between 3 and 45 character")
     private String name;
+    @ManyToOne()
+    private User user;
 
+    public MeasurementCategory(String name,User user) {
 
-    public MeasurementCategory(String name) {
         this.name = name;
+        this.user=user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public MeasurementCategory() {

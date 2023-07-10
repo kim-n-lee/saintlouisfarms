@@ -25,8 +25,11 @@ public class ProductCategoryController {
     private ProductCategoryRepository productCategoryRepository;
     @Autowired AuthenticationController authenticationController;
     @GetMapping("")
-    public String index(Model model){
-        model.addAttribute("productTypes",productCategoryRepository.findAll());
+    public String index(Model model ,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+
+        model.addAttribute("productTypes", productCategoryRepository.findProductsTypetById(user.getId()));
         return "productType/index" ;
     }
     // Corresponds to http://localhost:8080/productType/add
@@ -46,9 +49,12 @@ public class ProductCategoryController {
         if (errors.hasErrors()) {
             return "productType/add";
         }
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        newProductCategory.setUser(user);
         productCategoryRepository.save(newProductCategory);
-        model.addAttribute("productType", productCategoryRepository.findAll());
-        return "redirect:";
+        model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+        return  "redirect:../farmer/add";
     }
 
 

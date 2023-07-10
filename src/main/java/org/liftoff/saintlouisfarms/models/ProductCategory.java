@@ -1,6 +1,7 @@
 package org.liftoff.saintlouisfarms.models;
 
 
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -15,12 +16,22 @@ public class ProductCategory extends AbstractEntity{
     @Size(min = 3, max = 45, message="name must be between 3 and 45 character")
     private String name;
 
-
+    @ManyToOne()
+    private User user;
     @OneToMany(mappedBy = "productCategory")
     private final List<Product> products = new ArrayList<>();
 
-    public ProductCategory( @Size(min = 3, max = 45, message="name must be between 3 and 45 character") String name) {
+    public ProductCategory( @Size(min = 3, max = 45, message="name must be between 3 and 45 character") String name,User user) {
         this.name = name;
+        this.user=user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public ProductCategory() {
