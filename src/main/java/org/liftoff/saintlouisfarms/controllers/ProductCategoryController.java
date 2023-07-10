@@ -42,7 +42,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping("add")
-    public String processAddEmployerForm(@ModelAttribute @Valid ProductCategory newProductCategory,
+    public String processAddProductCategoryForm(@ModelAttribute @Valid ProductCategory newProductCategory,
                                          Errors errors, Model model,HttpServletRequest request) {
 //        HttpSession session=request.getSession();
 //        User user = authenticationController.getUserFromSession(session);
@@ -54,7 +54,7 @@ public class ProductCategoryController {
         newProductCategory.setUser(user);
         productCategoryRepository.save(newProductCategory);
         model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
-        return "redirect:";
+        return "redirect:../farmer/add";
     }
 
 
