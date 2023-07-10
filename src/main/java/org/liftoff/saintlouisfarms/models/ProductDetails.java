@@ -1,10 +1,9 @@
 package org.liftoff.saintlouisfarms.models;
 
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.File;
 import java.math.BigDecimal;
-import javax.persistence.OneToOne;
 import javax.persistence.Entity;
 
 
@@ -23,7 +22,7 @@ public class ProductDetails  extends AbstractEntity{
     @NotNull(message="status is required")
     private Boolean status;
 
-    private Byte picture;
+    private File picture;
 
     public Boolean getStatus() {
         return status;
@@ -33,22 +32,21 @@ public class ProductDetails  extends AbstractEntity{
         this.status = status;
     }
 
-    public Byte getPicture() {
+    public File getPicture() {
         return picture;
     }
 
-    public void setPicture(Byte picture) {
+    public void setPicture(File picture) {
         this.picture = picture;
     }
 
     public ProductDetails() {
     }
 
-    public ProductDetails(String description, BigDecimal price, Boolean status,Byte picture ) {
+    public ProductDetails(String description, BigDecimal price, Boolean status) {
         this.description = description;
         this.price = price;
         this.status = status;
-        this.picture = picture;
     }
 
     public String getDescription() {

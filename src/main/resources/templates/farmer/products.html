@@ -20,11 +20,11 @@
     </tr>
     </thead>
     <tr th:each="product : ${products}" th:object="${product}">
-        <td th:text="*{productDetails.picture}"></td>
+        <td></td> <img th:src="*{productDetails.picture}" />
         <td th:text="*{name}"></td>
         <td th:text="*{productCategory}"></td>
         <td th:text="'$'+*{ProductDetails.price}"></td>
-        <td>Placeholder</td>
+        <td><img th:src="*{productDetails.picture}" /></td>
         <!--    <td th:text="*{ProductDetails.amount+" "+measurementcategory}"></td>-->
         <td th:text="*{ProductDetails.status}"></td>
         <td>
