@@ -54,7 +54,7 @@ public class ProductCategoryController {
         newProductCategory.setUser(user);
         productCategoryRepository.save(newProductCategory);
         model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
-        return "redirect:";
+        return  "redirect:../farmer/add";
     }
 
 

@@ -1,5 +1,4 @@
 package org.liftoff.saintlouisfarms.controllers;
-
 import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
 import org.liftoff.saintlouisfarms.models.MeasurementCategory;
 import org.liftoff.saintlouisfarms.models.User;
@@ -11,21 +10,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
+import static java.time.temporal.TemporalAdjusters.previous;
 @Controller
-@RequestMapping("measurements")
+//@RequestMapping("")
 public class MeasurmentController {
-
     // Corresponds to http://localhost:8080/measurements
     @Autowired
     private MeasurementCategoryRepository measurementCategoryRepository;
     @Autowired
     AuthenticationController authenticationController;
-    @GetMapping("")
+    @GetMapping("measurements")
     public String index(Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -33,13 +31,12 @@ public class MeasurmentController {
         return "measurements/index" ;
     }
     // Corresponds to http://localhost:8080/measurements/add
-    @GetMapping("add")
+    @GetMapping("measurements/add")
     public String displayAddNewMeasurementForm(Model model) {
         model.addAttribute(new MeasurementCategory());
         return "measurements/add";
     }
-
-    @PostMapping("add")
+    @PostMapping("measurements/add")
     public String processAddNewMeasurementForm(@ModelAttribute @Valid MeasurementCategory newMeasuremenCategory,
                                                Errors errors, Model model, HttpServletRequest request) {
         HttpSession session=request.getSession();
@@ -50,7 +47,16 @@ public class MeasurmentController {
         newMeasuremenCategory.setUser(user);
         measurementCategoryRepository.save(newMeasuremenCategory);
         model.addAttribute("measurement", measurementCategoryRepository.findMeasurementById(user.getId()));
-        return "redirect:farmer";
+        return "redirect:../farmer/add";
     }
-
 }
+
+
+
+
+//    @RequestMapping(value = "/rate", method = RequestMethod.POST)
+//    public String rateHandler(HttpServletRequest request) {
+//        //your controller code
+//        String referer = request.getHeader("Referer");
+//        return "redirect:"+ referer;
+//    }
