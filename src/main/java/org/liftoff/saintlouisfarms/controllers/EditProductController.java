@@ -1,5 +1,7 @@
 package org.liftoff.saintlouisfarms.controllers;
 
+import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
+import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,10 @@ public class EditProductController {
     private AuthenticationController authenticationController;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private MeasurementCategoryRepository measurementCategoryRepository;
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
 
     @GetMapping("/{editProductId}")
     public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request){
@@ -38,11 +44,13 @@ public class EditProductController {
 
         model.addAttribute("title",
                 "Edit "+productToEdit.getName());
+        model.addAttribute("productType", productCategoryRepository.findAll());
+        model.addAttribute("measurements", measurementCategoryRepository.findAll());
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("editProductId", editProductId);
         return "farmer/edit";
     }
-    @PostMapping("/{editProductId}")
+    @PostMapping("/{productToEditId}")
     public String editEmployeeProcessing(@PathVariable int productToEditId,
                                          Model model,
                                          String name,
