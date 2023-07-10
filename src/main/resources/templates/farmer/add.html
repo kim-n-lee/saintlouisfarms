@@ -9,7 +9,7 @@
 
 <!--Success banner here for when product added successfully-->
 
-<form method="post" th:object="${product}">
+<form method="post" enctype="multipart/form-data" th:object="${product}">
     <div class="form-group">
         <label th:for="name">Name
             <input class="form-control" th:field="*{name}">
@@ -56,13 +56,12 @@
         </label>
         <p class="error" th:errors="*{productDetails.description}"></p>
     </div>
-<!--    Will need some time to figure this out-->
-<!--    <div class="form-group">-->
-<!--        <label th:for="picture">Picture-->
-<!--            <input class="form-control" th:field="*{productDetails.picture}" type="number">-->
-<!--        </label>-->
-<!--        <p class="error" th:errors="*{productDetails.picture}"></p>-->
-<!--    </div>-->
+    <div class="form-group">
+        <label th:for="picture">Picture
+            <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg">
+            <p class="error" th:if="${pictureError}" th:text="${pictureError}"></p>
+        </label>
+    </div>
     <div class="form-group">
         <label th:for="status">Currently Available
             <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox">
@@ -89,7 +88,7 @@
 </thead>
 <!--    Should have a navbar here that will stick to the top of the page and allows for searching through products-->
 <tr th:each="product : ${products}" th:object="${product}">
-    <td th:text="*{productDetails.picture}"></td>
+    <td><img th:if="${product.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{name}" width="90" height="100"/></td>
     <td th:text="*{name}"></td>
     <td th:text="*{productCategory}"></td>
     <td th:text="'$'+*{ProductDetails.price}"></td>
