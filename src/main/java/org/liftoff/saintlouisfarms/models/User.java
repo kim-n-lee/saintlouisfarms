@@ -48,6 +48,14 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private final List<Product> products = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  private final List<ProductCategory>productCategories=new ArrayList<>();
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private final List<MeasurementCategory>measurementCategories=new ArrayList<>();
+
+    public List<MeasurementCategory> getMeasurementCategories() {
+        return measurementCategories;
+    }
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -121,5 +129,9 @@ public class User extends AbstractEntity {
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public List<ProductCategory> getProductCategories() {
+        return productCategories;
     }
 }

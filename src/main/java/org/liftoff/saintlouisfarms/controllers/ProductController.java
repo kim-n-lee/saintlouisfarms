@@ -70,8 +70,8 @@ public class ProductController {
         User user = authenticationController.getUserFromSession(session);
 
         model.addAttribute("title", "Add Product");
-        model.addAttribute("productType", productCategoryRepository.findAll());
-        model.addAttribute("measurements", measurementCategoryRepository.findAll());
+        model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+        model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute(new Product());
         model.addAttribute("products", productRepository.findProductById(user.getId()));
         return "farmer/add";

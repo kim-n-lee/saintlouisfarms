@@ -26,8 +26,10 @@ public class MeasurmentController {
     @Autowired
     AuthenticationController authenticationController;
     @GetMapping("")
-    public String index(Model model){
-        model.addAttribute("measurements",measurementCategoryRepository.findAll());
+    public String index(Model model,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        model.addAttribute("measurements",measurementCategoryRepository.findMeasurementById(user.getId()));
         return "measurements/index" ;
     }
     // Corresponds to http://localhost:8080/measurements/add
@@ -45,8 +47,9 @@ public class MeasurmentController {
         if (errors.hasErrors()) {
             return "measurements/add";
         }
+        newMeasuremenCategory.setUser(user);
         measurementCategoryRepository.save(newMeasuremenCategory);
-        model.addAttribute("measurement", measurementCategoryRepository.findAll());
+        model.addAttribute("measurement", measurementCategoryRepository.findMeasurementById(user.getId()));
         return "redirect:farmer";
     }
 
