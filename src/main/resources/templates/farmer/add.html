@@ -46,7 +46,7 @@
     </div>
     <div class="form-group">
         <label th:for="price">Price
-            <input class="form-control" th:field="*{productDetails.price}" type="number">
+            <input class="form-control" th:field="*{productDetails.price}" type="number" step="any">
         </label>
         <p class="error" th:errors="*{productDetails.price}"></p>
     </div>
@@ -89,7 +89,7 @@
 </thead>
 <!--    Should have a navbar here that will stick to the top of the page and allows for searching through products-->
 <tr th:each="product : ${products}" th:object="${product}">
-    <td th:text="*{ProductDetails.picture}"></td>
+    <td th:text="*{productDetails.picture}"></td>
     <td th:text="*{name}"></td>
     <td th:text="*{productCategory}"></td>
     <td th:text="'$'+*{ProductDetails.price}"></td>

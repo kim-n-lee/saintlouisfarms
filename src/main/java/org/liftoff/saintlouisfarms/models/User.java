@@ -2,6 +2,7 @@ package org.liftoff.saintlouisfarms.models;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
 import javax.persistence.OneToMany;
@@ -44,7 +45,7 @@ public class User extends AbstractEntity {
     @NotBlank(message = "Phone number is required")
     private String phone;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private final List<Product> products = new ArrayList<>();
 
 

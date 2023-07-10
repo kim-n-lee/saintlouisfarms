@@ -8,6 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class LoginFormDTO {
+
+
+
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email. Try again.")
     @Size(min = 3, max = 45, message = "Email must be between 3 and 45 characters")

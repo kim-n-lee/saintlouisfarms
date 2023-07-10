@@ -87,10 +87,12 @@ public class AuthenticationController {
         // OTHERWISE, save new email and hashed password in database, start a new session, and redirect to home page
         User newUser = new User(registerFormDTO.getEmail(), registerFormDTO.getPassword(),registerFormDTO.getFirstName(),
                 registerFormDTO.getLastName(),registerFormDTO.getAddress(),registerFormDTO.getFarmName(),registerFormDTO.getPhone());
+
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
+        
 
-        return "redirect:";
+        return "redirect";
     }
     // Handlers for login form
     @GetMapping("/login")
@@ -126,6 +128,7 @@ public class AuthenticationController {
             model.addAttribute("title", "Log In");
             return "login";
         }
+
         // OTHERWISE, create a new session for the user and take them to the home page
         setUserInSession(request.getSession(), theUser);
 

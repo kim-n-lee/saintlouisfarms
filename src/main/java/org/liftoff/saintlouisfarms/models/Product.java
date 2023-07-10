@@ -31,7 +31,11 @@ public class Product extends AbstractEntity {
     @NotNull
     private MeasurementCategory measurementcategory;
 
-    @ManyToOne
+    public void setProductDetails(ProductDetails productDetails) {
+        this.productDetails = productDetails;
+    }
+
+    @ManyToOne()
     private User user;
 
 
@@ -39,6 +43,7 @@ public class Product extends AbstractEntity {
         this.name = name;
         this.measurementcategory = measurementcategory;
         this.productCategory = productCategory;
+        this.productDetails=productDetails;
         this.user = user;
     }
 
@@ -66,9 +71,7 @@ public class Product extends AbstractEntity {
         return productDetails;
     }
 
-    public void setProductDetails(ProductDetails productDetails) {
-        this.productDetails = productDetails;
-    }
+
 
     public MeasurementCategory getMeasurementcategory() {
         return measurementcategory;
