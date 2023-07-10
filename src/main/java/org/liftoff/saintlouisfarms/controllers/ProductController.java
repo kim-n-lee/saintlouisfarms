@@ -31,6 +31,7 @@ public class ProductController {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+
     //I think we need a method for farmer/store which displays products currently available
     //display navbar of products type and the search field
 //    @RequestMapping("")
@@ -41,19 +42,20 @@ public class ProductController {
 //    }
     // this method return all available products (product status =1)
     @GetMapping("products")
-    public  String displayAllProducts(Model model, HttpServletRequest request){
-        HttpSession session=request.getSession();
+    public String displayAllProducts(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
-       // model.addAttribute("title","Available Products");
-        model.addAttribute("products",productRepository.findProductByStatus(user.getId()));
+        // model.addAttribute("title","Available Products");
+        model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
         return "farmer/products";
     }
+
     //display result of searching
     @PostMapping("results")
-    public String displayProductResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm){
+    public String displayProductResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
         Iterable<Product> products;
-        if ( searchTerm.equals("")){
+        if (searchTerm.equals("")) {
             products = productRepository.findAll();
         } else {
             products = ProductData.findByColumnAndValue(searchType, searchTerm, productRepository.findAll());
@@ -63,23 +65,25 @@ public class ProductController {
         model.addAttribute("products", productRepository.findAll());
         return "redirect:";
     }
+
     // add new product
     @GetMapping("add")
-    public String displayAddProductForm(Model model,HttpServletRequest request) {
+    public String displayAddProductForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
         model.addAttribute("title", "Add Product");
-        model.addAttribute("productType", productCategoryRepository.findAll());
-        model.addAttribute("measurements", measurementCategoryRepository.findAll());
+        model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+        model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute(new Product());
         model.addAttribute("products", productRepository.findProductById(user.getId()));
         return "farmer/add";
     }
+
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                      //  Errors errors, Model model)
-    Errors errors, Model model, HttpServletRequest request)
+                                        //  Errors errors, Model model)
+                                        Errors errors, Model model, HttpServletRequest request)
     //                                        @RequestParam int productTypeId, @RequestParam int  measurmentId)
     {
 
@@ -99,4 +103,4 @@ public class ProductController {
         model.addAttribute("product", productRepository.findAll());
         return "redirect:add";
     }
-}
+};
