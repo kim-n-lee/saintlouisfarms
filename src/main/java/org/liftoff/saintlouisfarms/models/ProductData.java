@@ -2,6 +2,8 @@ package org.liftoff.saintlouisfarms.models;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 // this class for search part in product page in navbar
 public class ProductData {
 
@@ -29,8 +31,6 @@ public class ProductData {
             if (product.getName().toLowerCase().contains(lower_val)) {
                 results.add(product);
             } else if (product.getProductDetails().getDescription().toString().toLowerCase().contains(lower_val)) {
-                results.add(product);
-            } else if (product.getProductDetails().getPrice().toString().toLowerCase().contains(lower_val)) {
                 results.add(product);
             }
 
