@@ -24,7 +24,7 @@ public class ProductDetails  extends AbstractEntity{
     @NotNull(message="status is required")
     private Boolean status;
 
-    private File picture;
+    private String picture;
 
     public int getQuantity() {
         return quantity;
@@ -48,11 +48,11 @@ public class ProductDetails  extends AbstractEntity{
 
     }
 
-    public File getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(File picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
