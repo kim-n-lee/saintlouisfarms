@@ -108,20 +108,20 @@ public class ProductController {
 //        newProduct.setMeasurementcategory(newMeasurment);
 
         newProduct.setUser(user);
-
         if(!picture.getOriginalFilename().equals("")){
             try {
+                if(picture.getSize()>2098576){throw new RuntimeException();};
                 BufferedImage image = ImageIO.read(picture.getInputStream());
                 BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.BALANCED, 900, 1000);
                 File outputfile = new File("images/" + user.getId() + newProduct.getName() + newProduct.getId() + ".jpg");
                 ImageIO.write(scaledImage, "jpg", outputfile);
                 newProduct.getProductDetails().setPicture(outputfile);
-            }catch(IOException | IllegalArgumentException e){
+            }catch(IOException | RuntimeException e){
                 model.addAttribute("title", "Add Product");
                 model.addAttribute("productType", productCategoryRepository.findAll());
                 model.addAttribute("measurements", measurementCategoryRepository.findAll());
                 model.addAttribute("products", productRepository.findProductById(user.getId()));
-                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another");
+                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
                 return "farmer/add";
             }
         }
