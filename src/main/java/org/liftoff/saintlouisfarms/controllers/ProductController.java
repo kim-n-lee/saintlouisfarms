@@ -113,9 +113,10 @@ public class ProductController {
                 if(picture.getSize()>2098576){throw new RuntimeException();};
                 BufferedImage image = ImageIO.read(picture.getInputStream());
                 BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.BALANCED, 900, 1000);
-                File outputfile = new File("images/" + user.getId() + newProduct.getName() + newProduct.getId() + ".jpg");
+                String filePath = "images/" + user.getId() + newProduct.getName() + newProduct.getId() + ".jpg";
+                File outputfile = new File(filePath);
                 ImageIO.write(scaledImage, "jpg", outputfile);
-                newProduct.getProductDetails().setPicture(outputfile);
+                newProduct.getProductDetails().setPicture(filePath);
             }catch(IOException | RuntimeException e){
                 model.addAttribute("title", "Add Product");
                 model.addAttribute("productType", productCategoryRepository.findAll());

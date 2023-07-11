@@ -22,7 +22,7 @@ public class ProductDetails  extends AbstractEntity{
     @NotNull(message="status is required")
     private Boolean status;
 
-    private File picture;
+    private String picture;
 
     public Boolean getStatus() {
         return status;
@@ -32,11 +32,11 @@ public class ProductDetails  extends AbstractEntity{
         this.status = status;
     }
 
-    public File getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(File picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
