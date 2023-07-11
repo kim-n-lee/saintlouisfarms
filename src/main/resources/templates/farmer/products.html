@@ -13,6 +13,7 @@
         <th></th>
         <th>Name</th>
         <th>Product Category</th>
+        <th>Amount Available</th>
         <th>Product Details</th>
         <th>Price</th>
         <th>Current Availability</th>
@@ -23,6 +24,7 @@
         <td></td> <img th:src="*{productDetails.picture}" />
         <td th:text="*{name}"></td>
         <td th:text="*{productCategory}"></td>
+        <td th:text="*{ProductDetails.quantity}"></td>
         <td th:text="'$'+*{ProductDetails.price}"></td>
         <td><img th:src="*{productDetails.picture}" /></td>
         <!--    <td th:text="*{ProductDetails.amount+" "+measurementcategory}"></td>-->
