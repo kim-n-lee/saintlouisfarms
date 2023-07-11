@@ -99,8 +99,7 @@
     <td th:text="*{name}"></td>
     <td th:text="*{productCategory}"></td>
     <td th:text="'$'+*{ProductDetails.price}"></td>
-    <td th:text="*{ProductDetails.quantity}"></td>
-<!--    <td th:text="*{ProductDetails.amount+" "+measurementcategory}"></td>-->
+    <td th:text="*{ProductDetails.quantity+' '+measurementcategory.name}"></td>
     <td th:text="*{ProductDetails.status}"></td>
     <td>
         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>

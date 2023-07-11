@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
+    @Query
     User findByEmail(String email);
 
-    @Query(value = "SELECT * FROM farm.user where user.id= ?1", nativeQuery = true)
+    @Query
     User findById(int id);
 
 

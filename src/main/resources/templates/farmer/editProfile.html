@@ -4,9 +4,9 @@
 </head>
 <body class="container">
 
-<h1 th:replace="fragments :: banner"></h1>
+<h1 th:replace="fragments :: navigation"></h1>
 
-<form method="post" th:object="${registerFormDTO}">
+<form method="post" th:object="${profileFarmerToEdit}">
     <div class="form-group">
         <label>Farm Name
             <input class="form-control" th:field="*{farmName}" />
@@ -55,22 +55,8 @@
         </label>
         <p class="error" th:errors="*{email}"></p>
     </div>
-    <div class="form-group">
-        <label>Password
-            <input class="form-control" th:field="*{password}" type="password" />
-        </label>
-        <p class="error" th:errors="*{password}"></p>
-    </div>
-    <div class="form-group">
-        <label>Verify Password
-            <input class="form-control" th:field="*{verifyPassword}" type="password" />
-        </label>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Register" />
+    <input type="submit" class="btn btn-primary" value="Update" />
 </form>
-
-<p>Already have an account? <a href="/login">Login instead.</a></p>
 
 </body>
 </html>

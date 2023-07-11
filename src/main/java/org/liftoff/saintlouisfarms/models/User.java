@@ -24,7 +24,6 @@ public class User extends AbstractEntity {
     private String email;
 
 
-    @NotBlank(message = "Password is required")
     private String pwHash;
 
     @NotBlank(message = "First name is required")
