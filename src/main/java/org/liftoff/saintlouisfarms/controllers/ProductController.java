@@ -88,9 +88,7 @@ public class ProductController {
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                      //  Errors errors, Model model)
     Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture) throws IOException
-    //                                        @RequestParam int productTypeId, @RequestParam int  measurmentId)
     {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -102,10 +100,6 @@ public class ProductController {
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             return "farmer/add";
         }
-//        ProductCategory newProductType = productCategoryRepository.findById(productTypeId).orElse(new ProductCategory());
-//        newProduct.setProductCategory(newProductType);
-//        MeasurementCategory newMeasurment =  measurementCategoryRepository.findById(measurmentId).orElse(new MeasurementCategory());;
-//        newProduct.setMeasurementcategory(newMeasurment);
 
         newProduct.setUser(user);
         if(!picture.getOriginalFilename().equals("")){

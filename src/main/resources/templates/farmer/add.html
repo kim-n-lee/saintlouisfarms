@@ -29,6 +29,12 @@
         <p class="error" th:errors="*{productCategory}"></p>
     </div>
     <div class="form-group">
+        <label th:for="quantity">Quantity
+            <input class="form-control" th:field="*{productDetails.quantity}" type="number"  min="0">
+        </label>
+        <p class="error" th:errors="*{productDetails.quantity}"></p>
+    </div>
+    <div class="form-group">
 <!--        <label th:for="amount">Amount-->
 <!--            <input class="form-control" th:field="*{productDetails.amount}">-->
 <!--        </label>-->
@@ -44,9 +50,10 @@
         </label>
         <p class="error" th:errors="*{measurementcategory}"></p>
     </div>
+
     <div class="form-group">
         <label th:for="price">Price
-            <input class="form-control" th:field="*{productDetails.price}" type="number" step="any">
+            <input class="form-control" th:field="*{productDetails.price}" type="number" step="any" min="0">
         </label>
         <p class="error" th:errors="*{productDetails.price}"></p>
     </div>
@@ -92,8 +99,7 @@
     <td th:text="*{name}"></td>
     <td th:text="*{productCategory}"></td>
     <td th:text="'$'+*{ProductDetails.price}"></td>
-    <td>Placeholder</td>
-<!--    <td th:text="*{ProductDetails.amount+" "+measurementcategory}"></td>-->
+    <td th:text="*{ProductDetails.quantity+' '+measurementcategory.name}"></td>
     <td th:text="*{ProductDetails.status}"></td>
     <td>
         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>

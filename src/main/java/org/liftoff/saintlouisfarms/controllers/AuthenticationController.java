@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class AuthenticationController {
@@ -84,9 +86,20 @@ public class AuthenticationController {
             model.addAttribute("title", "Register");
             return "register";
         }
+//        String ZipCode=registerFormDTO.getZip();
+//        String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
+//        Pattern pattern = Pattern.compile(regex);
+//        Matcher matcher = pattern.matcher(ZipCode);
+//        if(!matcher.equals(true)){
+//            errors.rejectValue("zip", "zip.mismatch", "zip code not valid");
+//            model.addAttribute("title", "Register");
+//            return "register";
+//
+//        }
+
         // OTHERWISE, save new email and hashed password in database, start a new session, and redirect to home page
         User newUser = new User(registerFormDTO.getEmail(), registerFormDTO.getPassword(),registerFormDTO.getFirstName(),
-                registerFormDTO.getLastName(),registerFormDTO.getAddress(),registerFormDTO.getFarmName(),registerFormDTO.getPhone());
+                registerFormDTO.getLastName(),registerFormDTO.getAddress(),registerFormDTO.getFarmName(),registerFormDTO.getZip(),registerFormDTO.getCity(),registerFormDTO.getPhone());
 
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);

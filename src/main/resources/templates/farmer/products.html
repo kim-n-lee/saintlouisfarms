@@ -13,8 +13,8 @@
         <th></th>
         <th>Name</th>
         <th>Product Category</th>
-        <th>Price</th>
-        <th>Description</th>
+        <th>Amount Available</th>
+        <th>Product Details</th>
         <th>Amount Available</th>
         <th>Edit</th>
     </tr>
@@ -23,6 +23,7 @@
         <td><img th:if="${product.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{'Picture of'+name}" width="90" height="100"/></td>
         <td th:text="*{name}"></td>
         <td th:text="*{productCategory}"></td>
+        <td th:text="*{ProductDetails.quantity}"></td>
         <td th:text="'$'+*{ProductDetails.price}"></td>
         <td><img th:src="*{productDetails.description}" /></td>
         <td>Filler</td>
