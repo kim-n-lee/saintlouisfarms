@@ -94,9 +94,10 @@ public class EditProductController {
         Product productToEdit = optProductToEdit.get();
 
         productToEdit.setName(productEdit.getName());
-        productToEdit.getProductDetails().setStatus(productEdit.getProductDetails().getStatus());
         productToEdit.getProductDetails().setPrice(productEdit.getProductDetails().getPrice());
         productToEdit.getProductDetails().setDescription(productEdit.getProductDetails().getDescription());
+        productToEdit.getProductDetails().setQuantity(productEdit.getProductDetails().getQuantity());
+        productToEdit.getProductDetails().setStatus(productEdit.getProductDetails().getStatus());
 
         productToEdit.getMeasurementcategory().setName(productEdit.getMeasurementcategory().getName());
         productToEdit.getProductCategory().setName(productEdit.getProductCategory().getName());

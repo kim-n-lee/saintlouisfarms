@@ -3,6 +3,7 @@ package org.liftoff.saintlouisfarms.models.DTO;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.regex.Pattern;
 
 public class RegisterFormDTO  extends LoginFormDTO{
     @NotBlank(message = "First name is required")
@@ -16,7 +17,14 @@ public class RegisterFormDTO  extends LoginFormDTO{
     @Size(min = 3, max = 45, message = "Address must be between 3 and 45 characters")
     @NotBlank(message = "Address is required")
     private String address;
+    @NotBlank(message = "City name is required")
+    private String city;
 
+    @NotBlank(message = "Zip code  is required")
+    private String zip ;
+//    String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
+//
+//    Pattern pattern = Pattern.compile(regex);
     @Size(min = 3, max = 45, message = "Farm's name must be between 3 and 45 characters")
     @NotBlank(message = "Farm name is required")
     private String farmName;
@@ -66,6 +74,22 @@ public class RegisterFormDTO  extends LoginFormDTO{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     public String getVerifyPassword() {

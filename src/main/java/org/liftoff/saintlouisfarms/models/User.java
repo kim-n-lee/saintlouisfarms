@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 public class User extends AbstractEntity {
@@ -40,6 +42,38 @@ public class User extends AbstractEntity {
     @Size(min = 3, max = 45, message = "Farm's name must be between 3 and 45 characters")
     @NotBlank(message = "Farm name is required")
     private String farmName;
+    @NotBlank(message = "City name is required")
+    private String city;
+
+    @NotBlank(message = "Zip code  is required")
+    private String zip ;
+//    String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
+//
+//    Pattern pattern = Pattern.compile(regex);
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+       // Matcher matcher = pattern.matcher(zip);
+       // if(matcher.equals(true)){
+            this.zip = zip;
+        //}
+//        else {
+//            //not Valid zip code
+//            this.zip="notValid";
+//        }
+    }
+
+
 
 
     @NotBlank(message = "Phone number is required")
@@ -65,13 +99,15 @@ public class User extends AbstractEntity {
 
     public User(){
     }
-    public User(String email, String pwHash, String firstName, String lastName, String address, String farmName, String phone) {
+    public User(String email, String pwHash, String firstName, String lastName, String address, String farmName, String zip,String city,String phone) {
         this.email = email;
         this.pwHash = encoder.encode(pwHash);
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.farmName = farmName;
+        this.zip=zip;
+        this.city=city;
         this.phone = phone;
     }
 
