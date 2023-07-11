@@ -1,5 +1,7 @@
 package org.liftoff.saintlouisfarms.controllers;
 
+import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
+import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -21,34 +24,58 @@ public class EditProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private MeasurementCategoryRepository measurementCategoryRepository;
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
     @GetMapping("/{editProductId}")
-    public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request){
-        HttpSession session=request.getSession();
+    public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
         Optional<Product> optProductToEdit = productRepository.findById(editProductId);
         //check if product we want to edit not in the system!
-        if(optProductToEdit.isEmpty()){
+        if (optProductToEdit.isEmpty()) {
             model.addAttribute("title", "Available Products");
             model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
-            model.addAttribute("availability","ProductNotFound");
+            model.addAttribute("availability", "ProductNotFound");
             return "redirect:farmer/products";
         }
         Product productToEdit = optProductToEdit.get();
 
         model.addAttribute("title",
-                "Edit "+productToEdit.getName());
+                "Edit " + productToEdit.getName());
+        model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+        model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("editProductId", editProductId);
         return "farmer/edit";
     }
-    @PostMapping("/{editProductId}")
+
+
+//    @PutMapping("/{productToEditId}")
+//    public Product editProductsProcessing(@RequestBody Product editProduct
+//            ,@PathVariable int productToEditId, HttpServletRequest request,Model model){
+//Optional<Product> productToedit=productRepository.findById(productToEditId);
+//if(productToedit.isPresent()) {
+//    Product productData=productToedit.get();
+//    productData.setName(editProduct.getName());
+//    productData.setProductCategory(editProduct.getProductCategory());
+//    productData.setMeasurementcategory(editProduct.getMeasurementcategory());
+//    productData.setProductDetails(editProduct.getProductDetails());
+//    return productRepository.save(productData);
+//}
+//else {
+//    return  productRepository.save(editProduct);
+//}
+//        model.addAttribute("title", "Edit "+productData);
+//        model.addAttribute("productToEdit", productToEdit);
+
+
+    @PostMapping("/{productToEditId}")
     public String editEmployeeProcessing(@PathVariable int productToEditId,
                                          Model model,
-                                         String name,
-                                         MeasurementCategory measurementCategory,
-                                         ProductDetails productDetails,
-                                         ProductCategory productCategory,
+                                         @ModelAttribute @Valid Product productEdit,
 
                                          HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -59,30 +86,30 @@ public class EditProductController {
         if (optProductToEdit.isEmpty()) {
             model.addAttribute("title", "Available Products");
             model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
-            model.addAttribute("availability","ProductNotFound");
+            model.addAttribute("availability", "ProductNotFound");
 
             return "redirect:";
         }
 
         Product productToEdit = optProductToEdit.get();
 
+        productToEdit.setName(productEdit.getName());
+        productToEdit.getProductDetails().setStatus(productEdit.getProductDetails().getStatus());
+        productToEdit.getProductDetails().setPrice(productEdit.getProductDetails().getPrice());
+        productToEdit.getProductDetails().setDescription(productEdit.getProductDetails().getDescription());
 
-        productToEdit.setName(name);
-        productToEdit.setProductDetails(productDetails);
-        productToEdit.setProductCategory(productCategory);
-        productToEdit.setMeasurementcategory(measurementCategory);
-        model.addAttribute("Done","DoneEdit");
-
+        productToEdit.getMeasurementcategory().setName(productEdit.getMeasurementcategory().getName());
+        productToEdit.getProductCategory().setName(productEdit.getProductCategory().getName());
 
         productRepository.save(productToEdit);
 
+        model.addAttribute("Done", "DoneEdit");
 
-        model.addAttribute("title", "Edit "+productToEdit);
+        model.addAttribute("title", "Edit " + productToEdit);
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("productToEditId", productToEditId);
-        return "redirect:farmer/products";
+        return "redirect:../add";
     }
 
-
-
 }
+

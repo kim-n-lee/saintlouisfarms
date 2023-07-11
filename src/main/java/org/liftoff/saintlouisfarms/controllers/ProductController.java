@@ -99,4 +99,5 @@ public class ProductController {
         model.addAttribute("product", productRepository.findAll());
         return "redirect:add";
     }
+
 }

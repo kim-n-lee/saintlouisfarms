@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<h1 th:replace="fragments :: bannerFarmerLoggedIn"></h1>
+<nav th:replace="fragments :: navigation" ></nav>
+
+<!--Success banner here for when product added successfully-->
+
+<form method="post" th:object="${productToEdit}" >
+    <div class="form-group">
+        <label th:for="name">Name
+            <input class="form-control" th:field="*{name}">
+        </label>
+        <p class="error" th:errors="*{name}"></p>
+    </div>
+    <div class="form-group">
+        <label th:for="productCategory">Product Category
+            <select class="form-control" th:field="*{productCategory}">
+                <option th:each="category : ${productType}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+            </select>
+            <a th:href="@{/productType/add}">Add More Categories</a>
+        </label>
+        <p class="error" th:errors="*{productCategory}"></p>
+    </div>
+    <div class="form-group">
+        <!--        <label th:for="amount">Amount-->
+        <!--            <input class="form-control" th:field="*{productDetails.amount}">-->
+        <!--        </label>-->
+        <!--        <p class="error" th:errors="*{productDetails.amount}"></p>-->
+        <label th:for="measurementcategory">Measurement
+            <select class="form-control" th:field="*{measurementcategory}">
+                <option th:each="measurement : ${measurements}"
+                        th:value="${measurement.id}"
+                        th:text="${measurement.name}">
+                </option>
+            </select>
+            <a th:href="@{/measurements/add}">Add Custom Measurements</a>
+        </label>
+        <p class="error" th:errors="*{measurementcategory}"></p>
+    </div>
+    <div class="form-group">
+        <label th:for="price">Price
+            <input class="form-control" th:field="*{productDetails.price}" type="number" step="any">
+        </label>
+        <p class="error" th:errors="*{productDetails.price}"></p>
+    </div>
+    <div class="form-group">
+        <label th:for="description">Description
+            <input class="form-control" th:field="*{productDetails.description}" type="textbox">
+        </label>
+        <p class="error" th:errors="*{productDetails.description}"></p>
+    </div>
+    <!--    Will need some time to figure this out-->
+    <!--    <div class="form-group">-->
+    <!--        <label th:for="picture">Picture-->
+    <!--            <input class="form-control" th:field="*{productDetails.picture}" type="number">-->
+    <!--        </label>-->
+    <!--        <p class="error" th:errors="*{productDetails.picture}"></p>-->
+    <!--    </div>-->
+    <div class="form-group">
+        <label th:for="status">Currently Available
+            <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox">
+        </label>
+        <p class="error" th:errors="*{productDetails.status}"></p>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Edit Product" />
+</form>
+
+
+</body>
+</html>
