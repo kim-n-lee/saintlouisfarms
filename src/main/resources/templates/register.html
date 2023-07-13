@@ -10,12 +10,13 @@
         <div class="row gx-4 gx-lg-5 p-5 pe-5">
             <h1 th:replace="fragments :: banner"></h1>
             <hr/>
-    <div class="form-group">
+        <form method="post" th:object="${registerFormDTO}">
+            <div class="form-group">
         <label>First Name
             <input class="form-control" th:field="*{firstName}" />
         </label>
-        <p class="error" th:errors="*{firstName}"></p>
-    </div>
+                <p class="error" th:errors="*{firstName}"></p>
+            </div>
     <div class="form-group">
         <label>Last Name
             <input class="form-control" th:field="*{lastName}" />
@@ -68,8 +69,8 @@
 </form>
 
     <h6></br>Already have an account?</br><a href="/login">Login instead</a></h6>
-</div>
-</div>
+        </div>
+    </div>
  <footer th:replace="fragments :: footer">
     </footer>
 
