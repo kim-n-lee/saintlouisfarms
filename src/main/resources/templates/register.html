@@ -3,16 +3,13 @@
 <head th:replace="fragments :: head">
 </head>
 <body class="container">
+    <nav th:replace="fragments :: navigation">
+    </nav>
 
-<h1 th:replace="fragments :: banner"></h1>
-
-<form method="post" th:object="${registerFormDTO}">
-    <div class="form-group">
-        <label>Farm Name
-            <input class="form-control" th:field="*{farmName}" />
-        </label>
-        <p class="error" th:errors="*{farmName}"></p>
-    </div>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 p-5 pe-5">
+            <h1 th:replace="fragments :: banner"></h1>
+            <hr/>
     <div class="form-group">
         <label>First Name
             <input class="form-control" th:field="*{firstName}" />
@@ -70,7 +67,12 @@
     <input type="submit" class="btn btn-primary" value="Register" />
 </form>
 
-<p>Already have an account? <a href="/login">Login instead.</a></p>
+    <h6></br>Already have an account?</br><a href="/login">Login instead</a></h6>
+</div>
+</div>
+ <footer th:replace="fragments :: footer">
+    </footer>
+
 
 </body>
 </html>

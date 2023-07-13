@@ -16,10 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.awt.image.BufferedImage;
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -55,6 +53,7 @@ public class ProductController {
 
         // model.addAttribute("title","Available Products");
         model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+        model.addAttribute("loggedIn", user != null);
         return "farmer/products";
     }
 
@@ -84,6 +83,7 @@ public class ProductController {
         model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute(new Product());
         model.addAttribute("products", productRepository.findProductById(user.getId()));
+        model.addAttribute("loggedIn", user != null);
         return "farmer/add";
     }
 
@@ -128,6 +128,7 @@ public class ProductController {
         model.addAttribute("product", productRepository.findAll());
         return "redirect:add";
     }
+
     @PostMapping("{productToDeleteId}")
     public String deleteProductProcessing(@PathVariable int productToDeleteId,
                                           Model model,
