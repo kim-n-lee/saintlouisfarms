@@ -3,13 +3,16 @@
 <head th:replace="fragments :: head">
 </head>
 <body class="container">
-    <nav th:replace="fragments :: navigation">
-    </nav>
 
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 p-5 pe-5">
-            <h1 th:replace="fragments :: banner"></h1>
-            <hr/>
+<h1 th:replace="fragments :: navigation"></h1>
+
+<form method="post" th:object="${profileFarmerToEdit}">
+    <div class="form-group">
+        <label>Farm Name
+            <input class="form-control" th:field="*{farmName}" />
+        </label>
+        <p class="error" th:errors="*{farmName}"></p>
+    </div>
     <div class="form-group">
         <label>First Name
             <input class="form-control" th:field="*{firstName}" />
@@ -52,27 +55,8 @@
         </label>
         <p class="error" th:errors="*{email}"></p>
     </div>
-    <div class="form-group">
-        <label>Password
-            <input class="form-control" th:field="*{password}" type="password" />
-        </label>
-        <p class="error" th:errors="*{password}"></p>
-    </div>
-    <div class="form-group">
-        <label>Verify Password
-            <input class="form-control" th:field="*{verifyPassword}" type="password" />
-        </label>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Register" />
+    <input type="submit" class="btn btn-primary" value="Update" />
 </form>
-
-    <h6></br>Already have an account?</br><a href="/login">Login instead</a></h6>
-</div>
-</div>
- <footer th:replace="fragments :: footer">
-    </footer>
-
 
 </body>
 </html>

@@ -35,11 +35,12 @@
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
+
                 <!--        <li class="nav-item"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>-->
                 <li class="nav-item navbar-brand"><a class="nav-link" href="/about">About Us</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
-                <!--        <li class="nav-item"><a class="nav-link" href="/farmer/profile">Profile</a></li>-->
+                <li class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Logout</a></li>
                 <li th:unless="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
             </ul>

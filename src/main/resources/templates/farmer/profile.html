@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<h1 th:replace="fragments :: navigation"></h1>
+
+<div th:object="${UserInformation}">
+    <div>
+        <label>Farm Name
+            <p th:text="*{farmName}" />
+        </label>
+    </div>
+    <div>
+        <label>First Name
+            <p th:text="*{firstName}"></p>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>Last Name
+            <p th:text="*{lastName}"></p>
+        </label>
+    </div>
+    <div >
+        <label>Address
+            <p th:text="*{address}"></p>
+        </label>
+    </div>
+    <div>
+        <label>City
+            <p th:text="*{city}"></p>
+        </label>
+    </div>
+    <div>
+        <label>ZIP
+            <p th:text="*{zip}"></p>
+        </label>
+    </div>
+    <div>
+        <label>Phone Number
+            <p th:text="*{phone}"></p>
+        </label>
+    </div>
+    <div>
+        <label>Email
+            <p th:text="*{email}"></p>
+        </label>
+    </div>
+</div>
+
+<a href="/farmer/profile/edit"><button class="btn btn-success">Edit Profile</button></a>
+
+</body>
+</html>

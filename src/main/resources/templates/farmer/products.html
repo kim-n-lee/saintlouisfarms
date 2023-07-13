@@ -5,7 +5,6 @@
 <body class="container">
     <nav th:replace="fragments :: navigation">
     </nav>
-
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 p-5 pe-5">
             <h1 th:replace="fragments :: banner"></h1>
@@ -23,7 +22,7 @@
                 </tr>
                 </thead>
                 <tr th:each="product : ${products}" th:object="${product}">
-                    <td></td> <img th:src="*{productDetails.picture}" />
+                    <td><img th:if="${product.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{'Picture of'+name}" width="90" height="100"/></td>
                     <td th:text="*{name}"></td>
                     <td th:text="*{productCategory}"></td>
                     <td th:text="'$'+*{ProductDetails.price}"></td>

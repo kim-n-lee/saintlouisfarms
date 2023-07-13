@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("farmer")
@@ -88,9 +89,7 @@ public class ProductController {
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                      //  Errors errors, Model model)
     Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture) throws IOException
-    //                                        @RequestParam int productTypeId, @RequestParam int  measurmentId)
     {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -102,26 +101,23 @@ public class ProductController {
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             return "farmer/add";
         }
-//        ProductCategory newProductType = productCategoryRepository.findById(productTypeId).orElse(new ProductCategory());
-//        newProduct.setProductCategory(newProductType);
-//        MeasurementCategory newMeasurment =  measurementCategoryRepository.findById(measurmentId).orElse(new MeasurementCategory());;
-//        newProduct.setMeasurementcategory(newMeasurment);
 
         newProduct.setUser(user);
-
         if(!picture.getOriginalFilename().equals("")){
             try {
+                if(picture.getSize()>2098576){throw new RuntimeException();};
                 BufferedImage image = ImageIO.read(picture.getInputStream());
                 BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.BALANCED, 900, 1000);
-                File outputfile = new File("images/" + user.getId() + newProduct.getName() + newProduct.getId() + ".jpg");
+                String filePath = "images/" + user.getId() + newProduct.getName() + newProduct.getId() + ".jpg";
+                File outputfile = new File(filePath);
                 ImageIO.write(scaledImage, "jpg", outputfile);
-                newProduct.getProductDetails().setPicture(outputfile);
-            }catch(IOException | IllegalArgumentException e){
+                newProduct.getProductDetails().setPicture(filePath);
+            }catch(IOException | RuntimeException e){
                 model.addAttribute("title", "Add Product");
                 model.addAttribute("productType", productCategoryRepository.findAll());
                 model.addAttribute("measurements", measurementCategoryRepository.findAll());
                 model.addAttribute("products", productRepository.findProductById(user.getId()));
-                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another");
+                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
                 return "farmer/add";
             }
         }
@@ -132,4 +128,34 @@ public class ProductController {
         model.addAttribute("product", productRepository.findAll());
         return "redirect:add";
     }
-}
+
+    @PostMapping("{productToDeleteId}")
+    public String deleteProductProcessing(@PathVariable int productToDeleteId,
+                                          Model model,
+                                          HttpServletRequest request,
+                                          Boolean confirmation) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
+        if (optProductToDelete.isEmpty()) {
+            model.addAttribute("title", "Current Employees");
+            model.addAttribute("currentEmployees", productRepository.findProductById(user.getId()));
+            model.addAttribute("cannotFindEmployee", "ProductNotFound");
+            return "farmer/add";
+
+        }
+        Product productToDelete = optProductToDelete.get();
+        if (confirmation) {
+            productRepository.deleteById(productToDeleteId);
+            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
+            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
+            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
+            // delete will be on the same page
+
+            return "farmer/add";
+        }
+        return "farmer/add";
+
+
+    }
+};

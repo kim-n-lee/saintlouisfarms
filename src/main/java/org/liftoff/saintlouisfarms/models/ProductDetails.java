@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Entity;
 
 
@@ -17,36 +18,52 @@ public class ProductDetails  extends AbstractEntity{
 
     @NotNull(message="price is required")
     private BigDecimal price;
-
+    @NotNull(message="quantity is required")
+    private int quantity;
 //    I think it would be better to not require the status so that a farmer can create a product that is not yet avilable
     @NotNull(message="status is required")
     private Boolean status;
 
-    private File picture;
+    private String picture;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public Boolean getStatus() {
         return status;
     }
 
     public void setStatus(Boolean status) {
-        this.status = status;
+        if( (quantity<=0)){
+           this.status=false;
+
+        }
+        else {
+        this.status = status;}
+
     }
 
-    public File getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(File picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
     public ProductDetails() {
     }
 
-    public ProductDetails(String description, BigDecimal price, Boolean status) {
+    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity) {
         this.description = description;
         this.price = price;
         this.status = status;
+        this.quantity=quantity;
     }
 
     public String getDescription() {
@@ -65,5 +82,11 @@ public class ProductDetails  extends AbstractEntity{
         this.price = price;
     }
 
+public void checkAmount(int quantity,boolean stat){
+        if( (quantity<=0)){
+            stat=false;
 
+        }
+
+}
 }
