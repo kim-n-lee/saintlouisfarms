@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description"
-          content="Final Project for LaunchCode's Liftoff program. Made by: Jood Alzqaili, Maisa Salahaldin, Emily Chassin, Tudor Seserman, and Mike Wilson." />
+          content="Final Project for LaunchCode's Liftoff program. Created by: Jood Alzqaili, Maisa Salahaldin, Emily Chassin, Tudor Seserman, and Mike Wilson." />
     <meta name="author" content="Mike Wilson and Tudor Seserman" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" th:href="@{assets/favicon.ico}" />
@@ -29,17 +29,19 @@
 
 <nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand drop-shadow" href="#page-top">Saint Louis Farms</a><img th:src="@{/assets/img/STL-Farms-Icon.svg}" id="nav-icon" class="drop-shadow"/>
+        <a class="navbar-brand drop-shadow" href="/">Saint Louis Farms</a><img th:src="@{/assets/img/STL-Farms-Icon.svg}" id="nav-icon" class="drop-shadow"/>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
                 <!--        <li class="nav-item"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>-->
-                <li class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
-                <li class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
+                <li class="nav-item navbar-brand"><a class="nav-link" href="/about">About Us</a></li>
+                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
+                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
                 <!--        <li class="nav-item"><a class="nav-link" href="/farmer/profile">Profile</a></li>-->
-                <li class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
+                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Logout</a></li>
+                <li th:unless="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
             </ul>
         </div>
     </div>
@@ -60,7 +62,7 @@
                         Our mission is clear and powerful: to provide convenient access to fresh, locally sourced
                         products while supporting the dedicated farmers who make it all happen.</p>
                 </div>
-                <a class="btn btn-success btn-xl" href="#about">Login/Register</a>
+                <a class="btn btn-success btn-xl" href="about">Find out more!</a>
             </div>
             <div></br></br></br></div>
         </div>
@@ -148,7 +150,7 @@
                 the carbon footprint associated with long-distance transportation of goods. We actively support
                 eco-friendly practices such as organic farming, regenerative agriculture, and reducing food waste.
             </p>
-            <h4>
+            <h4></br>
                 Thank you for choosing Saint Louis Farms - a place where farming meets community.
             </h4>
         </div>
@@ -157,7 +159,11 @@
 
 <footer th:fragment="footer" class="off-white-bg py-5">
     <div class="container px-4 px-lg-5">
-        <div class="small text-center text-muted">Copyright &copy; 2023 - Saint Louis Farms</div>
+        <div class="small text-center text-muted">
+            Copyright &copy; 2023 - Saint Louis Farms</br>
+            Final Project for LaunchCode's Liftoff program</br>
+            Created by: <a href="https://github.com/Jzkili">Jood Alzqaili</a>, <a href="https://github.com/BlackRose1311">Maisa Salahaldin</a>, <a href="https://github.com/tudor-seserman">Tudor Seserman</a>, and <a href="https://mikewilsonstl.com">Mike Wilson</a>.
+        </div>
     </div>
 </footer>
 

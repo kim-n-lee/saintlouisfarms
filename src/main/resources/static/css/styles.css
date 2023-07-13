@@ -1,7 +1,29 @@
 @charset "UTF-8";
 
+html {
+overflow: scroll;
+overflow-x: hidden;
+}
+::-webkit-scrollbar {
+width: 0px;
+background: transparent;
+}
+/ optional: show position indicator in red
+::-webkit-scrollbar-thumb {
+background: #FF0000;
+}
+
+#about{
+  padding-top: 120px;
+}
+
 body{
   background-color: #f5f5dc !important;
+  padding-top: 85px;
+}
+
+#homepage-body{
+  padding-top: 0px !important;
 }
 
 #nav-icon{
@@ -10916,7 +10938,7 @@ body {
 }
 
 .page-section {
-  padding: 8rem 0;
+  padding: 0rem 0;
 }
 
 .text-white-75 {

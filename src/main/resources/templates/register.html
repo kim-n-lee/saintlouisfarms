@@ -3,75 +3,81 @@
 <head th:replace="fragments :: head">
 </head>
 <body class="container">
+    <nav th:replace="fragments :: navigation">
+    </nav>
 
-<h1 th:replace="fragments :: banner"></h1>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 p-5 pe-5">
+            <h1 th:replace="fragments :: banner"></h1>
+            <hr/>
+            <form method="post" th:object="${registerFormDTO}">
+                <div class="form-group">
+                    <label>Farm Name
+                        <input class="form-control" th:field="*{farmName}" />
+                    </label>
+                    <p class="error" th:errors="*{farmName}"></p>
+                </div>
+                <div class="form-group">
+                    <label>First Name
+                        <input class="form-control" th:field="*{firstName}" />
+                    </label>
+                    <p class="error" th:errors="*{firstName}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Last Name
+                        <input class="form-control" th:field="*{lastName}" />
+                    </label>
+                    <p class="error" th:errors="*{lastName}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Address
+                        <input class="form-control" th:field="*{address}" type="text"/>
+                    </label>
+                    <p class="error" th:errors="*{address}"></p>
+                </div>
+                <!--    Please add fields to class and DTO-->
+                <!--    <div class="form-group">-->
+                <!--        <label>City-->
+                <!--            <input class="form-control" th:field="*{city}" type="text"/>-->
+                <!--        </label>-->
+                <!--        <p class="error" th:errors="*{city}"></p>-->
+                <!--    </div>-->
+                <!--    <div class="form-group">-->
+                <!--        <label>ZIP-->
+                <!--            <input class="form-control" th:field="*{zip}" type="number"/>-->
+                <!--        </label>-->
+                <!--        <p class="error" th:errors="*{zip}"></p>-->
+                <!--    </div>-->
+                <div class="form-group">
+                    <label>Phone Number
+                        <input class="form-control" th:field="*{phone}" />
+                    </label>
+                    <p class="error" th:errors="*{phone}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Email
+                        <input class="form-control" th:field="*{email}" type="email"/>
+                    </label>
+                    <p class="error" th:errors="*{email}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Password
+                        <input class="form-control" th:field="*{password}" type="password" />
+                    </label>
+                    <p class="error" th:errors="*{password}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Verify Password
+                        <input class="form-control" th:field="*{verifyPassword}" type="password" />
+                    </label>
+                </div>
 
-<form method="post" th:object="${registerFormDTO}">
-    <div class="form-group">
-        <label>Farm Name
-            <input class="form-control" th:field="*{farmName}" />
-        </label>
-        <p class="error" th:errors="*{farmName}"></p>
+                <input type="submit" class="btn btn-primary" value="Register" />
+            </form>
+            <h6></br>Already have an account?</br><a href="/login">Login instead</a></h6>
+        </div>
     </div>
-    <div class="form-group">
-        <label>First Name
-            <input class="form-control" th:field="*{firstName}" />
-        </label>
-        <p class="error" th:errors="*{firstName}"></p>
-    </div>
-    <div class="form-group">
-        <label>Last Name
-            <input class="form-control" th:field="*{lastName}" />
-        </label>
-        <p class="error" th:errors="*{lastName}"></p>
-    </div>
-    <div class="form-group">
-        <label>Address
-            <input class="form-control" th:field="*{address}" type="text"/>
-        </label>
-        <p class="error" th:errors="*{address}"></p>
-    </div>
-<!--    Please add fields to class and DTO-->
-<!--    <div class="form-group">-->
-<!--        <label>City-->
-<!--            <input class="form-control" th:field="*{city}" type="text"/>-->
-<!--        </label>-->
-<!--        <p class="error" th:errors="*{city}"></p>-->
-<!--    </div>-->
-<!--    <div class="form-group">-->
-<!--        <label>ZIP-->
-<!--            <input class="form-control" th:field="*{zip}" type="number"/>-->
-<!--        </label>-->
-<!--        <p class="error" th:errors="*{zip}"></p>-->
-<!--    </div>-->
-    <div class="form-group">
-        <label>Phone Number
-            <input class="form-control" th:field="*{phone}" />
-        </label>
-        <p class="error" th:errors="*{phone}"></p>
-    </div>
-    <div class="form-group">
-        <label>Email
-            <input class="form-control" th:field="*{email}" type="email"/>
-        </label>
-        <p class="error" th:errors="*{email}"></p>
-    </div>
-    <div class="form-group">
-        <label>Password
-            <input class="form-control" th:field="*{password}" type="password" />
-        </label>
-        <p class="error" th:errors="*{password}"></p>
-    </div>
-    <div class="form-group">
-        <label>Verify Password
-            <input class="form-control" th:field="*{verifyPassword}" type="password" />
-        </label>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Register" />
-</form>
-
-<p>Already have an account? <a href="/login">Login instead.</a></p>
-
+    <footer th:replace="fragments :: footer">
+    </footer>
 </body>
 </html>

@@ -3,26 +3,32 @@
 <head th:replace="fragments :: head">
 </head>
 <body class="container">
+    <nav th:replace="fragments :: navigation">
+    </nav>
 
-<h1 th:replace="fragments :: banner"></h1>
-<form method="post" th:object="${loginFormDTO}">
-    <div class="form-group">
-        <label th:for="username">Email
-            <input class="form-control" th:field="*{email}">
-        </label>
-        <p class="error" th:errors="*{email}"></p>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 p-5 pe-5">
+            <h1 th:replace="fragments :: banner"></h1>
+            <hr/>
+            <form method="post" th:object="${loginFormDTO}">
+                <div class="form-group">
+                    <label th:for="username">Email
+                        <input class="form-control" th:field="*{email}">
+                    </label>
+                    <p class="error" th:errors="*{email}"></p>
+                </div>
+                <div class="form-group">
+                    <label>Password
+                        <input class="form-control" th:field="*{password}" type="password">
+                    </label>
+                    <p class="error" th:errors="*{password}"></p>
+                </div></br>
+                <input type="submit" class="btn btn-primary" value="Log In" />
+            </form>
+            <h6></br>Don't have an account?</br><a href="/register">Register for one here</a></h6>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Password
-            <input class="form-control" th:field="*{password}" type="password">
-        </label>
-        <p class="error" th:errors="*{password}"></p>
-    </div>
-
-    <input type="submit" class="btn btn-primary" value="Log In" />
-</form>
-
-<p>Don't have an account? <a href="/register">Register for one.</a></p>
-
+    <footer th:replace="fragments :: footer">
+    </footer>
 </body>
 </html>
