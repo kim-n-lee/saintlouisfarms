@@ -80,6 +80,10 @@
     <input type="submit" class="btn btn-primary" value="Edit Product" />
 </form>
 
+<form method="post" th:action="@{/farmer/delete/{productToDeleteId}(productToDeleteId=${productToEdit.id})}">
+    <input type="hidden" name="productToDelete" th:value="${productToEdit}" />
+    <input onclick = "if (! confirm('Are you sure you want to delete this product?')) { return false; }" type="submit" class="btn btn-danger" value="Delete Product" />
+</form>
 
 </body>
 </html>
