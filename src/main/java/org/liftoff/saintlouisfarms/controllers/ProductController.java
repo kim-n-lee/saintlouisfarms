@@ -132,30 +132,29 @@ public class ProductController {
     @PostMapping("{productToDeleteId}")
     public String deleteProductProcessing(@PathVariable int productToDeleteId,
                                           Model model,
-                                          HttpServletRequest request,
-                                          Boolean confirmation) {
+                                          HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
         if (optProductToDelete.isEmpty()) {
-            model.addAttribute("title", "Current Employees");
-            model.addAttribute("currentEmployees", productRepository.findProductById(user.getId()));
-            model.addAttribute("cannotFindEmployee", "ProductNotFound");
+            model.addAttribute("title", "Current Products");
+            model.addAttribute("currentProducts", productRepository.findProductById(user.getId()));
+            model.addAttribute("cannotFindProducts", "ProductNotFound");
             return "farmer/add";
 
         }
         Product productToDelete = optProductToDelete.get();
-        if (confirmation) {
-            productRepository.deleteById(productToDeleteId);
-            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
-            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
-            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
-            // delete will be on the same page
 
-            return "farmer/add";
-        }
+        productRepository.deleteById(productToDeleteId);
+        productRepository.delete(productToDelete);
+//            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
+//            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
+//            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
+        // delete will be on the same page
+
         return "farmer/add";
-
-
     }
+
+
+}
 };
