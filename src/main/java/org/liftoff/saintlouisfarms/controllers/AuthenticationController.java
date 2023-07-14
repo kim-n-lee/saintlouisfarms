@@ -151,7 +151,7 @@ public class AuthenticationController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
-        return "redirect:/login";
-    }
-
+        return "index"; // tried changing the return value from "redirect:/login" to "redirect:/index" but it
+    }                   // wouldn't work for some reason. This achieves functionality but the address bar shows "logout"
+                        // in the URL
 }

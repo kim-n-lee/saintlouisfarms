@@ -4,52 +4,92 @@
 </head>
 <body class="container">
 
-<h1 th:replace="fragments :: navigation"></h1>
-
-<div th:object="${UserInformation}">
-    <div>
-        <label>Farm Name
-            <p th:text="*{farmName}" />
-        </label>
-    </div>
-    <div>
-        <label>First Name
-            <p th:text="*{firstName}"></p>
-        </label>
-    </div>
-    <div class="form-group">
-        <label>Last Name
-            <p th:text="*{lastName}"></p>
-        </label>
-    </div>
-    <div >
-        <label>Address
-            <p th:text="*{address}"></p>
-        </label>
-    </div>
-    <div>
-        <label>City
-            <p th:text="*{city}"></p>
-        </label>
-    </div>
-    <div>
-        <label>ZIP
-            <p th:text="*{zip}"></p>
-        </label>
-    </div>
-    <div>
-        <label>Phone Number
-            <p th:text="*{phone}"></p>
-        </label>
-    </div>
-    <div>
-        <label>Email
-            <p th:text="*{email}"></p>
-        </label>
+<nav th:replace="fragments :: navigation"></nav>
+<div th:object="${UserInformation}" class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+        <div class="container bootstrap snippets">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img alt="" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/avatar-placeholder.png}">
+                    </div>
+                    <div class="col-md-6">
+                        <h4>User Profile: <span th:text="*{firstName}"></span> <span th:text="*{lastName}"></span></h4>
+                        <div class="table-responsive">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Farm Name
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <p th:text="*{farmName}"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            First Name
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <p th:text="*{firstName}"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Last Name
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <p th:text="*{lastName}"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Address
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <span th:text="*{address}"></span></br>
+                                        <span th:text="*{city}"></span>, MO <span th:text="*{zip}"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Phone Number
+                                        </strong>
+                                    </td>
+                                    <td class=>
+                                        <p th:text="*{phone}"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            Email
+                                        </strong>
+                                    </td>
+                                    <td class>
+                                        <p th:text="*{email}"></p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<a href="/farmer/profile/edit"><button class="btn btn-success">Edit Profile</button></a>
-
+<div class="text-center"><a href="/farmer/profile/edit" class="btn btn-success">Edit Profile</a></div>
 </body>
 </html>
