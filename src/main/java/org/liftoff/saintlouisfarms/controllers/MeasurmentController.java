@@ -28,12 +28,14 @@ public class MeasurmentController {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         model.addAttribute("measurements",measurementCategoryRepository.findMeasurementById(user.getId()));
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "measurements/index" ;
     }
     // Corresponds to http://localhost:8080/measurements/add
     @GetMapping("measurements/add")
-    public String displayAddNewMeasurementForm(Model model) {
+    public String displayAddNewMeasurementForm(Model model, HttpSession session) {
         model.addAttribute(new MeasurementCategory());
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "measurements/add";
     }
     @PostMapping("measurements/add")
@@ -42,11 +44,13 @@ public class MeasurmentController {
         HttpSession session=request.getSession();
         User user = authenticationController.getUserFromSession(session);
         if (errors.hasErrors()) {
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "measurements/add";
         }
         newMeasuremenCategory.setUser(user);
         measurementCategoryRepository.save(newMeasuremenCategory);
         model.addAttribute("measurement", measurementCategoryRepository.findMeasurementById(user.getId()));
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "redirect:../farmer/add";
     }
 }
