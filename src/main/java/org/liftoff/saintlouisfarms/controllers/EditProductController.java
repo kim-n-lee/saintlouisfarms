@@ -39,6 +39,7 @@ public class EditProductController {
             model.addAttribute("title", "Available Products");
             model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
             model.addAttribute("availability", "ProductNotFound");
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "redirect:farmer/products";
         }
         Product productToEdit = optProductToEdit.get();
@@ -49,6 +50,7 @@ public class EditProductController {
         model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("editProductId", editProductId);
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "farmer/edit";
     }
 
@@ -87,7 +89,7 @@ public class EditProductController {
             model.addAttribute("title", "Available Products");
             model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
             model.addAttribute("availability", "ProductNotFound");
-
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "redirect:";
         }
 
@@ -109,6 +111,7 @@ public class EditProductController {
         model.addAttribute("title", "Edit " + productToEdit);
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("productToEditId", productToEditId);
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "redirect:../add";
     }
 

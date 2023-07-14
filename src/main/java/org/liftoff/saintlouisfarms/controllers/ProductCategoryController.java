@@ -30,26 +30,25 @@ public class ProductCategoryController {
         User user = authenticationController.getUserFromSession(session);
 
         model.addAttribute("productTypes", productCategoryRepository.findProductsTypetById(user.getId()));
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "productType/index" ;
     }
     // Corresponds to http://localhost:8080/productType/add
     @GetMapping("add")
-    public String displayAddProductTypeForm(Model model) {
-
-
+    public String displayAddProductTypeForm(Model model, HttpSession session) {
         model.addAttribute(new ProductCategory());
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "productType/add";
     }
 
     @PostMapping("add")
     public String processAddEmployerForm(@ModelAttribute @Valid ProductCategory newProductCategory,
                                          Errors errors, Model model,HttpServletRequest request) {
-//        HttpSession session=request.getSession();
-//        User user = authenticationController.getUserFromSession(session);
+        HttpSession session=request.getSession();
         if (errors.hasErrors()) {
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "productType/add";
         }
-        HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         newProductCategory.setUser(user);
         productCategoryRepository.save(newProductCategory);

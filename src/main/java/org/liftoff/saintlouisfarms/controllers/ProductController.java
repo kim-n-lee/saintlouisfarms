@@ -59,7 +59,9 @@ public class ProductController {
 
     //display result of searching
     @PostMapping("results")
-    public String displayProductResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
+    public String displayProductResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
         Iterable<Product> products;
         if (searchTerm.equals("")) {
             products = productRepository.findAll();
@@ -69,6 +71,7 @@ public class ProductController {
         model.addAttribute("productType", productCategoryRepository.findAll());
         model.addAttribute("title", "Products in " + productCategoryRepository.findByName(searchType) + ": " + searchTerm);
         model.addAttribute("products", productRepository.findAll());
+        model.addAttribute("loggedIn", user != null);
         return "redirect:";
     }
 
@@ -99,6 +102,7 @@ public class ProductController {
             model.addAttribute("productType", productCategoryRepository.findAll());
             model.addAttribute("measurements", measurementCategoryRepository.findAll());
             model.addAttribute("products", productRepository.findProductById(user.getId()));
+            model.addAttribute("loggedIn", user != null);
             return "farmer/add";
         }
 
@@ -118,6 +122,7 @@ public class ProductController {
                 model.addAttribute("measurements", measurementCategoryRepository.findAll());
                 model.addAttribute("products", productRepository.findProductById(user.getId()));
                 model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
+                model.addAttribute("loggedIn", user != null);
                 return "farmer/add";
             }
         }
@@ -126,6 +131,7 @@ public class ProductController {
         productRepository.save(newProduct);
 //        Should also set userid to user logged in
         model.addAttribute("product", productRepository.findAll());
+        model.addAttribute("loggedIn", user != null);
         return "redirect:add";
     }
 
@@ -141,6 +147,7 @@ public class ProductController {
             model.addAttribute("title", "Current Employees");
             model.addAttribute("currentEmployees", productRepository.findProductById(user.getId()));
             model.addAttribute("cannotFindEmployee", "ProductNotFound");
+            model.addAttribute("loggedIn", user != null);
             return "farmer/add";
 
         }
@@ -151,11 +158,10 @@ public class ProductController {
             measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
             productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
             // delete will be on the same page
-
+            model.addAttribute("loggedIn", user != null);
             return "farmer/add";
         }
+        model.addAttribute("loggedIn", user != null);
         return "farmer/add";
-
-
     }
 };

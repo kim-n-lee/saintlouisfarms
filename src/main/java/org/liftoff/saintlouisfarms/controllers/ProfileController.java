@@ -42,6 +42,7 @@ public class ProfileController {
         model.addAttribute("title", "Edit " + profileFarmerToEdit.getFirstName()+" "+ profileFarmerToEdit.getFirstName()+" Information:");
         model.addAttribute("profileFarmerToEdit", profileFarmerToEdit);
         model.addAttribute("id", profileFarmerToEdit.getId());
+        model.addAttribute("loggedIn", user != null);
         return "farmer/editProfile";
     }
 @PostMapping("edit")
@@ -64,6 +65,7 @@ public class ProfileController {
     farmer.setLastName(editUser.getLastName());
     farmer.setZip(editUser.getZip());
     userRepository.save(farmer);
+    model.addAttribute("loggedIn", user != null);
     return "redirect:";
     }
 
