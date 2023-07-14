@@ -12,6 +12,12 @@
             <hr/>
         <form method="post" th:object="${registerFormDTO}">
             <div class="form-group">
+                <label>Farm Name
+                    <input class="form-control" th:field="*{farmName}" />
+                </label>
+                <p class="error" th:errors="*{farmName}"></p>
+            </div>
+            <div class="form-group">
         <label>First Name
             <input class="form-control" th:field="*{firstName}" />
         </label>
