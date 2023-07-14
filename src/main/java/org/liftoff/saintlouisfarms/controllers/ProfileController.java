@@ -28,6 +28,7 @@ public class ProfileController {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         model.addAttribute("UserInformation", userRepository.findById(user.getId()));
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "farmer/profile";
     }
 
