@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,9 +83,9 @@ public class User extends AbstractEntity {
     private final List<Product> products = new ArrayList<>();
 
   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-  private final List<ProductCategory>productCategories=new ArrayList<>();
+  private final List<ProductCategory>productCategories=new ArrayList<>(Arrays.asList(new ProductCategory("Featured",this),new ProductCategory("Vegetables",this),new ProductCategory("Fruit",this),new ProductCategory("Dry Goods",this),new ProductCategory("Featured",this)));
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private final List<MeasurementCategory>measurementCategories=new ArrayList<>();
+    private final List<MeasurementCategory>measurementCategories=new ArrayList<>(Arrays.asList(new MeasurementCategory("each", this),new MeasurementCategory("lbs", this),new MeasurementCategory("cs", this),new MeasurementCategory("pint", this),new MeasurementCategory("qt", this)));
 
     public List<MeasurementCategory> getMeasurementCategories() {
         return measurementCategories;

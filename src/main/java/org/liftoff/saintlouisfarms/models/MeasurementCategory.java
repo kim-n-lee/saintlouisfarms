@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 public class MeasurementCategory extends AbstractEntity{
 
     @NotBlank
-    @Size(min = 3, max = 45, message="name must be between 3 and 45 character")
+    @Size(min = 1, max = 45, message="name must be between 1 and 45 character")
     private String name;
     @ManyToOne()
     private User user;
