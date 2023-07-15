@@ -67,5 +67,29 @@ public class ProfileController {
     return "redirect:";
     }
 
+    @PostMapping("{farmerToDeleteId}")
+    public String deleteProductProcessing(@PathVariable int farmerToDeleteId,
+                                          Model model,
+                                          HttpServletRequest request,
+                                          Boolean confirmation) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
 
+        if (confirmation) {
+            userRepository.deleteById(farmerToDeleteId);
+//            productRepository.deleteAll(user.getProducts());
+//            productCategoryRepository.deleteAll(user.getProductCategories());
+//            measurementCategoryRepository.deleteAll(user.getMeasurementCategories());
+            userRepository.delete(user);
+            // delete will be on the same page
+            model.addAttribute("title", "delete account");
+            model.addAttribute("delete", "delete");
+            return "login";
+
+        }
+        model.addAttribute("title", "delete account");
+        model.addAttribute("farmerToDeletedId", farmerToDeleteId);
+        return "farmer/profile";
+    }
 }
+

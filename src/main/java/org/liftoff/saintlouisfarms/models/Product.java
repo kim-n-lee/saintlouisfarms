@@ -1,22 +1,25 @@
 package org.liftoff.saintlouisfarms.models;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@SQLDelete(sql = "UPDATE Product SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Product extends AbstractEntity {
 
     @NotBlank
     @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
     private String name;
 
+    private boolean deleted = Boolean.FALSE;
     @ManyToOne
     private ProductCategory productCategory;
 
@@ -93,5 +96,11 @@ public class Product extends AbstractEntity {
         return name;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

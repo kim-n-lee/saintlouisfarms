@@ -129,13 +129,14 @@ public class ProductController {
         return "redirect:add";
     }
 
-    @PostMapping("{productToDeleteId}")
+    @PostMapping("delete/{productToDeleteId}")
     public String deleteProductProcessing(@PathVariable int productToDeleteId,
                                           Model model,
                                           HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
+
         if (optProductToDelete.isEmpty()) {
             model.addAttribute("title", "Current Products");
             model.addAttribute("currentProducts", productRepository.findProductById(user.getId()));
@@ -145,16 +146,20 @@ public class ProductController {
         }
         Product productToDelete = optProductToDelete.get();
 
-        productRepository.deleteById(productToDeleteId);
-        productRepository.delete(productToDelete);
+        productRepository.deleteById(productToDelete.getId());
+//        productRepository.deleteById(productToDeleteId);
 //            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
 //            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
 //            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
-        // delete will be on the same page
+//        // delete will be on the same page
 
         return "farmer/add";
     }
 
 
+
 }
+
+
+
 
