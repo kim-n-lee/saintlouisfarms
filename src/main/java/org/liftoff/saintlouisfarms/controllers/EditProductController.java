@@ -2,11 +2,13 @@ package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
+import org.liftoff.saintlouisfarms.data.ProductDetailsRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +30,8 @@ public class EditProductController {
     private MeasurementCategoryRepository measurementCategoryRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    private ProductDetailsRepository productDetailsRepository;
     @GetMapping("/{editProductId}")
     public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -54,32 +58,12 @@ public class EditProductController {
         return "farmer/edit";
     }
 
-
-//    @PutMapping("/{productToEditId}")
-//    public Product editProductsProcessing(@RequestBody Product editProduct
-//            ,@PathVariable int productToEditId, HttpServletRequest request,Model model){
-//Optional<Product> productToedit=productRepository.findById(productToEditId);
-//if(productToedit.isPresent()) {
-//    Product productData=productToedit.get();
-//    productData.setName(editProduct.getName());
-//    productData.setProductCategory(editProduct.getProductCategory());
-//    productData.setMeasurementcategory(editProduct.getMeasurementcategory());
-//    productData.setProductDetails(editProduct.getProductDetails());
-//    return productRepository.save(productData);
-//}
-//else {
-//    return  productRepository.save(editProduct);
-//}
-//        model.addAttribute("title", "Edit "+productData);
-//        model.addAttribute("productToEdit", productToEdit);
-
-
     @PostMapping("/{productToEditId}")
-    public String editEmployeeProcessing(@PathVariable int productToEditId,
-                                         Model model,
-                                         @ModelAttribute @Valid Product productEdit,
+    public String editProductProcessing(@PathVariable int productToEditId,
+                                        Model model,
+                                        @ModelAttribute @Valid Product productEdit, Errors errors,
 
-                                         HttpServletRequest request) {
+                                        HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 

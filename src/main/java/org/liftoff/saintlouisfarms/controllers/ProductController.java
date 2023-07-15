@@ -134,34 +134,22 @@ public class ProductController {
         model.addAttribute("loggedIn", user != null);
         return "redirect:add";
     }
-
-    @PostMapping("{productToDeleteId}")
+    @RequestMapping(value = "{productToDeleteId}",method = {RequestMethod.POST, RequestMethod.GET})
     public String deleteProductProcessing(@PathVariable int productToDeleteId,
                                           Model model,
-                                          HttpServletRequest request,
-                                          Boolean confirmation) {
+                                          HttpServletRequest request ) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
         if (optProductToDelete.isEmpty()) {
-            model.addAttribute("title", "Current Employees");
-            model.addAttribute("currentEmployees", productRepository.findProductById(user.getId()));
-            model.addAttribute("cannotFindEmployee", "ProductNotFound");
+            model.addAttribute("title", "Current Products");
+            model.addAttribute("currentProducts", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
             return "farmer/add";
-
         }
         Product productToDelete = optProductToDelete.get();
-        if (confirmation) {
-            productRepository.deleteById(productToDeleteId);
-            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
-            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
-            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
-            // delete will be on the same page
-            model.addAttribute("loggedIn", user != null);
-            return "farmer/add";
-        }
-        model.addAttribute("loggedIn", user != null);
-        return "farmer/add";
+        productRepository.delete(productToDelete);
+        return "redirect:add";
     }
-};
+
+}

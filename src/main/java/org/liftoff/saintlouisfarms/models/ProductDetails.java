@@ -1,5 +1,8 @@
 package org.liftoff.saintlouisfarms.models;
 
+import org.springframework.validation.Errors;
+
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
@@ -39,10 +42,15 @@ public class ProductDetails  extends AbstractEntity{
     }
 
     public void setStatus(Boolean status) {
-        if( (quantity<=0)){
-           this.status=false;
+        if( (quantity<=0) ){
+          //  Errors errors = null;
+           // errors.rejectValue("status","status","status should be false");
+            this.status=false;
 
         }
+//        else if ( (quantity<=0) && status==false) {
+//            this.status=false;
+//        }
         else {
         this.status = status;}
 
