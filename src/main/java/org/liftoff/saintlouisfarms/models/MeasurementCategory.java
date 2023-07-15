@@ -1,14 +1,14 @@
 package org.liftoff.saintlouisfarms.models;
 
 
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+
 @Entity
+
 public class MeasurementCategory extends AbstractEntity{
 
     @NotBlank
@@ -16,6 +16,9 @@ public class MeasurementCategory extends AbstractEntity{
     private String name;
     @ManyToOne()
     private User user;
+
+
+
 
     public MeasurementCategory(String name,User user) {
 
@@ -49,4 +52,7 @@ public class MeasurementCategory extends AbstractEntity{
         return name;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
 }

@@ -1,5 +1,6 @@
 package org.liftoff.saintlouisfarms.models;
 
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
@@ -11,6 +12,8 @@ import javax.persistence.Entity;
 @Entity
 public class ProductDetails  extends AbstractEntity{
 
+    @OneToOne
+    private Product product;
     @Size(max = 500, message = "Description too long!")
     private String description;
 

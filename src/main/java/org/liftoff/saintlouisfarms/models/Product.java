@@ -30,9 +30,7 @@ public class Product extends AbstractEntity {
     private ProductDetails productDetails;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @Valid
-    @NotNull
+  @OneToOne
     private MeasurementCategory measurementcategory;
 
     public void setProductDetails(ProductDetails productDetails) {
