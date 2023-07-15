@@ -6,10 +6,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
-public class User extends AbstractEntity {
+public class User extends AbstractEntity  {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email. Try again.")

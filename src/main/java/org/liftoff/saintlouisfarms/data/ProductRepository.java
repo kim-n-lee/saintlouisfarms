@@ -15,4 +15,7 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> findProductById(int id);
 @Query(value = "select * from product left join productdetails on product.productDetails_id=productdetails.id where productdetails.status=true and product.user_id = ?1", nativeQuery = true)
     List<Product> findProductByStatus(int ids);
+
+@Query(value = "delete  from product where id= ?1", nativeQuery = true)
+    List<Product>deleteProductById(int id);
 }

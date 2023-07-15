@@ -1,10 +1,7 @@
 package org.liftoff.saintlouisfarms.models;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -26,7 +23,7 @@ public class Product extends AbstractEntity {
     private ProductDetails productDetails;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @Valid
     @NotNull
     private MeasurementCategory measurementcategory;
