@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+//
 @Entity
 @SQLDelete(sql = "UPDATE Product SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
