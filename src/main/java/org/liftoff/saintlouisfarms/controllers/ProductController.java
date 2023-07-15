@@ -133,6 +133,7 @@ public class ProductController {
     public String deleteProductProcessing(@PathVariable int productToDeleteId,
                                           Model model,
                                           HttpServletRequest request) {
+
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
@@ -146,12 +147,10 @@ public class ProductController {
         }
         Product productToDelete = optProductToDelete.get();
 
+
         productRepository.deleteById(productToDelete.getId());
-//        productRepository.deleteById(productToDeleteId);
-//            productCategoryRepository.deleteById(productToDelete.getProductCategory().getId());
-//            measurementCategoryRepository.deleteById(productToDelete.getMeasurementcategory().getId());
-//            productDetailsRepository.deleteById(productToDelete.getProductDetails().getId());
-//        // delete will be on the same page
+
+
 
         return "farmer/add";
     }
