@@ -28,7 +28,6 @@
                     <td th:text="*{ProductDetails.description}"></td>
                     <td th:text="'$'+*{ProductDetails.price}"></td>
                         <td th:text="*{ ProductDetails.quantity+' '+measurementcategory.name }"></td>
-
                     <td>
                         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>
                     </td>
