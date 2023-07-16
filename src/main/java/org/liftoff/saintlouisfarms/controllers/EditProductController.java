@@ -2,16 +2,19 @@ package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
+import org.liftoff.saintlouisfarms.data.ProductDetailsRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +31,8 @@ public class EditProductController {
     private MeasurementCategoryRepository measurementCategoryRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    private ProductDetailsRepository productDetailsRepository;
     @GetMapping("/{editProductId}")
     public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -42,6 +47,7 @@ public class EditProductController {
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "redirect:farmer/products";
         }
+
         Product productToEdit = optProductToEdit.get();
 
         model.addAttribute("title",
@@ -112,6 +118,47 @@ public class EditProductController {
         model.addAttribute("productToEdit", productToEdit);
         model.addAttribute("productToEditId", productToEditId);
         model.addAttribute("loggedIn", session.getAttribute("user") != null);
+        return "redirect:../add";
+    }
+
+    @PostMapping(value="quickedit")
+    public String editQuick( Model model,
+                             @RequestParam int productId,
+                             @RequestParam BigDecimal price,
+                             @RequestParam Integer quantity,
+                             @RequestParam Optional<Boolean> status,
+                             HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+
+        Optional<Product> optProductToEdit = productRepository.findById(productId);
+
+        if (optProductToEdit.isEmpty()) {
+//            model.addAttribute("title", "Available Products");
+//            model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+            model.addAttribute("availability", "ProductNotFound");
+//            model.addAttribute("loggedIn", session.getAttribute("user") != null);
+            return "redirect:../add";
+        }
+
+        Product productToEdit = optProductToEdit.get();
+
+        Optional<ProductDetails> optProductDetailsToEdit = productDetailsRepository.findById(productToEdit.getProductDetails().getId());
+        ProductDetails productDetailsToEdit = optProductDetailsToEdit.get();
+
+
+        productDetailsToEdit.setPrice(price);
+        productDetailsToEdit.setQuantity(quantity);
+        if(status.isPresent()) {
+            productDetailsToEdit.setStatus(status.get());
+        } else {
+            productDetailsToEdit.setStatus(false);
+        }
+
+
+        productDetailsRepository.save(productDetailsToEdit);
+
+        model.addAttribute("Done", "DoneEdit");
         return "redirect:../add";
     }
 
