@@ -68,6 +68,11 @@ public class EditProductController {
                                         HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+        if (errors.hasErrors()) {
+            model.addAttribute("products", productRepository.findProductById(user.getId()));
+            model.addAttribute("loggedIn", user != null);
+            return "redirect:./{productToEditId}";
+        }
 
         Optional<Product> optProductToEdit = productRepository.findById(productToEditId);
 
