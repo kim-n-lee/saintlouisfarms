@@ -17,4 +17,10 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/about")
+    public String displayAboutPage(Model model, HttpSession session) {
+        model.addAttribute("loggedIn", session.getAttribute("user") != null);
+        return "/about";
+    }
+
 }
