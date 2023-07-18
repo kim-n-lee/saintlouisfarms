@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,11 +50,15 @@ public class ProfileController {
     public String editFarmerInfoProcessing(
                                            Model model,
                                            @ModelAttribute @Valid User editUser,
-
+                                           Errors errors,
                                            HttpServletRequest request) {
 
     HttpSession session = request.getSession();
     User user = authenticationController.getUserFromSession(session);
+    if (errors.hasErrors()) {
+        model.addAttribute("loggedIn", user != null);
+        return "redirect:./edit";
+    }
     User farmer=userRepository.findById(user.getId());
 
     farmer.setAddress(editUser.getAddress());
