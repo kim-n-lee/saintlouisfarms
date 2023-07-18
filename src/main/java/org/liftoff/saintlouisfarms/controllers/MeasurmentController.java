@@ -54,7 +54,7 @@ public class MeasurmentController {
     }
 // ...
 
-    // Corresponds to http://localhost:8080/measurements/edit/{id}
+
     @GetMapping("measurements/edit/{id}")
     public String displayEditMeasurementForm(@PathVariable int editMeasurementCategory, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
