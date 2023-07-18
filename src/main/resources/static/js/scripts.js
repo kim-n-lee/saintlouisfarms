@@ -51,5 +51,18 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+function displayProductAlert() {
+    var productAlert = document.querySelector('.alert-banner');
+    if (productAlert) {
+        var alertMessage = productAlert.textContent.trim();
+        if (alertMessage !== '') {
+            alert(alertMessage);
+        }
+    }
+}
 
+// Call the function when the document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    displayProductAlert();
+});
 });

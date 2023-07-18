@@ -18,4 +18,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 
 @Query(value = "delete  from product where id= ?1", nativeQuery = true)
     List<Product>deleteProductById(int id);
+
+@Query(value = "select *  from product where name= ?1", nativeQuery = true)
+
+List<Product>findNameOfProductBy(String name);
 }

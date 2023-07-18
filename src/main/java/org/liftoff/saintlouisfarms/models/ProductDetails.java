@@ -27,15 +27,19 @@ public class ProductDetails  extends AbstractEntity{
     @NotNull(message="status is required")
     private Boolean status;
 
+
     private String picture;
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//        if (quantity < 5) {
+//            this.alertMessage = "Quantity is less than 5";
+//        }
+//    }
 
     public Boolean getStatus() {
         return status;
@@ -59,6 +63,7 @@ public class ProductDetails  extends AbstractEntity{
     public String getPicture() {
         return picture;
     }
+//    private String alertMessage;
 
     public void setPicture(String picture) {
         this.picture = picture;
@@ -67,7 +72,7 @@ public class ProductDetails  extends AbstractEntity{
     public ProductDetails() {
     }
 
-    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity) {
+    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity,) {
         this.description = description;
         this.price = price;
         this.status = status;
@@ -90,7 +95,8 @@ public class ProductDetails  extends AbstractEntity{
         this.price = price;
     }
 
-public void checkAmount(int quantity,boolean stat){
+
+    public void checkAmount(int quantity, boolean stat){
         if( (quantity<=0)){
             stat=false;
 

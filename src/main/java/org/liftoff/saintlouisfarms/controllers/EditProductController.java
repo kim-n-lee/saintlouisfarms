@@ -68,13 +68,17 @@ public class EditProductController {
                                         HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+
+        Optional<Product> optProductToEdit = productRepository.findById(productToEditId);
+
         if (errors.hasErrors()) {
+            model.addAttribute("products", productRepository.findNameOfProductBy(productEdit.getName()));
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
             return "redirect:./{productToEditId}";
         }
 
-        Optional<Product> optProductToEdit = productRepository.findById(productToEditId);
+//        Optional<Product> optProductToEdit = productRepository.findById(productToEditId);
 
         if (optProductToEdit.isEmpty()) {
             model.addAttribute("title", "Available Products");
@@ -91,6 +95,8 @@ public class EditProductController {
         productToEdit.getProductDetails().setDescription(productEdit.getProductDetails().getDescription());
         productToEdit.getProductDetails().setQuantity(productEdit.getProductDetails().getQuantity());
         productToEdit.getProductDetails().setStatus(productEdit.getProductDetails().getStatus());
+
+
 
         productToEdit.getMeasurementcategory().setName(productEdit.getMeasurementcategory().getName());
         productToEdit.getProductCategory().setName(productEdit.getProductCategory().getName());
