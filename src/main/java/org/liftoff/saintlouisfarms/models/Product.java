@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class Product extends AbstractEntity {
 
+
     @NotBlank
     @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
     private String name;

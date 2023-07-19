@@ -7,6 +7,18 @@
 <h1 th:replace="fragments :: bannerFarmerLoggedIn"></h1>
 <nav th:replace="fragments :: navigation" ></nav>
 
+
+<!--<div th:if="${productToEdit.productDetails.quantity lt 5}" class="alert alert-danger">-->
+<!--    <p>Alert: Quantity is less than 5!</p>-->
+<!--</div>-->
+
+<!-- The rest of your form code -->
+<form method="post" th:object="${productToEdit}" >
+
+
+
+
+
 <!--Success banner here for when product added successfully-->
 
 <form method="post" th:object="${productToEdit}" >
@@ -95,6 +107,25 @@
         }
     });
     /*]]>*/
+
+
+<!--    /*<![CDATA[*/-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+
+<!--        var alertMessage = document.getElementById('alertMessage');-->
+
+
+<!--        if (alertMessage && alertMessage.innerHTML.trim() !== '') {-->
+<!--            alertMessage.style.display = 'block';-->
+<!--        } else {-->
+<!--            alertMessage.style.display = 'none';-->
+<!--        }-->
+<!--    });-->
+<!--    /*]]>*/-->
+
+
+</script>
+    </script>
 </script>
 <form method="DELETE" th:action="@{/farmer/{productToDeleteId}(productToDeleteId=${productToEdit.id})}">
     <input type="hidden" name="productToDelete" th:value="${productToEdit}" />

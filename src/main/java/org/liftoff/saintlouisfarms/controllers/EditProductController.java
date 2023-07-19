@@ -55,7 +55,7 @@ public class EditProductController {
         model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
         model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute("productToEdit", productToEdit);
-        model.addAttribute("editProductId", editProductId);
+        model.addAttribute("editProductToId", editProductId);
         model.addAttribute("loggedIn", session.getAttribute("user") != null);
         return "farmer/edit";
     }
@@ -63,15 +63,23 @@ public class EditProductController {
     @PostMapping("/{productToEditId}")
     public String editProductProcessing(@PathVariable int productToEditId,
                                         Model model,
-                                        @ModelAttribute @Valid Product productEdit, Errors errors,
-
+                                        @ModelAttribute("productToEdit") @Valid Product productEdit,
+                                        Errors errors,
                                         HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+
+
+
         if (errors.hasErrors()) {
+            model.addAttribute("title",
+                    "Edit " + productEdit.getName());
+            model.addAttribute("productType", productCategoryRepository.findAll());
+            model.addAttribute("measurements", measurementCategoryRepository.findAll());
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
-            return "redirect:./{productToEditId}";
+            model.addAttribute("productToEdit", productEdit);
+            return "farmer/edit";
         }
 
         Optional<Product> optProductToEdit = productRepository.findById(productToEditId);
@@ -84,7 +92,11 @@ public class EditProductController {
             return "redirect:";
         }
 
+
+
         Product productToEdit = optProductToEdit.get();
+
+
 
         productToEdit.setName(productEdit.getName());
         productToEdit.getProductDetails().setPrice(productEdit.getProductDetails().getPrice());
