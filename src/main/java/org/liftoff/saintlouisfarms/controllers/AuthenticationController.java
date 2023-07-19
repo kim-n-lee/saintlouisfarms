@@ -103,9 +103,9 @@ public class AuthenticationController {
 
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
-        
 
-        return "redirect:farmer/add";
+
+        return "redirect:farmer/dashboard";
     }
     // Handlers for login form
     @GetMapping("/login")
@@ -145,7 +145,7 @@ public class AuthenticationController {
         // OTHERWISE, create a new session for the user and take them to the home page
         setUserInSession(request.getSession(), theUser);
 
-        return "redirect:farmer/add";
+        return "redirect:farmer/dashboard";
     }
     // Handler for logout
     @GetMapping("/logout")

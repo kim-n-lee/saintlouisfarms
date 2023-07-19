@@ -23,7 +23,7 @@ public class ProductDetails  extends AbstractEntity{
     private BigDecimal price;
     @NotNull(message="quantity is required")
     private int quantity;
-//    I think it would be better to not require the status so that a farmer can create a product that is not yet avilable
+    //    I think it would be better to not require the status so that a farmer can create a product that is not yet avilable
     @NotNull(message="status is required")
     private Boolean status;
 
@@ -47,8 +47,8 @@ public class ProductDetails  extends AbstractEntity{
 
     public void setStatus(Boolean status) {
         if( (quantity<=0) ){
-          //  Errors errors = null;
-           // errors.rejectValue("status","status","status should be false");
+            //  Errors errors = null;
+            // errors.rejectValue("status","status","status should be false");
             this.status=false;
 
         }
@@ -56,7 +56,7 @@ public class ProductDetails  extends AbstractEntity{
 //            this.status=false;
 //        }
         else {
-        this.status = status;}
+            this.status = status;}
 
     }
 
@@ -72,7 +72,7 @@ public class ProductDetails  extends AbstractEntity{
     public ProductDetails() {
     }
 
-    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity,) {
+    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity) {
         this.description = description;
         this.price = price;
         this.status = status;
@@ -102,5 +102,9 @@ public class ProductDetails  extends AbstractEntity{
 
         }
 
-}
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

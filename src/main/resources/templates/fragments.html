@@ -7,7 +7,7 @@
           content="Final Project for LaunchCode's Liftoff program. Created by: Jood Alzqaili, Maisa Salahaldin, Emily Chassin, Tudor Seserman, and Mike Wilson." />
     <meta name="author" content="Mike Wilson and Tudor Seserman" />
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" th:href="@{../../../assets/favicon.ico}" />
+    <link rel="icon" type="image/x-icon" th:href="@{assets/favicon.ico}" />
     <!-- Bootstrap Icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google fonts-->
@@ -36,7 +36,8 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
 
-                <li class="nav-item navbar-brand"><a class="nav-link" href="/about">About Us</a></li>
+                <!--        <li class="nav-item"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>-->
+                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
