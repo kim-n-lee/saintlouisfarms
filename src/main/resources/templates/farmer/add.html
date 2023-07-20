@@ -135,65 +135,53 @@
 <!--                <br>-->
 <!--                <input type="submit" class="btn btn-primary" value="Add Product" />-->
 <!--            </form>-->
-    <div class="overflow-auto text-start" style="max-width: 100%; max-height: 600px; overflow-x: hidden !important;">
-        <nav class="navbar sticky-top" style="background-color: #e9e9d1">
-            <form method="post" enctype="multipart/form-data" th:object="${product}">
-                <div class="form-row">
-<!--                    <h4 class="col-form-label pb-3">Search for item</h4>-->
-                    <div class="row px-1">
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Picture</label>
-                            <input type="number" class="form-control" id="testVar" name="picture" min="0" max="40" />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Item Name</label>
-                            <input type="number" class="form-control" id="testVar1" name="testVar" min="0" max="40" />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Product Category</label>
-                            <input type="number" class="form-control" id="testVar2" name="testVar" min="0" max="40" />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Price</label>
-                            <input type="number" class="form-control" id="testVar3" name="testVar" min="0" max="40" />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Amount Available</label>
-                            <input type="number" class="form-control" id="testVar4" name="testVar" min="0" max="40" />
-                        </div>
-                        <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
-                            <label for="testVar">Current Availability</label>
-                            <input type="number" class="form-control" id="testVar5\" name="testVar" min="0" max="40" />
-                        </div>
+    <nav class="navbar text-center" style="background-color: #e9e9d1">
+        <form method="post" enctype="multipart/form-data" th:object="${product}">
+            <div class="form-row">
+                <!--                    <h4 class="col-form-label pb-3">Search for item</h4>-->
+                <div class="row px-1">
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Picture</label>
+                        <input type="number" class="form-control" id="testVar" name="picture" min="0" max="40" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Item Name</label>
+                        <input type="number" class="form-control" id="testVar1" name="testVar" min="0" max="40" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Product Category</label>
+                        <input type="number" class="form-control" id="testVar2" name="testVar" min="0" max="40" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Price</label>
+                        <input type="number" class="form-control" id="testVar3" name="testVar" min="0" max="40" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Amount Available</label>
+                        <input type="number" class="form-control" id="testVar4" name="testVar" min="0" max="40" />
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-sm-4 col-6">
+                        <label for="testVar">Current Availability</label>
+                        <input type="number" class="form-control" id="testVar5\" name="testVar" min="0" max="40" />
                     </div>
                 </div>
-                <br>
-                <div class="text-center"><button class="btn btn-primary btn-block col-lg-2" type="submit">Search</button></div>
-            </form>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Product Category</th>
-                    <th>Price</th>
-                    <th>Amount Available</th>
-                    <th style="width: 38%;">Current Availability</th>
-                </tr>
-                </thead>
-            </table>
-        </nav>
+            </div>
+            <br>
+            <div class="text-center"><button class="btn btn-primary btn-block col-lg-2" type="submit">Search</button></div>
+        </form>
+    </nav>
+    <div class="overflow-auto" style="max-width: 100%; max-height: 600px; overflow-x: hidden !important;">
         <table class="table table-striped">
             <thead>
-            <tr>
+            <tr class="sticky-top" style="background-color: #e9e9d1">
                 <th></th>
                 <th>Name</th>
                 <th>Product Category</th>
                 <th>Price</th>
                 <th>Amount Available</th>
                 <th>Current Availability</th>
-                <th>Save Quick Edits</th>
-                <th>Edit</th>
+                <th></th>
+                <th></th>
                 <th></th>
             </tr>
 
