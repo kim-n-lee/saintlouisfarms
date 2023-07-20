@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -92,7 +93,7 @@ public class ProductController {
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-    Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture) throws IOException
+    Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture, RedirectAttributes redirectAttrs) throws IOException
     {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -127,6 +128,7 @@ public class ProductController {
             }
         }
 
+        redirectAttrs.addFlashAttribute("productAdded", newProduct.getName());
 
         productRepository.save(newProduct);
 //        Should also set userid to user logged in

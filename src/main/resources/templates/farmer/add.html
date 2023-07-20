@@ -10,8 +10,22 @@
             <h1 th:replace="fragments :: banner"></h1>
             <hr/>
 
+            <div th:if="${productAdded}" class="alert alert-success fade show" role="alert">
+                <strong th:text="${productAdded}"></strong> was successfully added.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <div th:if="${measurementAdded}" class="alert alert-success fade show" role="alert">
                 <strong th:text="${measurementAdded}"></strong> was successfully added to measurements.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div th:if="${categoryAdded}" class="alert alert-success fade show" role="alert">
+                <strong th:text="${categoryAdded}"></strong> was successfully added to categories.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

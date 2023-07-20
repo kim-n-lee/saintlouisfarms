@@ -40,7 +40,6 @@ public class MeasurmentController {
         model.addAttribute(new MeasurementCategory());
         model.addAttribute("currentMeasurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute("loggedIn", session.getAttribute("user") != null);
-
         return "measurements/add";
     }
     @PostMapping("measurements/add")
@@ -50,7 +49,7 @@ public class MeasurmentController {
         User user = authenticationController.getUserFromSession(session);
         if (errors.hasErrors()) {
             model.addAttribute("currentMeasurements", measurementCategoryRepository.findMeasurementById(user.getId()));
-//            model.addAttribute("loggedIn", session.getAttribute("user") != null);
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "measurements/add";
         }
         redirectAttrs.addFlashAttribute("measurementAdded", newMeasuremenCategory.getName());
@@ -87,8 +86,8 @@ public class MeasurmentController {
                                              @ModelAttribute @Valid MeasurementCategory MeasurementCategory,
                                              Errors errors, Model model, HttpServletRequest request,RedirectAttributes redirectAttrs) {
 
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
+//        HttpSession session = request.getSession();
+//        User user = authenticationController.getUserFromSession(session);
 
         Optional<MeasurementCategory> optmeasurementCategory = measurementCategoryRepository.findById(id);
 
@@ -129,8 +128,8 @@ public class MeasurmentController {
                                             HttpServletRequest request,
                                             RedirectAttributes redirectAttrs) {
 
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
+//        HttpSession session = request.getSession();
+//        User user = authenticationController.getUserFromSession(session);
 
         Optional<MeasurementCategory> optmeasurementCategory = measurementCategoryRepository.findById(id);
         if (optmeasurementCategory.isEmpty()) {
