@@ -69,7 +69,6 @@
                     </form>
                     <td>
                         <form method="post" th:action="@{/productType/delete/{id}(id=${currentProductCategory.id})}">
-                            <!--                                <input type="hidden" name="productToDelete" th:value="${currentProduct}" />-->
                             <input onclick = "if (! confirm('Are you sure you want to delete this category?')) { return false; }" type="submit" class="btn btn-danger" value="Delete Category" />
                         </form>
                     </td>
