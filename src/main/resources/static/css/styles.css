@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.padding-bottom{
+  padding-bottom: 10px;
+}
+
 html {
 overflow: scroll;
 overflow-x: hidden;
