@@ -99,6 +99,7 @@ public class User extends AbstractEntity  {
         return encoder.matches(password, pwHash);
     }
 
+    private String picture;
     public User(){
     }
     public User(String email, String pwHash, String firstName, String lastName, String address, String farmName, String zip,String city,String phone) {
@@ -171,5 +172,13 @@ public class User extends AbstractEntity  {
 
     public List<ProductCategory> getProductCategories() {
         return productCategories;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

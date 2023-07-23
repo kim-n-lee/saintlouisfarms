@@ -13,7 +13,8 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <img alt="" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/avatar-placeholder.png}">
+                        <img th:if="*{picture != null}" th:src="@{'/'+*{picture}}" th:alt="'Picture of '+*{farmName}" style="width:600px;"  class="img-thumbnail" >
+                        <img th:unless="*{picture != null}" th:alt="'Picture of '+*{farmName}" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/profilePlaceholder.jpg}">
                     </div>
                     <div class="col-md-6">
                         <h4>User Profile: <span th:text="*{firstName}"></span> <span th:text="*{lastName}"></span></h4>
