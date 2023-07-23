@@ -111,7 +111,7 @@ public class EditProductController {
 
                 String filePath;
                 if(productToEdit.getProductDetails().getPicture()!=null) {
-                     filePath = productToEdit.getProductDetails().getPicture()+1;
+                     filePath = productToEdit.getProductDetails().getPicture().replace(".jpg","edited.jpg");
                 }else{
                      filePath = "images/" + user.getId() + productEdit.getName() + productToEdit.getId() + ".jpg";
                 }
