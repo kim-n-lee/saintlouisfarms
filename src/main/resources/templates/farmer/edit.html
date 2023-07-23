@@ -13,7 +13,7 @@
 <!--</div>-->
 
 <!-- The rest of your form code -->
-<form method="post" th:object="${productToEdit}" >
+<!--<form method="post" th:object="${productToEdit}" >-->
 
 
 
@@ -82,6 +82,12 @@
 <!--        </label>-->
 <!--        <p class="error" th:errors="*{productDetails.picture}"></p>-->
 <!--    </div>-->
+    <div class="form-group">
+        <label th:for="picture">Picture
+            <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg">
+            <p class="error" th:if="${pictureError}" th:text="${pictureError}"></p>
+        </label>
+    </div>
     <div class="form-group">
         <label th:for="status">Currently Available
             <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox" id="statusCheckbox">

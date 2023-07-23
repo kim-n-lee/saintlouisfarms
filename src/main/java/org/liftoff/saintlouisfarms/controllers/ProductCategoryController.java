@@ -2,6 +2,7 @@ package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
 import org.liftoff.saintlouisfarms.models.MeasurementCategory;
+import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.ProductCategory;
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,7 +26,7 @@ public class ProductCategoryController {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
     @Autowired AuthenticationController authenticationController;
-//    @GetMapping("")
+    //    @GetMapping("")
 //    public String index(Model model ,HttpServletRequest request){
 //        HttpSession session = request.getSession();
 //        User user = authenticationController.getUserFromSession(session);
@@ -47,7 +49,7 @@ public class ProductCategoryController {
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid ProductCategory newProductCategory,
-                                         Errors errors, Model model,HttpServletRequest request, RedirectAttributes redirectAttrs) {
+                                        Errors errors, Model model,HttpServletRequest request, RedirectAttributes redirectAttrs) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -91,7 +93,7 @@ public class ProductCategoryController {
             return "redirect:../add";
         }
 
-      ProductCategory productTypeToEdit = optproductCategory.get();
+        ProductCategory productTypeToEdit = optproductCategory.get();
 
         productTypeToEdit.setName(productCategory.getName());
         redirectAttrs.addFlashAttribute("edited", productTypeToEdit.getName());
@@ -109,7 +111,7 @@ public class ProductCategoryController {
 
     @PostMapping("delete/{id}")
     public String deleteProductCategory(@PathVariable int id, Model model,
-                                            HttpServletRequest request, RedirectAttributes redirectAttrs) {
+                                        HttpServletRequest request, RedirectAttributes redirectAttrs) {
 
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -124,12 +126,28 @@ public class ProductCategoryController {
         }
 
         ProductCategory productToDelete = optproductCategory.get();
-        redirectAttrs.addFlashAttribute("deleted", productToDelete.getName());
-      productCategoryRepository.delete(productToDelete);
+        List<Product> products= productToDelete.getProducts();
+//                (List<Product>) productCategoryRepository.findAllProductAssignedToProductCategory(user.getId(),productToDelete.getId());
+//        System.out.println(products.toString());
 
-        return "redirect:../add";
+        // if there is no products assigned to the Product Category
+        if(products.isEmpty()) {
+            redirectAttrs.addFlashAttribute("deleted", productToDelete.getName());
+            productCategoryRepository.delete(productToDelete);
+
+            return "redirect:../add";
+
+        }
+
+            //model.addAttribute("title","Products assigned to "+measurementToDelete.getName());
+else {
+          model.addAttribute("product",productToDelete.getProducts());
+
+            return "productType:/testt";
+
+
+        }
     }
 //
 
 }
-

@@ -35,10 +35,10 @@ public class ProfileController {
 
     @GetMapping("edit")
     public String editFarmerInformation( Model model , HttpServletRequest request){
-    HttpSession session=request.getSession();
-    User user=authenticationController.getUserFromSession(session);
+        HttpSession session=request.getSession();
+        User user=authenticationController.getUserFromSession(session);
 
-    User profileFarmerToEdit=userRepository.findById(user.getId());
+        User profileFarmerToEdit=userRepository.findById(user.getId());
 
         model.addAttribute("title", "Edit " + profileFarmerToEdit.getFirstName()+" "+ profileFarmerToEdit.getFirstName()+" Information:");
         model.addAttribute("profileFarmerToEdit", profileFarmerToEdit);
@@ -46,32 +46,32 @@ public class ProfileController {
         model.addAttribute("loggedIn", user != null);
         return "farmer/editProfile";
     }
-@PostMapping("edit")
+    @PostMapping("edit")
     public String editFarmerInfoProcessing(
-                                           Model model,
-                                           @ModelAttribute @Valid User editUser,
-                                           Errors errors,
-                                           HttpServletRequest request) {
+            Model model,
+            @ModelAttribute @Valid User editUser,
+            Errors errors,
+            HttpServletRequest request) {
 
-    HttpSession session = request.getSession();
-    User user = authenticationController.getUserFromSession(session);
-    if (errors.hasErrors()) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        if (errors.hasErrors()) {
+            model.addAttribute("loggedIn", user != null);
+            return "redirect:./edit";
+        }
+        User farmer=userRepository.findById(user.getId());
+
+        farmer.setAddress(editUser.getAddress());
+        farmer.setCity(editUser.getCity());
+        farmer.setEmail(editUser.getEmail());
+        farmer.setPhone(editUser.getPhone());
+        farmer.setFarmName(editUser.getFarmName());
+        farmer.setFirstName(editUser.getFirstName());
+        farmer.setLastName(editUser.getLastName());
+        farmer.setZip(editUser.getZip());
+        userRepository.save(farmer);
         model.addAttribute("loggedIn", user != null);
-        return "redirect:./edit";
-    }
-    User farmer=userRepository.findById(user.getId());
-
-    farmer.setAddress(editUser.getAddress());
-    farmer.setCity(editUser.getCity());
-    farmer.setEmail(editUser.getEmail());
-    farmer.setPhone(editUser.getPhone());
-    farmer.setFarmName(editUser.getFarmName());
-    farmer.setFirstName(editUser.getFirstName());
-    farmer.setLastName(editUser.getLastName());
-    farmer.setZip(editUser.getZip());
-    userRepository.save(farmer);
-    model.addAttribute("loggedIn", user != null);
-    return "redirect:";
+        return "redirect:";
     }
 
 

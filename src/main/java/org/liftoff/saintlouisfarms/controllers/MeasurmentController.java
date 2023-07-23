@@ -1,6 +1,7 @@
 package org.liftoff.saintlouisfarms.controllers;
 import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
 import org.liftoff.saintlouisfarms.models.MeasurementCategory;
+import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 import static java.time.temporal.TemporalAdjusters.previous;
@@ -23,7 +25,7 @@ public class MeasurmentController {
     private MeasurementCategoryRepository measurementCategoryRepository;
     @Autowired
     AuthenticationController authenticationController;
-//    @GetMapping("measurements")
+    //    @GetMapping("measurements")
 //    public String index(Model model,HttpServletRequest request){
 //        HttpSession session = request.getSession();
 //        User user = authenticationController.getUserFromSession(session);
@@ -107,7 +109,7 @@ public class MeasurmentController {
             return "redirect:../add";
         }
 
-         MeasurementCategory measurementToEdit = optmeasurementCategory.get();
+        MeasurementCategory measurementToEdit = optmeasurementCategory.get();
 
         measurementToEdit.setName(MeasurementCategory.getName());
         redirectAttrs.addFlashAttribute("edited", measurementToEdit.getName());
@@ -127,31 +129,39 @@ public class MeasurmentController {
                                             Model model,
                                             HttpServletRequest request,
                                             RedirectAttributes redirectAttrs) {
-
-//        HttpSession session = request.getSession();
-//        User user = authenticationController.getUserFromSession(session);
-
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
         Optional<MeasurementCategory> optmeasurementCategory = measurementCategoryRepository.findById(id);
+
         if (optmeasurementCategory.isEmpty()) {
-//            model.addAttribute("title", "Current measurements");
-//            model.addAttribute("currentProducts", measurementCategoryRepository.findMeasurementById(user.getId()));
-//            model.addAttribute("loggedIn", user != null);
             redirectAttrs.addFlashAttribute("isEmpty", "Cannot find that Measurement.");
             return "redirect:../add";
         }
 
-       MeasurementCategory measurementToDelete = optmeasurementCategory.get();
-        redirectAttrs.addFlashAttribute("deleted", measurementToDelete.getName());
-        measurementCategoryRepository.delete(measurementToDelete);
-//        measurementCategoryRepository.deleteById(id);
+        MeasurementCategory measurementToDelete = optmeasurementCategory.get();
+            List<Product> products= (List<Product>) measurementCategoryRepository.findAllProductAssignedToMeasurment(user.getId(),measurementToDelete.getName());
+           System.out.println(products.toString());
 
-        return "redirect:../add";
-    }
+            // if there is no products assigned to the measurement
+        if(products.isEmpty()) {
+            redirectAttrs.addFlashAttribute("deleted", measurementToDelete.getName());
+            measurementCategoryRepository.delete(measurementToDelete);
+            return "redirect:../add";
+
+
+                        }
+        else{
+   //model.addAttribute("title","Products assigned to "+measurementToDelete.getName());
+          return "redirect:../add";
+
+        }
+
 
 
 
 }
 
+    }
 
 
 

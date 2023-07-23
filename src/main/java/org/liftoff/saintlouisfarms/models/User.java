@@ -1,6 +1,5 @@
 package org.liftoff.saintlouisfarms.models;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,136 +18,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
-public class User extends AbstractEntity  {
+public  class User extends MainUser {
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email. Try again.")
-    @Size(min = 3, max = 45, message = "Email must be between 3 and 45 characters")
-    private String email;
-
-
-    private String pwHash;
-
-    @NotBlank(message = "First name is required")
-    @Size(min = 3, max = 45, message = "First name must be between 3 and 45 characters")
-    private String firstName;
-
-    @Size(min = 3, max = 45, message = "Last name must be between 3 and 45 characters")
-    @NotBlank(message = "Last name is required")
-    private String lastName;
-
-    @Size(min = 3, max = 45, message = "Address must be between 3 and 45 characters")
-    @NotBlank(message = "Address is required")
-    private String address;
+////farmer
 
     @Size(min = 3, max = 45, message = "Farm's name must be between 3 and 45 characters")
     @NotBlank(message = "Farm name is required")
     private String farmName;
-    @NotBlank(message = "City name is required")
-    private String city;
-
-    @NotBlank(message = "Zip code  is required")
-    private String zip ;
-//    String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
-//
-//    Pattern pattern = Pattern.compile(regex);
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-       // Matcher matcher = pattern.matcher(zip);
-       // if(matcher.equals(true)){
-            this.zip = zip;
-        //}
-//        else {
-//            //not Valid zip code
-//            this.zip="notValid";
-//        }
-    }
-
-
-
-
-    @NotBlank(message = "Phone number is required")
-    private String phone;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private final List<Product> products = new ArrayList<>();
-
-  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-  private final List<ProductCategory>productCategories=new ArrayList<>(Arrays.asList(new ProductCategory("Featured",this),new ProductCategory("Vegetables",this),new ProductCategory("Fruit",this),new ProductCategory("Dry Goods",this),new ProductCategory("Featured",this)));
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private final List<MeasurementCategory>measurementCategories=new ArrayList<>(Arrays.asList(new MeasurementCategory("each", this),new MeasurementCategory("lbs", this),new MeasurementCategory("cs", this),new MeasurementCategory("pint", this),new MeasurementCategory("qt", this)));
-
-    public List<MeasurementCategory> getMeasurementCategories() {
-        return measurementCategories;
-    }
-
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-    public boolean isMatchingPassword(String password) {
-        return encoder.matches(password, pwHash);
-    }
-
-    public User(){
-    }
-    public User(String email, String pwHash, String firstName, String lastName, String address, String farmName, String zip,String city,String phone) {
-        this.email = email;
-        this.pwHash = encoder.encode(pwHash);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.farmName = farmName;
-        this.zip=zip;
-        this.city=city;
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPwHash() {
-        return pwHash;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getFarmName() {
         return farmName;
     }
@@ -157,19 +33,31 @@ public class User extends AbstractEntity  {
         this.farmName = farmName;
     }
 
-    public String getPhone() {
-        return phone;
-    }
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private final List<Product> products = new ArrayList<>();
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private final List<ProductCategory>productCategories=new ArrayList<>(Arrays.asList(new ProductCategory("Featured",this),new ProductCategory("Vegetables",this),new ProductCategory("Fruit",this),new ProductCategory("Dry Goods",this),new ProductCategory("Featured",this)));
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private final List<MeasurementCategory>measurementCategories=new ArrayList<>(Arrays.asList(new MeasurementCategory("each", this),new MeasurementCategory("lbs", this),new MeasurementCategory("cs", this),new MeasurementCategory("pint", this),new MeasurementCategory("qt", this)));
 
+    public List<MeasurementCategory> getMeasurementCategories() {
+        return measurementCategories;
+    }
     public List<Product> getProducts() {
         return products;
     }
 
     public List<ProductCategory> getProductCategories() {
         return productCategories;
+    }
+
+    public User() {
+
+    }
+
+    public User(String email, String pwHash, String firstName, String lastName, String address, String zip, String city, String phone, String farmName) {
+        super(email, pwHash, firstName, lastName, address, zip, city, phone);
+        this.farmName = farmName;
     }
 }

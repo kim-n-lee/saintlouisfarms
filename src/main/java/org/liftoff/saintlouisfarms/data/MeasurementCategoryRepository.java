@@ -12,4 +12,6 @@ import java.util.List;
 public interface MeasurementCategoryRepository extends CrudRepository<MeasurementCategory, Integer> {
     @Query(value = "select * from measurementcategory left join user on measurementcategory.user_id=user.id where   user.id = ?1",nativeQuery = true)
     List<MeasurementCategory> findMeasurementById(int id);
+    @Query(value = "select * from product p left join measurementcategory m on p.measurementcategory_id=m.id  where  p.user_id= ?1 and m.name= ?2",nativeQuery = true)
+    Iterable<Product> findAllProductAssignedToMeasurment(int id, String measurementToDelete);
 }

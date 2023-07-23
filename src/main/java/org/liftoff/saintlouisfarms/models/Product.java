@@ -1,6 +1,8 @@
 package org.liftoff.saintlouisfarms.models;
 
 
+import org.hibernate.annotations.OnDelete;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +17,7 @@ public class Product extends AbstractEntity {
     @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -24,7 +26,7 @@ public class Product extends AbstractEntity {
     private ProductDetails productDetails;
 
 
-    @OneToOne()
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.PERSIST)
     @Valid
     @NotNull
     private MeasurementCategory measurementcategory;
