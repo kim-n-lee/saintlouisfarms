@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group">
                     <label th:for="picture">Picture
-                        <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg" onchange="()=>{
+                        <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg" onsubmit="()=>{
                                if(this.files[0].size > 2097152){
                         alert('File is too big!');
                         this.value = '';
