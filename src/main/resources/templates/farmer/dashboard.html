@@ -5,11 +5,74 @@
 <body class="container">
 <nav th:replace="fragments :: navigation">
 </nav>
-<h1> Dashboard </h1>
-<!--just a very simple html to test something -->
-<p>To see Available Products  click this link =><a href="/farmer/products">Available Products</a></p>
-<p>To add new products click this link =><a href="/farmer/add">Add product</a></p>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+    <h1 th:replace="fragments :: banner"></h1>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders</h5>
+                        <p class="card-text">See Current Orders</p>
+                        <a th:href="@{/farmer/orders}" class="btn btn-primary">See Your Orders</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p class="card-text">Quickly create and edit your products</p>
+                        <a th:href="@{/farmer/add}" class="btn btn-primary">All Your Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Store</h5>
+                        <p class="card-text">See what customers see</p>
+                        <a th:href="@{/farmer/products}" class="btn btn-primary">Go To Your Store</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Home Page</h5>
+                        <p class="card-text">Brings you to our homepage</p>
+                        <a th:href="@{/}" class="btn btn-primary">Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">Edit your Information</p>
+                        <a th:href="@{/farmer/profile}" class="btn btn-primary">Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Settings</h5>
+                        <p class="card-text">Customize user settings</p>
+                        <a th:href="@{/farmer/settings}" class="btn btn-primary">Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <footer th:replace="fragments :: footer">
