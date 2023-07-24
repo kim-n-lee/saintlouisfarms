@@ -92,7 +92,7 @@ public class ProductCategoryController {
     }
 
 
-    @PostMapping("delete/{id}")
+    @RequestMapping(value = "delete/{id}", method = {RequestMethod.GET, RequestMethod.POST})
     public String deleteProductCategory(@PathVariable int id,
                                         Model model,
                                         HttpServletRequest request,
@@ -116,7 +116,7 @@ public class ProductCategoryController {
             productCategoryRepository.delete(productToDelete);
             return "redirect:../add";
         } else {
-
+//            If there are products in the category they are put in ProductTypeDeleteDTO to have their categories reassigned en mass
             ProductTypeDeleteDTO productTypeDeleteDTO = new ProductTypeDeleteDTO();
             for(Product product: products){
                 productTypeDeleteDTO.getProductsToReassign().add(product);
@@ -146,32 +146,31 @@ public class ProductCategoryController {
             return "redirect:../add";
         }
 
-
         ProductCategory productToDelete = optproductCategory.get();
         List<Product> products = productToDelete.getProducts();
 
-        System.out.println(products.size());
+        ProductTypeDeleteDTO newProductTypeDeleteDTO = new ProductTypeDeleteDTO();
+
+//        Goes through each product in ProductTypeDeleteDTO and if it has been reassigned
+//        it is put saved to the dB if it is not it is put into a new DTO to have user reassign
         for(int i=0; i < products.size();i++){
             Product current = products.get(i);
             ProductCategory toSet = productTypeDeleteDTO.getProductsToReassign().get(i).getProductCategory();
-
-            current.setProductCategory(toSet);
-            productRepository.save(products.get(i));
+            if(current.getProductCategory().equals(toSet)){
+                newProductTypeDeleteDTO.getProductsToReassign().add(current);
+            }else{
+                current.setProductCategory(toSet);
+                productRepository.save(products.get(i));
+            }
         }
 
-        products = productToDelete.getProducts();
-        System.out.println(products.size());
 
-        if (products.isEmpty()) {
-            redirectAttrs.addFlashAttribute("deleted", productToDelete.getName());
-            productCategoryRepository.delete(productToDelete);
-            return "redirect:../add";
+        if (newProductTypeDeleteDTO.getProductsToReassign().isEmpty()) {
+            return "redirect:../"+id;
         } else {
-
-
             model.addAttribute(id);
             model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
-            model.addAttribute("productTypeDeleteDTO", productTypeDeleteDTO);
+            model.addAttribute("productTypeDeleteDTO", newProductTypeDeleteDTO);
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "productType/delete";
         }

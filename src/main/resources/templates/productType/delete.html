@@ -10,6 +10,8 @@
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
+
+        <p>You currently have products in this category, please reassign to a new category before deleting this one.</p>
         <form method="post" th:action="@{/productType/delete/reassign/{id}(id=${id})}" th:object="${productTypeDeleteDTO}">
             <table class="table table-striped">
                 <thead>
