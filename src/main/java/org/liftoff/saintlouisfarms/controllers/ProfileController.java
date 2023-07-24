@@ -1,5 +1,6 @@
 package org.liftoff.saintlouisfarms.controllers;
 
+import org.imgscalr.Scalr;
 import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.User;
@@ -9,10 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -72,6 +78,7 @@ public class ProfileController {
         userRepository.save(farmer);
         model.addAttribute("loggedIn", user != null);
         return "redirect:";
+
     }
 
 

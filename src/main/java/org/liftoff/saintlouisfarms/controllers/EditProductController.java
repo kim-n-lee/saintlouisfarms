@@ -1,5 +1,6 @@
 package org.liftoff.saintlouisfarms.controllers;
 
+import org.imgscalr.Scalr;
 import org.liftoff.saintlouisfarms.data.MeasurementCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductDetailsRepository;
@@ -11,9 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -65,7 +71,8 @@ public class EditProductController {
                                         Model model,
                                         @ModelAttribute("productToEdit") @Valid Product productEdit,
                                         Errors errors,
-                                        HttpServletRequest request) {
+                                        HttpServletRequest request,
+                                        @RequestParam(required = false, value = "picture") MultipartFile picture) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -92,9 +99,46 @@ public class EditProductController {
             return "redirect:";
         }
 
-
-
+        productEdit.setUser(user);
         Product productToEdit = optProductToEdit.get();
+
+        System.out.println(picture);
+        if(!picture.getOriginalFilename().equals("")){
+            try {
+                if(picture.getSize()>2098576){throw new RuntimeException();};
+                BufferedImage image = ImageIO.read(picture.getInputStream());
+                BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.BALANCED, 900, 1000);
+
+                String filePath;
+                if(productToEdit.getProductDetails().getPicture()!=null) {
+                     filePath = productToEdit.getProductDetails().getPicture().replace(".jpg","edited.jpg");
+                }else{
+                     filePath = "images/" + user.getId() + productEdit.getName() + productToEdit.getId() + ".jpg";
+                }
+
+                File outputfile = new File(filePath);
+                ImageIO.write(scaledImage, "jpg", outputfile);
+                productToEdit.getProductDetails().setPicture(filePath);
+            }catch(IOException | RuntimeException e){
+                model.addAttribute("title",
+                        "Edit " + productEdit.getName());
+                model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+                model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
+                model.addAttribute("productToEdit", productEdit);
+                model.addAttribute("editProductToId", productToEditId);
+                model.addAttribute("loggedIn", session.getAttribute("user") != null);
+                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
+                model.addAttribute("title", "Add Product");
+                model.addAttribute("productType", productCategoryRepository.findAll());
+                model.addAttribute("measurements", measurementCategoryRepository.findAll());
+                model.addAttribute("products", productRepository.findProductById(user.getId()));
+                model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
+                model.addAttribute("loggedIn", user != null);
+                return "farmer/edit";
+            }
+        }
+
+
 
 
 

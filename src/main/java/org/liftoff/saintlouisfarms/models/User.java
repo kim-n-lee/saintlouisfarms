@@ -46,6 +46,7 @@ public  class User extends MainUser {
     }
     public List<Product> getProducts() {
         return products;
+
     }
 
     public List<ProductCategory> getProductCategories() {
@@ -61,3 +62,4 @@ public  class User extends MainUser {
         this.farmName = farmName;
     }
 }
+

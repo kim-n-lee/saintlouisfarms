@@ -19,14 +19,27 @@
 
 
 
-<!--Success banner here for when product added successfully-->
 
-<form method="post" th:object="${productToEdit}" >
+<!--Success banner here for when product added successfully-->
+    <img class="img-thumbnail" th:if="${productToEdit.productDetails.picture != null}" th:src="@{'/'+${productToEdit.productDetails.picture}}" th:alt="'Picture of '+*{name}" width="270" height="300">
+<form method="post" enctype="multipart/form-data" th:object="${productToEdit}" >
     <div class="form-group">
         <label th:for="name">Name
             <input class="form-control" th:field="*{name}">
         </label>
         <p class="error" th:errors="*{name}"></p>
+    </div>
+    <div class="form-group">
+        <label th:for="picture">Picture
+            <input class="form-control" name="picture"  value="picture" type="file" data-max-size="2098" accept="image/jpeg" onsubmit="(event)=>{
+                        if(this.files[0].size > 2097152){
+                        event.preventDefault()
+                        alert('File is too big!');
+                        this.value = '';
+                        };
+                        };">
+            <p class="error" th:if="${pictureError}" th:text="${pictureError}"></p>
+        </label>
     </div>
     <div class="form-group">
         <label th:for="productCategory">Product Category
@@ -47,12 +60,9 @@
         <p class="error" th:errors="*{productDetails.quantity}"></p>
     </div>
     <div class="form-group">
-<!--        <label th:for="amount">Amount-->
-<!--            <input class="form-control" th:field="*{productDetails.amount}">-->
-<!--        </label>-->
-<!--        <p class="error" th:errors="*{productDetails.amount}"></p>-->
         <label th:for="measurementCategory">Measurement
             <select class="form-control" th:field="*{measurementCategory}">
+
                 <option th:each="measurement : ${measurements}"
                         th:value="${measurement.id}"
                         th:text="${measurement.name}">
@@ -75,13 +85,6 @@
         </label>
         <p class="error" th:errors="*{productDetails.description}"></p>
     </div>
-<!--    Will need some time to figure this out-->
-<!--    <div class="form-group">-->
-<!--        <label th:for="picture">Picture-->
-<!--            <input class="form-control" th:field="*{productDetails.picture}" type="number">-->
-<!--        </label>-->
-<!--        <p class="error" th:errors="*{productDetails.picture}"></p>-->
-<!--    </div>-->
     <div class="form-group">
         <label th:for="picture">Picture
             <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg">
