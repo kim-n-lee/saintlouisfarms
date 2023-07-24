@@ -51,8 +51,8 @@
 <!--            <input class="form-control" th:field="*{productDetails.amount}">-->
 <!--        </label>-->
 <!--        <p class="error" th:errors="*{productDetails.amount}"></p>-->
-        <label th:for="measurementcategory">Measurement
-            <select class="form-control" th:field="*{measurementcategory}">
+        <label th:for="measurementCategory">Measurement
+            <select class="form-control" th:field="*{measurementCategory}">
                 <option th:each="measurement : ${measurements}"
                         th:value="${measurement.id}"
                         th:text="${measurement.name}">
@@ -60,7 +60,7 @@
             </select>
             <a th:href="@{/measurements/add}">Add Custom Measurements</a>
         </label>
-        <p class="error" th:errors="*{measurementcategory}"></p>
+        <p class="error" th:errors="*{measurementCategory}"></p>
     </div>
 
     <div class="form-group">
@@ -71,7 +71,7 @@
     </div>
     <div class="form-group">
         <label th:for="description">Description
-            <input class="form-control" th:field="*{productDetails.description}" type="textbox">
+            <input class="form-control" th:field="*{productDetails.description}" type="text">
         </label>
         <p class="error" th:errors="*{productDetails.description}"></p>
     </div>

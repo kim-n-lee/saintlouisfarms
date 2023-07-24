@@ -2,8 +2,7 @@ package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.ProductCategoryRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
-import org.liftoff.saintlouisfarms.models.DTO.ProductTypeDeleteDTO;
-import org.liftoff.saintlouisfarms.models.MeasurementCategory;
+import org.liftoff.saintlouisfarms.models.DTO.MultiProductDTO;
 import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.ProductCategory;
 import org.liftoff.saintlouisfarms.models.User;
@@ -116,23 +115,23 @@ public class ProductCategoryController {
             productCategoryRepository.delete(productToDelete);
             return "redirect:../add";
         } else {
-//            If there are products in the category they are put in ProductTypeDeleteDTO to have their categories reassigned en mass
-            ProductTypeDeleteDTO productTypeDeleteDTO = new ProductTypeDeleteDTO();
+//            If there are products in the category they are put in MultiProductDTO to have their categories reassigned en mass
+            MultiProductDTO multiProductDTO = new MultiProductDTO();
             for(Product product: products){
-                productTypeDeleteDTO.getProductsToReassign().add(product);
+                multiProductDTO.getProductsToReassign().add(product);
             }
 
 
             model.addAttribute(id);
             model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
-            model.addAttribute("productTypeDeleteDTO", productTypeDeleteDTO);
+            model.addAttribute("multiProductDTO", multiProductDTO);
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "productType/delete";
         }
     }
 
     @PostMapping("delete/reassign/{id}")
-    public String deleteProductCategoryAfterReassign(@ModelAttribute ProductTypeDeleteDTO productTypeDeleteDTO,
+    public String deleteProductCategoryAfterReassign(@ModelAttribute MultiProductDTO multiProductDTO,
                                                      @PathVariable int id,
                                                      Model model,
                                                      HttpServletRequest request,
@@ -149,15 +148,15 @@ public class ProductCategoryController {
         ProductCategory productToDelete = optproductCategory.get();
         List<Product> products = productToDelete.getProducts();
 
-        ProductTypeDeleteDTO newProductTypeDeleteDTO = new ProductTypeDeleteDTO();
+        MultiProductDTO newMultiProductDTO = new MultiProductDTO();
 
-//        Goes through each product in ProductTypeDeleteDTO and if it has been reassigned
+//        Goes through each product in MultiProductDTO and if it has been reassigned
 //        it is put saved to the dB if it is not it is put into a new DTO to have user reassign
         for(int i=0; i < products.size();i++){
             Product current = products.get(i);
-            ProductCategory toSet = productTypeDeleteDTO.getProductsToReassign().get(i).getProductCategory();
+            ProductCategory toSet = multiProductDTO.getProductsToReassign().get(i).getProductCategory();
             if(current.getProductCategory().equals(toSet)){
-                newProductTypeDeleteDTO.getProductsToReassign().add(current);
+                newMultiProductDTO.getProductsToReassign().add(current);
             }else{
                 current.setProductCategory(toSet);
                 productRepository.save(products.get(i));
@@ -165,12 +164,12 @@ public class ProductCategoryController {
         }
 
 
-        if (newProductTypeDeleteDTO.getProductsToReassign().isEmpty()) {
+        if (newMultiProductDTO.getProductsToReassign().isEmpty()) {
             return "redirect:../"+id;
         } else {
             model.addAttribute(id);
             model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
-            model.addAttribute("productTypeDeleteDTO", newProductTypeDeleteDTO);
+            model.addAttribute("multiProductDTO", newMultiProductDTO);
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "productType/delete";
         }

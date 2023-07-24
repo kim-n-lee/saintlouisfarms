@@ -1,14 +1,12 @@
 package org.liftoff.saintlouisfarms.models;
 
 
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+
 @Entity
 public class MeasurementCategory extends AbstractEntity{
 
@@ -17,6 +15,8 @@ public class MeasurementCategory extends AbstractEntity{
     private String name;
     @ManyToOne()
     private User user;
+    @OneToMany(mappedBy = "measurementCategory", orphanRemoval = true,cascade = CascadeType.PERSIST)
+    private final List<Product>products = new ArrayList<>();
 
     public MeasurementCategory(String name,User user) {
 
@@ -43,7 +43,9 @@ public class MeasurementCategory extends AbstractEntity{
         this.name = name;
     }
 
-
+    public List<Product> getProducts() {
+        return products;
+    }
 
     @Override
     public String toString() {

@@ -13,10 +13,9 @@ public class ProductCategory extends AbstractEntity{
 
     @Size(min = 3, max = 45, message="name must be between 3 and 45 character")
     private String name;
-
     @ManyToOne()
     private User user;
-    @OneToMany(mappedBy = "productCategory" ,orphanRemoval = true,cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "productCategory", orphanRemoval = true,cascade = CascadeType.PERSIST)
     private final List<Product> products = new ArrayList<>();
 
     public ProductCategory( @Size(min = 3, max = 45, message="name must be between 3 and 45 character") String name,User user) {
