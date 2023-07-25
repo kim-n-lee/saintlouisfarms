@@ -3,6 +3,7 @@ package org.liftoff.saintlouisfarms;
 
 
 import org.liftoff.saintlouisfarms.controllers.AuthenticationController;
+import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +24,7 @@ public class AuthenticationFilter implements HandlerInterceptor {
     // Allow certain pages and static resources to be seen by the public (not logged in)
 
 
-    private static final List<String> whitelist = Arrays.asList( "/register","/index", "/login", "/css", "/assets","/images", "/about");
+    private static final List<String> whitelist = Arrays.asList( "/register","/registerClient","/index", "/login", "/css", "/assets","/images", "/about");
 
     // Check all pages and static resources against blacklist
     private static boolean isWhitelisted(String path) {
@@ -48,9 +49,10 @@ public class AuthenticationFilter implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+        Client client=authenticationController.getClientFromSession(session);
 
         // The user is logged in
-        if (user != null) {
+        if (user != null || client!=null) {
             return true;
         }
 

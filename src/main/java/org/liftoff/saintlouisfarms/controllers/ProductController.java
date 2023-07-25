@@ -93,7 +93,7 @@ public class ProductController {
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-    Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture, RedirectAttributes redirectAttrs) throws IOException
+                                        Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture, RedirectAttributes redirectAttrs) throws IOException
     {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
