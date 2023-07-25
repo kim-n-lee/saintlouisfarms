@@ -68,6 +68,7 @@ public class CartController {
             shoppingBasket.setQuantity(addQuantity);
         }
         else{
+
             shoppingBasket=new ShoppingBasket();
             shoppingBasket.setQuantity(quantity);
             shoppingBasket.setClient(client);
