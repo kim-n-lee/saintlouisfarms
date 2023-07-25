@@ -55,16 +55,19 @@ public class ProfileController {
     @PostMapping("edit")
     public String editFarmerInfoProcessing(
             Model model,
+
             @ModelAttribute("profileFarmerToEdit") @Valid User editUser,
             Errors errors,
             HttpServletRequest request,
             @RequestParam(required = false) MultipartFile newPicture) {
+
 
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         if (errors.hasErrors()) {
             model.addAttribute("loggedIn", user != null);
             return "redirect:./edit";
+
         }
 
         User farmer=userRepository.findById(user.getId());
@@ -106,6 +109,7 @@ public class ProfileController {
         userRepository.save(farmer);
         model.addAttribute("loggedIn", user != null);
         return "redirect:";
+
     }
 
 

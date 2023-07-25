@@ -80,4 +80,6 @@ public class RegisterFormClientDTO extends LoginFormDTO{
     public void setVerifyPassword(String verifyPassword) {
         this.verifyPassword = verifyPassword;
     }
+
 }
+

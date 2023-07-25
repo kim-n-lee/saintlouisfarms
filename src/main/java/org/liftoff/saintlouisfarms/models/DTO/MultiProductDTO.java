@@ -17,4 +17,6 @@ public class MultiProductDTO {
     public void setProductsToReassign(List<Product> productsToReassign) {
         this.productsToReassign = productsToReassign;
     }
+
 }
+

@@ -2,7 +2,6 @@ package org.liftoff.saintlouisfarms.models;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 // this class for search part in product page in navbar
 public class ProductData {

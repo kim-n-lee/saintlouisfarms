@@ -15,14 +15,17 @@
         <form method="post" th:action="@{/measurements/delete/reassign/{id}(id=${id})}" th:object="${multiProductDTO}">
             <table class="table table-striped">
                 <thead>
+
                 <tr>
                     <th>Name</th>
                     <th>Measurement Category</th>
                 </tr>
+
                 </thead>
                 <tr th:each="productToReassign, itemStat : *{productsToReassign}">
                     <td th:text="*{productsToReassign[__${itemStat.index}__].name}"></td>
                     <td class="form-group">
+
                         <select class="form-control"  th:field="*{productsToReassign[__${itemStat.index}__].measurementCategory}">
                             <option th:each="measurement : ${measurements}"
                                     th:value="${measurement.id}"
@@ -30,12 +33,15 @@
                             </option>
                         </select>
 
+
                     </td>
                 </tr>
             </table>
             <input type="submit" class="btn btn-primary" value="Reassign Products" />
         </form>
+
     </div>
+
 </div>
 </body>
 <footer th:replace="fragments :: footer">

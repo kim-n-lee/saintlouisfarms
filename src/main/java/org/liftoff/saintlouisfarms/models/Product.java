@@ -17,7 +17,7 @@ public class Product extends AbstractEntity {
     @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "products")
     private final List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
@@ -41,9 +41,11 @@ public class Product extends AbstractEntity {
     private User user;
 
 
-    public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementcategory, User user) {
+    public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
         this.name = name;
+
         this.measurementCategory = measurementcategory;
+
         this.productCategory = productCategory;
         this.productDetails=productDetails;
 //        this.shoppingBasket=shoppingBasket;
