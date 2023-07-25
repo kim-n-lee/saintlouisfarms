@@ -148,7 +148,7 @@ public class EditProductController {
         productToEdit.getProductDetails().setQuantity(productEdit.getProductDetails().getQuantity());
         productToEdit.getProductDetails().setStatus(productEdit.getProductDetails().getStatus());
 
-        productToEdit.getMeasurementcategory().setName(productEdit.getMeasurementcategory().getName());
+        productToEdit.getMeasurementCategory().setName(productEdit.getMeasurementCategory().getName());
         productToEdit.getProductCategory().setName(productEdit.getProductCategory().getName());
 
         productRepository.save(productToEdit);

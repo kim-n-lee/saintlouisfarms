@@ -5,6 +5,7 @@
 <body class="container">
     <nav th:replace="fragments :: navigation">
     </nav>
+
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 p-5 pe-5">
             <h1 th:replace="fragments :: banner"></h1>
@@ -27,7 +28,7 @@
                     <td th:text="*{productCategory}"></td>
                     <td th:text="*{ProductDetails.description}"></td>
                     <td th:text="'$'+*{ProductDetails.price}"></td>
-                        <td th:text="*{ ProductDetails.quantity+' '+measurementcategory.name }"></td>
+                        <td th:text="*{ ProductDetails.quantity+' '+measurementCategory.name }"></td>
                     <td>
                         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>
                     </td>

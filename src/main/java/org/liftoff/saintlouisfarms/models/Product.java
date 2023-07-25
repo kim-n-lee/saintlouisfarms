@@ -15,7 +15,7 @@ public class Product extends AbstractEntity {
     @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -23,11 +23,10 @@ public class Product extends AbstractEntity {
     @NotNull
     private ProductDetails productDetails;
 
-
-    @OneToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Valid
     @NotNull
-    private MeasurementCategory measurementcategory;
+    private MeasurementCategory measurementCategory;
 
     public void setProductDetails(ProductDetails productDetails) {
         this.productDetails = productDetails;
@@ -37,9 +36,9 @@ public class Product extends AbstractEntity {
     private User user;
 
 
-    public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementcategory, User user) {
+    public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
         this.name = name;
-        this.measurementcategory = measurementcategory;
+        this.measurementCategory = measurementCategory;
         this.productCategory = productCategory;
         this.productDetails=productDetails;
         this.user = user;
@@ -71,11 +70,11 @@ public class Product extends AbstractEntity {
 
 
 
-    public MeasurementCategory getMeasurementcategory() {
-        return measurementcategory;
+    public MeasurementCategory getMeasurementCategory() {
+        return measurementCategory;
     }
-    public void setMeasurementcategory(MeasurementCategory measurementcategory) {
-        this.measurementcategory = measurementcategory;
+    public void setMeasurementCategory(MeasurementCategory measurementCategory) {
+        this.measurementCategory = measurementCategory;
     }
 
     public User getUser() {

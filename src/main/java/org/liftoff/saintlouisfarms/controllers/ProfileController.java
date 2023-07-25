@@ -41,10 +41,10 @@ public class ProfileController {
 
     @GetMapping("edit")
     public String editFarmerInformation( Model model , HttpServletRequest request){
-    HttpSession session=request.getSession();
-    User user=authenticationController.getUserFromSession(session);
+        HttpSession session=request.getSession();
+        User user=authenticationController.getUserFromSession(session);
 
-    User profileFarmerToEdit=userRepository.findById(user.getId());
+        User profileFarmerToEdit=userRepository.findById(user.getId());
 
         model.addAttribute("title", "Edit " + profileFarmerToEdit.getFirstName()+" "+ profileFarmerToEdit.getFirstName()+" Information:");
         model.addAttribute("profileFarmerToEdit", profileFarmerToEdit);
@@ -52,60 +52,33 @@ public class ProfileController {
         model.addAttribute("loggedIn", user != null);
         return "farmer/editProfile";
     }
-@PostMapping("edit")
+    @PostMapping("edit")
     public String editFarmerInfoProcessing(
-                                           Model model,
-                                           @ModelAttribute("profileFarmerToEdit") @Valid User editUser,
-                                           Errors errors,
-                                           HttpServletRequest request,
-                                           @RequestParam(required = false) MultipartFile newPicture) {
+            Model model,
+            @ModelAttribute @Valid User editUser,
+            Errors errors,
+            HttpServletRequest request) {
 
-    HttpSession session = request.getSession();
-    User user = authenticationController.getUserFromSession(session);
-    if (errors.hasErrors()) {
-        model.addAttribute("loggedIn", user != null);
-        return "redirect:./edit";
-    }
-
-    User farmer=userRepository.findById(user.getId());
-
-    if(!newPicture.getOriginalFilename().equals("")){
-        try {
-            if(newPicture.getSize()>2098576){throw new RuntimeException();};
-            BufferedImage image = ImageIO.read(newPicture.getInputStream());
-            BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.BALANCED, 900, 1000);
-
-            String filePath;
-            if(farmer.getPicture()!=null) {
-                filePath = farmer.getPicture().replace(".jpg","edited.jpg");
-            }else{
-                filePath = "images/" + user.getId() + farmer.getFarmName()+".jpg";
-            }
-
-            File outputfile = new File(filePath);
-            ImageIO.write(scaledImage, "jpg", outputfile);
-            farmer.setPicture(filePath);
-        }catch(IOException | RuntimeException e){
-            model.addAttribute("title", "Edit " + farmer.getFirstName()+" "+ farmer.getFirstName()+" Information:");
-            model.addAttribute("profileFarmerToEdit", farmer);
-            model.addAttribute("id", farmer.getId());
-            model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        if (errors.hasErrors()) {
             model.addAttribute("loggedIn", user != null);
-            return "farmer/add";
+            return "redirect:./edit";
         }
-    }
+        User farmer=userRepository.findById(user.getId());
 
-    farmer.setAddress(editUser.getAddress());
-    farmer.setCity(editUser.getCity());
-    farmer.setEmail(editUser.getEmail());
-    farmer.setPhone(editUser.getPhone());
-    farmer.setFarmName(editUser.getFarmName());
-    farmer.setFirstName(editUser.getFirstName());
-    farmer.setLastName(editUser.getLastName());
-    farmer.setZip(editUser.getZip());
-    userRepository.save(farmer);
-    model.addAttribute("loggedIn", user != null);
-    return "redirect:";
+        farmer.setAddress(editUser.getAddress());
+        farmer.setCity(editUser.getCity());
+        farmer.setEmail(editUser.getEmail());
+        farmer.setPhone(editUser.getPhone());
+        farmer.setFarmName(editUser.getFarmName());
+        farmer.setFirstName(editUser.getFirstName());
+        farmer.setLastName(editUser.getLastName());
+        farmer.setZip(editUser.getZip());
+        userRepository.save(farmer);
+        model.addAttribute("loggedIn", user != null);
+        return "redirect:";
+
     }
 
 

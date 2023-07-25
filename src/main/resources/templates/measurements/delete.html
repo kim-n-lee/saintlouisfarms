@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+<nav th:replace="fragments :: navigation">
+</nav>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+
+        <p>You currently have products in these category, please reassign to a new category before deleting this one.</p>
+        <form method="post" th:action="@{/measurements/delete/reassign/{id}(id=${id})}" th:object="${multiProductDTO}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Measurement Category</th>
+                    </tr>
+                </thead>
+                <tr th:each="productToReassign, itemStat : *{productsToReassign}">
+                    <td th:text="*{productsToReassign[__${itemStat.index}__].name}"></td>
+                    <td class="form-group">
+                                <select class="form-control"  th:field="*{productsToReassign[__${itemStat.index}__].measurementCategory}">
+                                    <option th:each="measurement : ${measurements}"
+                                            th:value="${measurement.id}"
+                                            th:text="${measurement.name}">
+                                    </option>
+                                </select>
+
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-primary" value="Reassign Products" />
+        </form>
+</div>
+</div>
+</body>
+<footer th:replace="fragments :: footer">
+</footer>
+</html>
