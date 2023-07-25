@@ -46,17 +46,7 @@ public class ProductController {
 //        model.addAttribute("productType", productCategoryRepository.findAll());
 //        return "farmer/products";
 //    }
-    // this method return all available products (product status =1)
-    @GetMapping("products")
-    public String displayAllProducts(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
 
-        // model.addAttribute("title","Available Products");
-        model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
-        model.addAttribute("loggedIn", user != null);
-        return "farmer/products";
-    }
 
     //display result of searching
     @PostMapping("results")
@@ -75,7 +65,15 @@ public class ProductController {
         model.addAttribute("loggedIn", user != null);
         return "redirect:";
     }
-
+    // this method return all available products (product status =1)
+    @GetMapping("products")
+    public String displayAllProducts(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+        model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+        model.addAttribute("loggedIn", user != null);
+        return "farmer/products";
+    }
     // add new product
     @GetMapping("add")
     public String displayAddProductForm(Model model, HttpServletRequest request) {
@@ -153,5 +151,9 @@ public class ProductController {
         productRepository.delete(productToDelete);
         return "redirect:add";
     }
+
+
+
+
 
 }

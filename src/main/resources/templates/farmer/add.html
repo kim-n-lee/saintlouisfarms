@@ -4,8 +4,10 @@
 </head>
 <body class="container">
 
+
 <nav th:replace="fragments :: navigation">
 </nav>
+
 <!--    <div class="">-->
 <!--        <div class="card-body">-->
 <!--            <form method="post" enctype="multipart/form-data" th:object="${product}">-->
@@ -15,10 +17,12 @@
 <!--            </form>-->
 <!--        </div>-->
 <!--    </div>-->
+
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
+
 
         <div th:if="${productAdded}" class="alert alert-success fade show" role="alert">
             <strong th:text="${productAdded}"></strong> was successfully added.
@@ -47,6 +51,7 @@
                     <input class="form-control" th:field="*{name}">
                 </label>
                 <p class="error" th:errors="*{name}"></p>
+
             </div>
             <div class="form-group">
                 <label th:for="productCategory">Product Category
@@ -185,6 +190,7 @@
                             <input type="submit" class="btn btn-primary" value="Save" />
                         </td>
                     </form>
+
                     <td>
                         <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${currentProduct.id})}"><button class="btn btn-warning">Edit</button></a>
                     </td>
@@ -194,12 +200,14 @@
                             <input onclick = "if (! confirm('Are you sure you want to delete this product?')) { return false; }" type="submit" class="btn btn-danger" value="Delete Product" />
                         </form>
                     </td>
+
                 </tr>
             </table>
 
         </div>
     </div>
 </div>
+
 </body>
 <footer th:replace="fragments :: footer">
 </footer>

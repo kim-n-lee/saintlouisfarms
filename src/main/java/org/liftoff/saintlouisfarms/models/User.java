@@ -1,7 +1,9 @@
 package org.liftoff.saintlouisfarms.models;
 import net.bytebuddy.implementation.bind.annotation.Super;
 
+
 import javax.persistence.*;
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -43,10 +45,13 @@ public  class User extends MainUser {
     }
     public List<Product> getProducts() {
         return products;
+
+
     }
 
     public List<ProductCategory> getProductCategories() {
         return productCategories;
+
     }
     private String picture;
     public String getPicture() {
@@ -78,5 +83,7 @@ private Client client;
         super(email, pwHash, firstName, lastName, address, zip, city, phone);
         this.farmName = farmName;
         this.client=client;
+
     }
 }
+
