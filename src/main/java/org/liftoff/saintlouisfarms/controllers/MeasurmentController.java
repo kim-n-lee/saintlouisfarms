@@ -170,18 +170,5 @@ public class MeasurmentController {
     }
 
 
-    }
-
-        if (newMultiProductDTO.getProductsToReassign().isEmpty()) {
-            return "redirect:../"+id;
-        } else {
-            model.addAttribute(id);
-            model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
-            model.addAttribute("multiProductDTO", newMultiProductDTO);
-            model.addAttribute("loggedIn", session.getAttribute("user") != null);
-            return "measurements/delete";
-        }
-    }
-
 
 }

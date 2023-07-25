@@ -44,8 +44,7 @@ public class Product extends AbstractEntity {
     public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
         this.name = name;
 
-        this.measurementCategory = measurementcategory;
-
+        this.measurementCategory = measurementCategory;
         this.productCategory = productCategory;
         this.productDetails=productDetails;
 //        this.shoppingBasket=shoppingBasket;
@@ -101,6 +100,4 @@ public class Product extends AbstractEntity {
     public String toString() {
         return name;
     }
-
-
 }
