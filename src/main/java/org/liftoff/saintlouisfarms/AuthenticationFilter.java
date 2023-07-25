@@ -3,6 +3,7 @@ package org.liftoff.saintlouisfarms;
 
 
 import org.liftoff.saintlouisfarms.controllers.AuthenticationController;
+import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -48,9 +49,10 @@ public class AuthenticationFilter implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+        Client client=authenticationController.getClientFromSession(session);
 
         // The user is logged in
-        if (user != null) {
+        if (user != null || client!=null) {
             return true;
         }
 

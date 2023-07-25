@@ -97,8 +97,10 @@ public class AuthenticationController {
 
     @PostMapping("/registerClient")
     public String processRegistrationFormClient(@ModelAttribute @Valid RegisterFormClientDTO registerFormClientDTO,
-                                          Errors errors, HttpServletRequest request,
-                                          Model model) {
+
+                                                Errors errors, HttpServletRequest request,
+                                                Model model) {
+
         // Send user back to form if errors are found
         if (errors.hasErrors()) {
             model.addAttribute("title", "Client Register");
@@ -131,7 +133,10 @@ public class AuthenticationController {
     }
 
 
-//farmer  Part
+
+    //farmer  Part
+
+
     @GetMapping("/register")
     public String displayRegistrationForm(Model model,HttpSession session) {
         model.addAttribute(new RegisterFormDTO());
@@ -185,10 +190,12 @@ public class AuthenticationController {
         model.addAttribute(new LoginFormDTO());
         model.addAttribute("title", "Log In");
         if(session.getAttribute("user") != null){
-        model.addAttribute("loggedIn", session.getAttribute("user") != null);
+
+            model.addAttribute("loggedIn", session.getAttribute("user") != null);
         }
         else{
-        model.addAttribute("loggedIn", session.getAttribute("client") != null);}
+            model.addAttribute("loggedIn", session.getAttribute("client") != null);}
+
 
         return "login";
     }
@@ -213,18 +220,22 @@ public class AuthenticationController {
 
         //if farmer
         if(theUser!=null && theClient==null){
-        String password = loginFormDTO.getPassword();
 
-        if (!theUser.isMatchingPassword(password)) {
-            errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
-            return "login";
-        }
+            String password = loginFormDTO.getPassword();
 
-        // OTHERWISE, create a new session for the user and take them to the home page
-        setUserInSession(request.getSession(), theUser);
 
-        return "redirect:farmer/dashboard";
+            if (!theUser.isMatchingPassword(password)) {
+                errors.rejectValue("password", "password.invalid", "Invalid password");
+                model.addAttribute("title", "Log In");
+                return "login";
+            }
+
+            // OTHERWISE, create a new session for the user and take them to the home page
+            setUserInSession(request.getSession(), theUser);
+
+
+            return "redirect:farmer/dashboard";
+
         }
         //if client
         else {
@@ -239,7 +250,9 @@ public class AuthenticationController {
             // OTHERWISE, create a new session for the user and take them to the home page
             setClientInSession(request.getSession(), theClient);
 
-            return "redirect:farmer/dashboard";
+// go to the page of available products of farms
+            return "redirect:farmer/availableProducts";
+
         }
     }
     // Handler for logout
