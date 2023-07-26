@@ -92,6 +92,7 @@ public class ShoppingBasketController {
         return shoppingBasketRepository.save(shoppingBasket);
     }
 
+
     @PostMapping("/removeFromBasket/{basketId}/{productId}")
     public ShoppingBasket removeFromBasket(
             @PathVariable int basketId,
