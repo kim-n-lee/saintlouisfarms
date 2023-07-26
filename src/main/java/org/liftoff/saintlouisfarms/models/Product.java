@@ -18,6 +18,9 @@ public class Product extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
 
+
+    @ManyToOne
+    ShoppingBasket shoppingBasket;
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @NotNull
@@ -90,5 +93,11 @@ public class Product extends AbstractEntity {
         return name;
     }
 
+    public ShoppingBasket getShoppingBasket() {
+        return shoppingBasket;
+    }
 
+    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
 }
