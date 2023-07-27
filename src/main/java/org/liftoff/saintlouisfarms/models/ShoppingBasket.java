@@ -33,9 +33,11 @@ public class ShoppingBasket extends AbstractEntity {
     public ShoppingBasket() {
     }
 
+
     public Client getClient() {
         return client;
     }
+
 
     public void setClient(Client client) {
         this.client = client;
@@ -52,6 +54,7 @@ public class ShoppingBasket extends AbstractEntity {
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
+
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;

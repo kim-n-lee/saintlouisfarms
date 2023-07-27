@@ -15,29 +15,35 @@
         <form method="post" th:action="@{/productType/delete/reassign/{id}(id=${id})}" th:object="${multiProductDTO}">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Product Category</th>
-                    </tr>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Product Category</th>
+                </tr>
+
                 </thead>
                 <tr th:each="productToReassign, itemStat : *{productsToReassign}">
                     <td th:text="*{productsToReassign[__${itemStat.index}__].name}"></td>
                     <td class="form-group">
-<!--                            <label th:for="*{productCategory}">Product Category-->
-                                <select class="form-control"  th:field="*{productsToReassign[__${itemStat.index}__].productCategory}">
-                                    <option th:each="category : ${productType}"
-                                            th:value="${category.id}"
-                                            th:text="${category.name}">
-                                    </option>
-                                </select>
-<!--                            </label>-->
-<!--                            <p class="error" th:errors="*{productCategory}"></p>-->
+
+                        <!--                            <label th:for="*{productCategory}">Product Category-->
+                        <select class="form-control"  th:field="*{productsToReassign[__${itemStat.index}__].productCategory}">
+                            <option th:each="category : ${productType}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}">
+                            </option>
+                        </select>
+                        <!--                            </label>-->
+                        <!--                            <p class="error" th:errors="*{productCategory}"></p>-->
+
                     </td>
                 </tr>
             </table>
             <input type="submit" class="btn btn-primary" value="Reassign Products" />
         </form>
-</div>
+
+    </div>
+
 </div>
 </body>
 <footer th:replace="fragments :: footer">

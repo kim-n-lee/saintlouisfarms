@@ -53,9 +53,6 @@ public class MeasurmentController {
         redirectAttrs.addFlashAttribute("measurementAdded", newMeasuremenCategory.getName());
         newMeasuremenCategory.setUser(user);
         measurementCategoryRepository.save(newMeasuremenCategory);
-//        model.addAttribute("measurement", measurementCategoryRepository.findMeasurementById(user.getId()));
-//        model.addAttribute("loggedIn", session.getAttribute("user") != null);
-
         return "redirect:../farmer/add";
     }
 
@@ -125,10 +122,12 @@ public class MeasurmentController {
 
     @PostMapping("delete/reassign/{id}")
     public String deleteMeasurementCategoryAfterReassign(@ModelAttribute MultiProductDTO multiProductDTO,
-                                                        @PathVariable int id,
-                                                        Model model,
-                                                        HttpServletRequest request,
-                                                        RedirectAttributes redirectAttrs) {
+
+                                                         @PathVariable int id,
+                                                         Model model,
+                                                         HttpServletRequest request,
+                                                         RedirectAttributes redirectAttrs) {
+
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -137,6 +136,7 @@ public class MeasurmentController {
             redirectAttrs.addFlashAttribute("isEmpty", "Cannot find that category.");
             return "redirect:../add";
         }
+
 
         MeasurementCategory measurementCategoryToDelete = optionalMeasurementCategory.get();
         List<Product> products = measurementCategoryToDelete.getProducts();
@@ -150,7 +150,8 @@ public class MeasurmentController {
             MeasurementCategory toSet = multiProductDTO.getProductsToReassign().get(i).getMeasurementCategory();
             if(current.getProductCategory().equals(toSet)){
                 newMultiProductDTO.getProductsToReassign().add(current);
-            }else{
+            }
+            else{
                 current.setMeasurementCategory(toSet);
                 productRepository.save(products.get(i));
             }
@@ -169,7 +170,5 @@ public class MeasurmentController {
     }
 
 
-    }
 
-
-
+}

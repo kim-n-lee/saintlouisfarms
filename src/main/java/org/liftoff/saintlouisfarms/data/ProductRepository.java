@@ -22,4 +22,9 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 @Query(value = "select *  from product where name= ?1", nativeQuery = true)
 
 List<Product>findNameOfProductBy(String name);
+
+    @Query(value = "SELECT * FROM farm.product p left join productdetails d on p.productDetails_id=d.id left join user u on p.user_id=u.id where d.status=1 order by u.farmName", nativeQuery = true)
+    List<Product> findAllProduct();
+    @Query(value = "select * from product left join user on product.user_id=user.id where user.farmName= ?1", nativeQuery = true)
+    List<Product> findByNameOfFarmName( String farmName);
 }

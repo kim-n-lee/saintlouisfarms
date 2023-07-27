@@ -1,11 +1,10 @@
 package org.liftoff.saintlouisfarms.models;
 import net.bytebuddy.implementation.bind.annotation.Super;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,19 +46,44 @@ public  class User extends MainUser {
     public List<Product> getProducts() {
         return products;
 
+
     }
 
     public List<ProductCategory> getProductCategories() {
         return productCategories;
+
+    }
+    private String picture;
+    public String getPicture() {
+        return picture;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
     public User() {
 
     }
-
+@ManyToOne
+private Client client;
     public User(String email, String pwHash, String firstName, String lastName, String address, String zip, String city, String phone, String farmName) {
         super(email, pwHash, firstName, lastName, address, zip, city, phone);
         this.farmName = farmName;
+
+    }
+    public User(String email, String pwHash, String firstName, String lastName, String address, String zip, String city, String phone, String farmName,Client client) {
+        super(email, pwHash, firstName, lastName, address, zip, city, phone);
+        this.farmName = farmName;
+        this.client=client;
+
     }
 }
 

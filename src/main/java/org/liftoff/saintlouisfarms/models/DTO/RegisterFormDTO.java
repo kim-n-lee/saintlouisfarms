@@ -22,7 +22,7 @@ public class RegisterFormDTO  extends LoginFormDTO{
 
     @NotBlank(message = "Zip code  is required")
     private String zip ;
-//    String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
+    //    String regex = "^[0-9]{5}(?:-[0-9]{4})?$";
 //
 //    Pattern pattern = Pattern.compile(regex);
     @Size(min = 3, max = 45, message = "Farm's name must be between 3 and 45 characters")
