@@ -22,6 +22,9 @@ public class Product extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "products")
     private final List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
 
+
+    @ManyToOne
+    ShoppingBasket shoppingBasket;
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @NotNull
@@ -100,4 +103,13 @@ public class Product extends AbstractEntity {
     public String toString() {
         return name;
     }
+
+    public ShoppingBasket getShoppingBasket() {
+        return shoppingBasket;
+    }
+
+    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
+
 }
