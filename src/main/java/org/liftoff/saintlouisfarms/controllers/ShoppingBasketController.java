@@ -35,21 +35,21 @@ public class ShoppingBasketController {
     @Autowired
     ClientRepository clientRepository;
 
-    @PostMapping("/createBasket/{clientId}")
-    public ShoppingBasket createBasket(@PathVariable int clientId,
-                                       Model model, HttpServletRequest request,
-                                       RedirectAttributes redirectAttrs) {
-
-        HttpSession session = request.getSession();
-        Client client = authenticationController.getClientFromSession(session);
-
-        model.addAttribute("loggedIn", client != null);
-
-        LocalDateTime currentTime = LocalDateTime.now();
-        ShoppingBasket shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
-
-        return shoppingBasketRepository.save(shoppingBasket);
-    }
+//    @PostMapping("/createBasket/{clientId}")
+//    public ShoppingBasket createBasket(@PathVariable int clientId,
+//                                       Model model, HttpServletRequest request,
+//                                       RedirectAttributes redirectAttrs) {
+//
+//        HttpSession session = request.getSession();
+//        Client client = authenticationController.getClientFromSession(session);
+//
+//        model.addAttribute("loggedIn", client != null);
+//
+//        LocalDateTime currentTime = LocalDateTime.now();
+//        ShoppingBasket shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
+//
+//        return shoppingBasketRepository.save(shoppingBasket);
+//    }
 
     @PostMapping("/addToBasket/{basketId}/{productId}")
     public ShoppingBasket addToBasket(

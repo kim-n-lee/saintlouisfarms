@@ -14,17 +14,20 @@ public class ShoppingBasket extends AbstractEntity {
     @OneToMany(mappedBy = "shoppingBasket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BasketItem> basketItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "shoppingBasketAvailable", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BasketItem> basketItemsAvailable = new ArrayList<>();
+
     private BigDecimal totalAmount;
 
     private LocalDateTime localDateTime;
-
-    public ShoppingBasket(Client client, List<BasketItem> basketItems, BigDecimal totalAmount, LocalDateTime localDateTime) {
-        this.client = client;
-        this.basketItems = basketItems;
-        this.totalAmount = totalAmount;
-        this.localDateTime = localDateTime;
-    }
-
+//
+//    public ShoppingBasket(Client client, List<BasketItem> basketItems, BigDecimal totalAmount, LocalDateTime localDateTime) {
+//        this.client = client;
+//        this.basketItems = basketItems;
+//        this.totalAmount = totalAmount;
+//        this.localDateTime = localDateTime;
+//    }
+//
     public ShoppingBasket(Client client, LocalDateTime localDateTime) {
         this.client = client;
         this.localDateTime = localDateTime;
@@ -87,12 +90,24 @@ public class ShoppingBasket extends AbstractEntity {
         }//. newItem.setShoppingBasket(this);By setting this as the shopping basket for the new item, the new item becomes part of the shopping basket.
     }
 
+    public void addProductsToBuy(BasketItem basketItem){
+        this.basketItemsAvailable.add(basketItem);
+    }
+
     public void removeProduct(Product product) {
         basketItems.removeIf(item -> item.getProduct().equals(product));
     }// lambda expression checks if the product object of basketItem in the list is the same object we want to remove
 
     public List<BasketItem> getBasketItems() {
         return basketItems;
+    }
+
+    public List<BasketItem> getBasketItemsAvailable() {
+        return basketItemsAvailable;
+    }
+
+    public void setBasketItemsAvailable(List<BasketItem> basketItemsAvailable) {
+        this.basketItemsAvailable = basketItemsAvailable;
     }
 }
 

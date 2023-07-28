@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
@@ -14,6 +16,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query(value = "select * from user where farmName= ?1", nativeQuery = true)
     User findByFarmName(String farmName);
+
+    @Query
+    Boolean existsByFarmName(String farmName);
 
     @Query
     User findById(int id);

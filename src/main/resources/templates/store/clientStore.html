@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation">
+</nav>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+<!--        Display current shopping basket here-->
+<!--        <table class="table table-striped">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th></th>-->
+<!--                <th>Name</th>-->
+<!--                <th>Product Category</th>-->
+<!--                <th>Product Description</th>-->
+<!--                <th>Price</th>-->
+<!--                <th>Purchase</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tr th:each="productToBuy : ${shoppingBasket}" th:object="${productToBuy}">-->
+<!--                <td><img th:if="${productToBuy.product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>-->
+<!--                <td th:text="*{product.name}"></td>-->
+<!--                <td th:text="*{product.productCategory}"></td>-->
+<!--                <td th:text="*{product.ProductDetails.description}"></td>-->
+<!--                <td th:text="'$'+*{product.ProductDetails.price}"></td>-->
+<!--                <td><input th:field="*{quantity}" > <p th:text="*{product.measurementCategory.name}"></p></td>-->
+<!--            </tr>-->
+<!--            <input type="submit" class="btn btn-primary" value="Reassign Products" />-->
+<!--        </table>-->
+        <form method="post">
+            <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Product Category</th>
+                <th>Product Description</th>
+                <th>Price</th>
+                <th>Purchase</th>
+            </tr>
+            </thead>
+            <tr th:each="basketItem : ${shoppingBasket}" th:object="${basketItem}">
+                                <td><img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>
+                                <td th:text="*{product.name}"></td>
+                                <td th:text="*{product.productCategory}"></td>
+                                <td th:text="*{product.ProductDetails.description}"></td>
+                                <td th:text="'$'+*{product.ProductDetails.price}"></td>
+                                <td><input th:name="*{quantity}" th:value="*{quantity}" type="number" min="0" step="any"/> <p th:text="*{product.measurementCategory.name}"></p></td>
+                                <td><input type="submit" class="btn btn-primary" value="Buy Products" /></td>
+            </tr>
+            </table>
+            <input type="submit" class="btn btn-primary" value="Buy Products" />
+
+        </form>
+    </div>
+</div>
+<footer th:replace="fragments :: footer">
+</footer>
+</body>
+</html>

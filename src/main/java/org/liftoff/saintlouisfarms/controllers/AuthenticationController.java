@@ -157,7 +157,8 @@ public class AuthenticationController {
         }
 // Look up user in database using email they provided in the form
         User existingUser = userRepository.findByEmail(registerFormDTO.getEmail());
-        User existingFarm=userRepository.findByFarmName(registerFormDTO.getFarmName());
+        User existingFarm= userRepository.findByFarmName(registerFormDTO.getFarmName());
+
         // Send user back to form if email already exists
         if (existingUser != null ) {
             errors.rejectValue("email", "email.alreadyexists", "A user with that email already exists");

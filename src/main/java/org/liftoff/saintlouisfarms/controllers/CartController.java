@@ -63,19 +63,19 @@ public class CartController {
 
 
         //the product is already in the cart
-        if(shoppingBasket != null){
-            addQuantity=shoppingBasket.getQuantity()+quantity;
-            shoppingBasket.setQuantity(addQuantity);
-        }
-        else{
-
-            shoppingBasket=new ShoppingBasket();
-            shoppingBasket.setQuantity(quantity);
-            shoppingBasket.setClient(client);
-            shoppingBasket.setLocalDateTime(LocalDateTime.now());
-            shoppingBasket.setProducts(product);
-        }
-        shoppingBasketRepository.save(shoppingBasket);
+//        if(shoppingBasket != null){
+//            addQuantity=shoppingBasket.getQuantity()+quantity;
+//            shoppingBasket.setQuantity(addQuantity);
+//        }
+//        else{
+//
+//            shoppingBasket=new ShoppingBasket();
+//            shoppingBasket.setQuantity(quantity);
+//            shoppingBasket.setClient(client);
+//            shoppingBasket.setLocalDateTime(LocalDateTime.now());
+//            shoppingBasket.setProducts(product);
+//        }
+//        shoppingBasketRepository.save(shoppingBasket);
 
         return "redirect:../{farmName}";
     }

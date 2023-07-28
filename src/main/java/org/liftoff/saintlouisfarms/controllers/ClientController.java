@@ -3,10 +3,10 @@ package org.liftoff.saintlouisfarms.controllers;
 import org.imgscalr.Scalr;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
-import org.liftoff.saintlouisfarms.models.Client;
-import org.liftoff.saintlouisfarms.models.Product;
-import org.liftoff.saintlouisfarms.models.ShoppingBasket;
-import org.liftoff.saintlouisfarms.models.User;
+import org.liftoff.saintlouisfarms.data.UserRepository;
+import org.liftoff.saintlouisfarms.models.*;
+import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("availableProducts")
+@RequestMapping("store")
 public class ClientController {
 
     @Autowired
@@ -29,6 +29,9 @@ public class ClientController {
     private ProductRepository productRepository;
     @Autowired
     private ShoppingBasketRepository shoppingBasketRepository;
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("")
     public String displayAllAvailableProductsWithFarmsName(Model model, HttpServletRequest request){
 
@@ -46,13 +49,30 @@ public class ClientController {
     }
     //display the product associated with farmName
    @GetMapping("/{farmName}")
-   public  String displaySpecificFarmNameWithProduct(Model model,HttpServletRequest request
-           ,@PathVariable String farmName){
-       HttpSession session = request.getSession();
-       Client client = authenticationController.getClientFromSession(session);
-       model.addAttribute("loggedIn", client != null);
-       model.addAttribute("products", productRepository.findByNameOfFarmName(farmName));
-       return "Products";
+   public  String displaySpecificFarmNameWithProduct(Model model,
+                                                     HttpServletRequest request,
+                                                     @PathVariable String farmName){
+
+       if (!userRepository.existsByFarmName(farmName)){
+           return "redirect:../";
+       }
+
+       ShoppingBasket shoppingBasket;
+       if(request.isUserInRole("client")) {
+           HttpSession session = request.getSession();
+           Client client = authenticationController.getClientFromSession(session);
+           model.addAttribute("loggedIn", client != null);
+           LocalDateTime currentTime = LocalDateTime.now();
+           shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
+           shoppingBasketRepository.save(shoppingBasket);
+       }else{
+           shoppingBasket = new ShoppingBasket();
+       }
+
+       productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasket.addProductsToBuy(new BasketItem(product,0)));
+
+       model.addAttribute("shoppingBasket", shoppingBasket.getBasketItemsAvailable());
+       return "store/clientStore";
    }
 
 
