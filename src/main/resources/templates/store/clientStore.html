@@ -33,7 +33,7 @@
 <!--            </tr>-->
 <!--            <input type="submit" class="btn btn-primary" value="Reassign Products" />-->
 <!--        </table>-->
-        <form method="post">
+        <form method="post" th:object="${shoppingBasket}">
             <table class="table table-striped">
             <thead>
             <tr>
@@ -45,17 +45,20 @@
                 <th>Purchase</th>
             </tr>
             </thead>
-            <tr th:each="basketItem : ${shoppingBasket}" th:object="${basketItem}">
-                                <td><img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>
-                                <td th:text="*{product.name}"></td>
-                                <td th:text="*{product.productCategory}"></td>
-                                <td th:text="*{product.ProductDetails.description}"></td>
-                                <td th:text="'$'+*{product.ProductDetails.price}"></td>
-                                <td><input th:name="*{quantity}" th:value="*{quantity}" type="number" min="0" step="any"/> <p th:text="*{product.measurementCategory.name}"></p></td>
-                                <td><input type="submit" class="btn btn-primary" value="Buy Products" /></td>
+            <tr th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
+                                <td><img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="90" height="100"/></td>
+                                <td th:text="${basketItem.product.name}"></td>
+                                <td th:text="${basketItem.product.productCategory}"></td>
+                                <td th:text="${basketItem.product.ProductDetails.description}"></td>
+                                <td th:text="'$'+${basketItem.product.ProductDetails.price}"></td>
+                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
+                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
+                                <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" step="any"/> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
+                <td><input type="submit" class="btn btn-primary" value="Add Items to Cart" /></td>
             </tr>
             </table>
-            <input type="submit" class="btn btn-primary" value="Buy Products" />
+            <input type="hidden" name="basketId" th:value="${basketId}">
+            <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
 
         </form>
     </div>

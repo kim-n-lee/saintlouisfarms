@@ -22,5 +22,9 @@ public class ShoppingBasketDTO {
     public void addProductsToBuy(BasketItem basketItem){
         this.productsToBuy.add(basketItem);
     }
+    public BasketItem getBasketItem(BasketItem basketItem){
+        System.out.println(basketItem.getQuantity());
+        return this.productsToBuy.get(productsToBuy.indexOf(basketItem));
+    }
 }
 

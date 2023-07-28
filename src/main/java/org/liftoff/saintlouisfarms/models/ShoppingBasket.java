@@ -71,24 +71,28 @@ public class ShoppingBasket extends AbstractEntity {
 
 //    The controller indirectly uses this hanlder to add products to the shopping basket by calling
 //    it on the ShoppingBasket instance obtained from the repository and passing the necessary arguments.
-    public void addProduct(Product product, int quantity) {
-        // Check if the product already exists
-//        handler is used to get the first matching BasketItem if its exists
-        Optional<BasketItem> existingItem = basketItems.stream()
-                .filter(item -> item.getProduct().equals(product))
-                .findFirst();
-
-        if (existingItem.isPresent()) {
-            BasketItem item = existingItem.get();
-            item.setQuantity(item.getQuantity() + quantity);
-        } else {
-            BasketItem newItem = new BasketItem(product, quantity);
-            newItem.setProduct(product);
-            newItem.setQuantity(quantity);
-            newItem.setShoppingBasket(this);
-            basketItems.add(newItem);
-        }//. newItem.setShoppingBasket(this);By setting this as the shopping basket for the new item, the new item becomes part of the shopping basket.
+//    public void addProduct(Product product, int quantity) {
+//        // Check if the product already exists
+////        handler is used to get the first matching BasketItem if its exists
+//        Optional<BasketItem> existingItem = basketItems.stream()
+//                .filter(item -> item.getProduct().equals(product))
+//                .findFirst();
+//
+//        if (existingItem.isPresent()) {
+//            BasketItem item = existingItem.get();
+//            item.setQuantity(item.getQuantity() + quantity);
+//        } else {
+//            BasketItem newItem = new BasketItem(product, quantity);
+//            newItem.setProduct(product);
+//            newItem.setQuantity(quantity);
+//            newItem.setShoppingBasket(this);
+//            basketItems.add(newItem);
+//        }//. newItem.setShoppingBasket(this);By setting this as the shopping basket for the new item, the new item becomes part of the shopping basket.
+//    }
+    public void addProduct(BasketItem basketItem) {
+        this.basketItems.add(basketItem);
     }
+
 
     public void addProductsToBuy(BasketItem basketItem){
         this.basketItemsAvailable.add(basketItem);
@@ -102,6 +106,10 @@ public class ShoppingBasket extends AbstractEntity {
         return basketItems;
     }
 
+    public BasketItem getBasketItem(BasketItem basketItem){
+        return this.basketItemsAvailable.get(basketItemsAvailable.indexOf(basketItem));
+    }
+
     public List<BasketItem> getBasketItemsAvailable() {
         return basketItemsAvailable;
     }
@@ -109,6 +117,8 @@ public class ShoppingBasket extends AbstractEntity {
     public void setBasketItemsAvailable(List<BasketItem> basketItemsAvailable) {
         this.basketItemsAvailable = basketItemsAvailable;
     }
+
+
 }
 
 
