@@ -115,14 +115,16 @@ public class StoreController {
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
 
-        addedItems.forEach(itemToUpdate ->{currentShoppingBasket.addProduct(itemToUpdate);});
+        addedItems.forEach(currentShoppingBasket::addProduct);
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
         shoppingBasketRepository.save(currentShoppingBasket);
         System.out.println(totalAmount);
+        System.out.println(currentShoppingBasket.getBasketItems().size());
 
         model.addAttribute("loggedIn", client != null);
+        model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasket);
         model.addAttribute("basketId", basketId);
         return "store/clientStore";
