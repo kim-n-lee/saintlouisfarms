@@ -122,12 +122,10 @@ public class MeasurmentController {
 
     @PostMapping("delete/reassign/{id}")
     public String deleteMeasurementCategoryAfterReassign(@ModelAttribute MultiProductDTO multiProductDTO,
-
                                                          @PathVariable int id,
                                                          Model model,
                                                          HttpServletRequest request,
                                                          RedirectAttributes redirectAttrs) {
-
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -136,7 +134,6 @@ public class MeasurmentController {
             redirectAttrs.addFlashAttribute("isEmpty", "Cannot find that category.");
             return "redirect:../add";
         }
-
 
         MeasurementCategory measurementCategoryToDelete = optionalMeasurementCategory.get();
         List<Product> products = measurementCategoryToDelete.getProducts();
@@ -157,20 +154,6 @@ public class MeasurmentController {
             }
         }
 
-
-        if (newMultiProductDTO.getProductsToReassign().isEmpty()) {
-            return "redirect:../"+id;
-        } else {
-            model.addAttribute(id);
-            model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
-            model.addAttribute("multiProductDTO", newMultiProductDTO);
-            model.addAttribute("loggedIn", session.getAttribute("user") != null);
-            return "measurements/delete";
-        }
-    }
-
-
-    }
 
         if (newMultiProductDTO.getProductsToReassign().isEmpty()) {
             return "redirect:../"+id;

@@ -22,6 +22,9 @@ public class Product extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "products")
     private final List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
 
+
+    @ManyToOne
+    ShoppingBasket shoppingBasket;
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @NotNull
@@ -44,8 +47,7 @@ public class Product extends AbstractEntity {
     public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
         this.name = name;
 
-        this.measurementCategory = measurementcategory;
-
+        this.measurementCategory = measurementCategory;
         this.productCategory = productCategory;
         this.productDetails=productDetails;
 //        this.shoppingBasket=shoppingBasket;
@@ -102,5 +104,12 @@ public class Product extends AbstractEntity {
         return name;
     }
 
+    public ShoppingBasket getShoppingBasket() {
+        return shoppingBasket;
+    }
+
+    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
 
 }
