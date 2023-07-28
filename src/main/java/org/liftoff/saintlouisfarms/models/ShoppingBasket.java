@@ -1,29 +1,37 @@
 package org.liftoff.saintlouisfarms.models;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Entity
-public class ShoppingBasket extends AbstractEntity{
+public class ShoppingBasket extends AbstractEntity {
 
+    @OneToOne
+    private Client client;
 
-    @OneToOne()
-    private  Client client;
-    private int Quantity;
-    @ManyToOne
-    private Product products;
+    @OneToMany(mappedBy = "shoppingBasket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BasketItem> basketItems = new ArrayList<>();
 
-    public int getQuantity() {
-        return Quantity;
+    private BigDecimal totalAmount;
+
+    private LocalDateTime localDateTime;
+
+    public ShoppingBasket(Client client, List<BasketItem> basketItems, BigDecimal totalAmount, LocalDateTime localDateTime) {
+        this.client = client;
+        this.basketItems = basketItems;
+        this.totalAmount = totalAmount;
+        this.localDateTime = localDateTime;
     }
 
-    public void setQuantity(int quantity) {
-        Quantity = quantity;
+    public ShoppingBasket(Client client, LocalDateTime localDateTime) {
+        this.client = client;
+        this.localDateTime = localDateTime;
     }
 
+    public ShoppingBasket() {
+    }
 
 
     public Client getClient() {
@@ -35,9 +43,18 @@ public class ShoppingBasket extends AbstractEntity{
         this.client = client;
     }
 
+    public void setBasketItems(List<BasketItem> basketItems) {
+        this.basketItems = basketItems;
+    }
 
-    private LocalDateTime localDateTime;
-   // private double totalAmount;
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
@@ -47,30 +64,38 @@ public class ShoppingBasket extends AbstractEntity{
         this.localDateTime = localDateTime;
     }
 
-//    public double getTotalAmount() {
-//        return totalAmount;
-//    }
-//
-//    public void setTotalAmount(double totalAmount) {
-//
-//        this.totalAmount = totalAmount;
-//    }
-    public ShoppingBasket(){
 
+
+//    The controller indirectly uses this hanlder to add products to the shopping basket by calling
+//    it on the ShoppingBasket instance obtained from the repository and passing the necessary arguments.
+    public void addProduct(Product product, int quantity) {
+        // Check if the product already exists
+//        handler is used to get the first matching BasketItem if its exists
+        Optional<BasketItem> existingItem = basketItems.stream()
+                .filter(item -> item.getProduct().equals(product))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            BasketItem item = existingItem.get();
+            item.setQuantity(item.getQuantity() + quantity);
+        } else {
+            BasketItem newItem = new BasketItem(product, quantity);
+            newItem.setProduct(product);
+            newItem.setQuantity(quantity);
+            newItem.setShoppingBasket(this);
+            basketItems.add(newItem);
+        }//. newItem.setShoppingBasket(this);By setting this as the shopping basket for the new item, the new item becomes part of the shopping basket.
     }
 
-    public ShoppingBasket(Client client, int quantity, LocalDateTime localDateTime,Product product) {
-        this.client = client;
-        Quantity = quantity;
-        this.localDateTime = localDateTime;
-        this.products=product;
-    }
+    public void removeProduct(Product product) {
+        basketItems.removeIf(item -> item.getProduct().equals(product));
+    }// lambda expression checks if the product object of basketItem in the list is the same object we want to remove
 
-    public Product getProducts() {
-        return products;
-    }
-
-    public void setProducts(Product products) {
-        this.products = products;
+    public List<BasketItem> getBasketItems() {
+        return basketItems;
     }
 }
+
+
+
+
