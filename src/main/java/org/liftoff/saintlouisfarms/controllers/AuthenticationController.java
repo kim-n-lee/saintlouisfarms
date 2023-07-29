@@ -144,7 +144,7 @@ public class AuthenticationController {
         clientRepository.save(newClient);
         setClientInSession(request.getSession(), newClient);
 
-        return "redirect:farmer/products";
+        return "redirect:store";
     }
 
 
@@ -274,7 +274,7 @@ public class AuthenticationController {
             setClientInSession(request.getSession(), theClient);
 
 // go to the page of available products of farms
-            return "redirect:farmer/availableProducts";
+            return "redirect:store";
 
         }
     }

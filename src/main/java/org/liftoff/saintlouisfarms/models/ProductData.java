@@ -1,6 +1,10 @@
 package org.liftoff.saintlouisfarms.models;
 
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 // this class for search part in product page in navbar
@@ -48,5 +52,10 @@ public class ProductData {
 
         return results;
     }
+
+
+
+
+
 
 }

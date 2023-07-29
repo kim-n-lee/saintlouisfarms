@@ -6,6 +6,7 @@
 
 <nav th:replace="fragments :: navigation">
 </nav>
+  
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
@@ -102,27 +103,26 @@
 
 
 
-        <!--        <h1>Product Search<</h1>-->
-        <!--        <form action="/search" method="post">-->
-        <!--            <label for="productName">Product Name:</label>-->
-        <!--            <input type="text" id="productName" name="productName"><br>-->
-        <!--            <label for="productCategoryName">product Category:</label>-->
-        <!--            <input type="text" id="productCategoryName" name="productCategoryName"><br>-->
-        <!--            <label for="measurementCategoryName">Measurement Category:</label>-->
-        <!--            <input type="text" id="measurementCategoryName" name="measurementCategoryName"><br>-->
-        <!--            <label for="price">Price:</label>-->
-        <!--            <input type="number" id="price" name="price"><br>-->
-        <!--            <input type="submit" value="Search">-->
-        <!--?-->
-        <!--        <ul>-->
-        <!--            <li th:each="product : ${products}">-->
-        <!--                <span th:ext="${product.name}"></span>-->
-        <!--                <span th:text="${product.productCategory.name}"><span>-->
-        <!--            <span th;text="${product.measurementCategory.name}"></span>-->
-        <!--            <span th:text="${product.productDetails.price}"></span>-->
-        <!--            </li>-->
-        <!--        </ul>-->
-
+<!--        <h1>Product Search<</h1>-->
+<!--        <form action="/search" method="post">-->
+<!--            <label for="productName">Product Name:</label>-->
+<!--            <input type="text" id="productName" name="productName"><br>-->
+<!--            <label for="productCategoryName">product Category:</label>-->
+<!--            <input type="text" id="productCategoryName" name="productCategoryName"><br>-->
+<!--            <label for="measurementCategoryName">Measurement Category:</label>-->
+<!--            <input type="text" id="measurementCategoryName" name="measurementCategoryName"><br>-->
+<!--            <label for="price">Price:</label>-->
+<!--            <input type="number" id="price" name="price"><br>-->
+<!--            <input type="submit" value="Search">-->
+<!--?-->
+<!--        <ul>-->
+<!--            <li th:each="product : ${products}">-->
+<!--                <span th:ext="${product.name}"></span>-->
+<!--                <span th:text="${product.productCategory.name}"><span>-->
+<!--            <span th;text="${product.measurementCategory.name}"></span>-->
+<!--            <span th:text="${product.productDetails.price}"></span>-->
+<!--            </li>-->
+<!--        </ul>-->
 
         <!--    <nav class="navbar text-center" style="background-color: #e9e9d1">-->
         <!--        <form method="post" enctype="multipart/form-data" th:object="${product}">-->
@@ -159,7 +159,6 @@
         <!--            <div class="text-center"><button class="btn btn-primary btn-block col-lg-2" type="submit">Search</button></div>-->
         <!--        </form>-->
         <!--    </nav>-->
-
     </div>
 </div>
 
