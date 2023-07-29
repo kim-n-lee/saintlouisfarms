@@ -1,6 +1,5 @@
 package org.liftoff.saintlouisfarms.data;
 
-
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

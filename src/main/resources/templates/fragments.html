@@ -40,6 +40,8 @@
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
+                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/search">Search </a></li>
+
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/logout">Logout</a></li>
                 <li th:unless="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
