@@ -17,7 +17,7 @@ public class ShoppingBasket extends AbstractEntity {
     @OneToMany(mappedBy = "shoppingBasketAvailable", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BasketItem> basketItemsAvailable = new ArrayList<>();
 
-    private BigDecimal totalAmount;
+    private BigDecimal totalAmount = BigDecimal.valueOf(0);
 
     private LocalDateTime localDateTime;
 //

@@ -5,7 +5,6 @@ import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
 import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.*;
-import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,24 +36,29 @@ public class StoreController {
     private UserRepository userRepository;
 
 
-    /*
-        I'll uncomment when I start working on it
-     */
-//    @GetMapping("")
-//    public String displayAllAvailableProductsWithFarmsName(Model model, HttpServletRequest request){
+/*
 //
-//        //get client from session
-//        HttpSession session = request.getSession();
-//        Client client = authenticationController.getClientFromSession(session);
 //
-//        //display all products order by farmName
-//        model.addAttribute("products", productRepository.findAllProduct());
-//        model.addAttribute("loggedIn", client != null);
+// I actually think we should put this on the home page instead
 //
-//        //return to available product order by farm name for all farmer
-//        return "availableFarms";
 //
-//    }
+ */
+    @GetMapping("")
+    public String displayAllAvailableProductsWithFarmsName(Model model,
+                                                           HttpServletRequest request){
+        //get client from session
+        HttpSession session = request.getSession();
+        Client client = authenticationController.getClientFromSession(session);
+
+        //display all products order by farmName
+//          I displayed all farms with inks to their pages instead
+        model.addAttribute("user", userRepository.findAll());
+        model.addAttribute("loggedIn", client != null);
+
+        //return to available product order by farm name for all farmer
+        return "farms";
+
+    }
     //display the product associated with farmName
    @GetMapping("/{farmName}")
    public  String displaySpecificFarmNameWithProduct(Model model,
@@ -79,8 +83,10 @@ public class StoreController {
        productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasket.addProductsToBuy(new BasketItem(product,0)));
        shoppingBasketRepository.save(shoppingBasket);
 
+       model.addAttribute("currentShoppingBasket", shoppingBasket);
        model.addAttribute("shoppingBasket",shoppingBasket);
        model.addAttribute("basketId", shoppingBasket.getId());
+       model.addAttribute("title", farmName+" Store");
        return "store/clientStore";
    }
 
@@ -105,7 +111,6 @@ public class StoreController {
 
         List<BasketItem> basketItems = shoppingBasket.getBasketItemsAvailable();
         List<BasketItem> addedItems = basketItems.stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
-        System.out.println(addedItems);
 
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
         if (basketOptional.isEmpty()) {
@@ -114,19 +119,17 @@ public class StoreController {
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
-
         addedItems.forEach(currentShoppingBasket::addProduct);
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
         shoppingBasketRepository.save(currentShoppingBasket);
-        System.out.println(totalAmount);
-        System.out.println(currentShoppingBasket.getBasketItems().size());
 
         model.addAttribute("loggedIn", client != null);
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasket);
         model.addAttribute("basketId", basketId);
+        model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }
 

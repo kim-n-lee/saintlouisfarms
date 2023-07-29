@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation">
+</nav>
+
+
+<div class="card bg-dark text-white" th:each="farm : ${user}">
+    <img  th:src="@{'/'+${farm.picture}}" class="img-thumbnail" th:alt="${farm.farmName}">
+    <div class="card-img-overlay">
+        <h5 class="card-title" th:text="${farm.farmName}"></h5>
+        <a th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary">Go to store</a>
+    </div>
+</div>
+
+
+</body>
+<footer th:replace="fragments :: footer"></footer>
+</html>
