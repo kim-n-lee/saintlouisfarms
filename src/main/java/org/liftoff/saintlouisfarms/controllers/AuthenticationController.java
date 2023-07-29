@@ -58,6 +58,21 @@ public class AuthenticationController {
         session.setAttribute(userSessionKey, user.getId());
     }
 
+//    public boolean clientInSession(HttpSession session){
+//        Integer clientId = (Integer) session.getAttribute(userSessionKey);
+//        if (clientId == null) {
+//            return false;
+//        }
+//
+//        Optional<Client> client = clientRepository.findById(clientId);
+//
+//        if (client.isEmpty()) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
+
 
 
 
@@ -129,7 +144,7 @@ public class AuthenticationController {
         clientRepository.save(newClient);
         setClientInSession(request.getSession(), newClient);
 
-        return "redirect:farmer/products";
+        return "redirect:store";
     }
 
 
@@ -157,7 +172,8 @@ public class AuthenticationController {
         }
 // Look up user in database using email they provided in the form
         User existingUser = userRepository.findByEmail(registerFormDTO.getEmail());
-        User existingFarm=userRepository.findByFarmName(registerFormDTO.getFarmName());
+        User existingFarm= userRepository.findByFarmName(registerFormDTO.getFarmName());
+
         // Send user back to form if email already exists
         if (existingUser != null ) {
             errors.rejectValue("email", "email.alreadyexists", "A user with that email already exists");
@@ -258,7 +274,7 @@ public class AuthenticationController {
             setClientInSession(request.getSession(), theClient);
 
 // go to the page of available products of farms
-            return "redirect:farmer/availableProducts";
+            return "redirect:store";
 
         }
     }

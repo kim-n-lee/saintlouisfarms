@@ -10,9 +10,12 @@ public class BasketItem extends AbstractEntity {
     @ManyToOne
     private Product product;
 
-    private int quantity;
+    private Integer quantity;
     @ManyToOne
     private ShoppingBasket shoppingBasket;
+
+    @ManyToOne
+    private ShoppingBasket shoppingBasketAvailable;
 
     public BasketItem(Product product, int quantity, ShoppingBasket shoppingBasket) {
         this.product = product;
@@ -23,6 +26,9 @@ public class BasketItem extends AbstractEntity {
     public BasketItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public BasketItem() {
     }
 
     public Product getProduct() {
@@ -41,13 +47,20 @@ public class BasketItem extends AbstractEntity {
         this.product = product;
     }
 
-    public int getQuantity() {
+
+    public ShoppingBasket getShoppingBasketAvailable() {
+        return shoppingBasketAvailable;
+    }
+
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-
+    public void setShoppingBasketAvailable(ShoppingBasket shoppingBasketAvailable) {
+        this.shoppingBasketAvailable = shoppingBasketAvailable;
+    }
 }

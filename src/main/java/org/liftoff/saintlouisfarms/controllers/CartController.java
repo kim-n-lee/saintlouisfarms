@@ -27,58 +27,73 @@ public class CartController {
     @Autowired
     private ShoppingBasketRepository shoppingBasketRepository;
 
+ /*
+//
+//
+// Have not implemented yet
+//
+//
+     */
+
+//    //show the information(description ,quantity,..etc) of the product
+//    @GetMapping("/{farmName}/{ProductId}")
+//    public String displayInformationOfProduct(@PathVariable int ProductId, @PathVariable String farmName
+//            , Model model, HttpServletRequest request, RedirectAttributes redirectAttrs) {
+//        HttpSession session = request.getSession();
+//        Client client = authenticationController.getClientFromSession(session);
+//
+//        Optional<Product> optProductToShow = productRepository.findById(ProductId);
+//        //check if product we want to display not in the system!
+//        if (optProductToShow.isEmpty()) {
+//            redirectAttrs.addFlashAttribute("NotFound", "ProductNotFound");
+//            return "redirect:availableProducts/Products";
+//        }
+//
+//        Product productToEdit = optProductToShow.get();
+//        model.addAttribute("info",productToEdit);
+//        return"productInfo";
+//    }
 
 
-    //show the information(description ,quantity,..etc) of the product
-    @GetMapping("/{farmName}/{ProductId}")
-    public String displayInformationOfProduct(@PathVariable int ProductId, @PathVariable String farmName
-            , Model model, HttpServletRequest request, RedirectAttributes redirectAttrs) {
-        HttpSession session = request.getSession();
-        Client client = authenticationController.getClientFromSession(session);
-
-        Optional<Product> optProductToShow = productRepository.findById(ProductId);
-        //check if product we want to display not in the system!
-        if (optProductToShow.isEmpty()) {
-            redirectAttrs.addFlashAttribute("NotFound", "ProductNotFound");
-            return "redirect:availableProducts/Products";
-        }
-
-        Product productToEdit = optProductToShow.get();
-        model.addAttribute("info",productToEdit);
-        return"productInfo";
-    }
+  /*
+//
+//
+// Seemed similar to addToBasket, used that logic instead
+//
+//
+     */
     //add products to cart
-    @PostMapping("/{farmName}/{productId}")
-    public String ProcessAddingProductToBasket(Model model, HttpServletRequest request,@PathVariable String farmName
-            , @PathVariable Integer productId, @RequestParam Integer quantity){
-        //get client from session
-        HttpSession session = request.getSession();
-        Client client = authenticationController.getClientFromSession(session);
-
-        Integer addQuantity=quantity;
-        model.addAttribute("loggedIn", client != null);
-        Product product=productRepository.findById(productId).get();
-
-        ShoppingBasket shoppingBasket =shoppingBasketRepository.findByClientAndProduct(product.getId(),client.getId());
-
-
-        //the product is already in the cart
-        if(shoppingBasket != null){
-            addQuantity=shoppingBasket.getQuantity()+quantity;
-            shoppingBasket.setQuantity(addQuantity);
-        }
-        else{
-
-            shoppingBasket=new ShoppingBasket();
-            shoppingBasket.setQuantity(quantity);
-            shoppingBasket.setClient(client);
-            shoppingBasket.setLocalDateTime(LocalDateTime.now());
-            shoppingBasket.setProducts(product);
-        }
-        shoppingBasketRepository.save(shoppingBasket);
-
-        return "redirect:../{farmName}";
-    }
+//    @PostMapping("/{farmName}/{productId}")
+//    public String ProcessAddingProductToBasket(Model model, HttpServletRequest request,@PathVariable String farmName
+//            , @PathVariable Integer productId, @RequestParam Integer quantity){
+//        //get client from session
+//        HttpSession session = request.getSession();
+//        Client client = authenticationController.getClientFromSession(session);
+//
+//        Integer addQuantity=quantity;
+//        model.addAttribute("loggedIn", client != null);
+//        Product product=productRepository.findById(productId).get();
+//
+//        ShoppingBasket shoppingBasket =shoppingBasketRepository.findByClientAndProduct(product.getId(),client.getId());
+//
+//
+//        //the product is already in the cart
+////        if(shoppingBasket != null){
+////            addQuantity=shoppingBasket.getQuantity()+quantity;
+////            shoppingBasket.setQuantity(addQuantity);
+////        }
+////        else{
+////
+////            shoppingBasket=new ShoppingBasket();
+////            shoppingBasket.setQuantity(quantity);
+////            shoppingBasket.setClient(client);
+////            shoppingBasket.setLocalDateTime(LocalDateTime.now());
+////            shoppingBasket.setProducts(product);
+////        }
+////        shoppingBasketRepository.save(shoppingBasket);
+//
+//        return "redirect:../{farmName}";
+//    }
 
 
 }

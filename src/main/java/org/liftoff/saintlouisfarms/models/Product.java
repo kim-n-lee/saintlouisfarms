@@ -19,12 +19,12 @@ public class Product extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "products")
-    private final List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+    private final List<BasketItem> basketItems = new ArrayList<>();
 
 
-    @ManyToOne
-    ShoppingBasket shoppingBasket;
+//    @ManyToOne
+//    ShoppingBasket shoppingBasket;
     @OneToOne(cascade = CascadeType.ALL)
     @Valid
     @NotNull
@@ -95,21 +95,10 @@ public class Product extends AbstractEntity {
         this.user = user;
     }
 
-    public List<ShoppingBasket> getShoppingBaskets() {
-        return shoppingBaskets;
-    }
 
     @Override
     public String toString() {
         return name;
-    }
-
-    public ShoppingBasket getShoppingBasket() {
-        return shoppingBasket;
-    }
-
-    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
-        this.shoppingBasket = shoppingBasket;
     }
 
 }
