@@ -92,7 +92,7 @@ public class FarmerOrdersController {
 //    Create a FarmOrder item which also removes items from Farmer's inventory
         List<FarmOrder> orders = optionalFarmOrders.get();
 
-        System.out.println(orders.size());
+        model.addAttribute("title", "Current Orders");
         model.addAttribute("orders", orders);
         model.addAttribute("loggedIn", farmer != null);
         return "farmer/orders";

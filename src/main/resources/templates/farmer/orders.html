@@ -12,13 +12,7 @@
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th colspan="4">Orders</th>
-            </tr>
-            </thead>
-            <div th:each="order : ${orders}" th:object="${order}">
+        <table class="table table-striped" th:each="order : ${orders}" th:object="${order}">
                 <tr>
                     <th th:text="${'Order for: '+order.client.getName()}"></th>
                     <th th:text="${'Order placed: '+order.localDateTime}"></th>
@@ -37,7 +31,7 @@
             <tr>
                 <th colspan="4" th:text="${'Total Amount $'+order.totalAmount}"></th>
             </tr>
-            </div>
+                <br>
         </table>
 
 
