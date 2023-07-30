@@ -34,8 +34,10 @@ public class DashboardController {
     public String viewDashboard(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
-      model.addAttribute("title","Dashboard");
-      model.addAttribute("loggedIn", user != null);
+
+        model.addAttribute("farmName", user.getFarmName());
+        model.addAttribute("title","Dashboard");
+        model.addAttribute("loggedIn", user != null);
 
 //      model.addAttribute("ProductType",productCategoryRepository.findById(user.getId()));
 //      model.addAttribute("Measurement",measurementCategoryRepository.findById(user.getId()));

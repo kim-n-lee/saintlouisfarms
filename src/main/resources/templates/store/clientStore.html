@@ -34,7 +34,7 @@
                 <th colspan="4" th:text="${'Total Amount $'+currentShoppingBasket.totalAmount}"></th>
             </tr>
         </table>
-        <form method="post" th:action="@{/order/{id}(id=${currentShoppingBasket.id})}" >
+        <form method="post" th:action="@{/order/{basketId}(basketId=${currentShoppingBasket.id})}" >
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
             <input type="submit" value="Checkout" class="btn btn-primary">
         </form>
@@ -61,7 +61,7 @@
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
                                 <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" step="any"/> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
-                <td><input type="submit" class="btn btn-primary" value="Add Items to Cart" /></td>
+                <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
             </tr>
             </table>
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">

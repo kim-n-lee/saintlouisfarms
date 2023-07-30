@@ -109,7 +109,7 @@ public class StoreController {
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
-                                                                @ModelAttribute ShoppingBasketDTO shoppingBasket){
+                                                                @ModelAttribute ShoppingBasketDTO shoppingBasketDTO){
 
 //        Make sure farm exists
         if (!userRepository.existsByFarmName(farmName)){
@@ -125,11 +125,8 @@ public class StoreController {
 
         Client client = authenticationController.getClientFromSession(session);
 
-//        Gets values that have been set on ShoppingBasket passed in
-//        List<BasketItem> basketItems = shoppingBasket.getBasketItemsAvailable();
-//        List<BasketItem> addedItems = basketItems;
 
-//        Retrives the current ShoppingBasket attached to the client
+//        Retrieves the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
         if (basketOptional.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
@@ -139,11 +136,10 @@ public class StoreController {
         ShoppingBasket currentShoppingBasket = basketOptional.get();
 
 //        Need to see if there is enough stock of an item before it can be added to the cart
-//        Clears current Basket and adds products to the user's basket
-//        currentShoppingBasket.getBasketItems().removeAll(currentShoppingBasket.getBasketItems());
-//        addedItems.forEach(currentShoppingBasket::addProduct);
-        for(Integer i =0; i<shoppingBasket.getBasketItemsAvailable().size();i++){
-            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasket.getBasketItemsAvailable().get(i).getQuantity());
+
+//        Sets quantity of cart to what is in DTO
+        for(Integer i =0; i<shoppingBasketDTO.getBasketItemsAvailable().size();i++){
+            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity());
         }
 
 
@@ -157,7 +153,7 @@ public class StoreController {
         model.addAttribute("loggedIn", client != null);
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
-        model.addAttribute("shoppingBasket", shoppingBasket);
+        model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }

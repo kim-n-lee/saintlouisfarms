@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation">
+</nav>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th colspan="4">Orders</th>
+            </tr>
+            </thead>
+            <div th:each="order : ${orders}" th:object="${order}">
+                <tr>
+                    <th th:text="${'Order for: '+order.client.getName()}"></th>
+                    <th th:text="${'Order placed: '+order.localDateTime}"></th>
+                    <th th:text="${'Order Number: '+order.id}"></th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Total Price</th>
+                    <th>Amount</th>
+                </tr>
+            <tr th:each="productOrdered : *{orderItems}" th:object="${productOrdered}">
+                <td th:text="*{product.name}"></td>
+                <td th:text="'$'+*{product.ProductDetails.price*quantity}"></td>
+                <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
+            </tr>
+            <tr>
+                <th colspan="4" th:text="${'Total Amount $'+order.totalAmount}"></th>
+            </tr>
+            </div>
+        </table>
+
+
+    </div>
+</div>
+<footer th:replace="fragments :: footer">
+</footer>
+</body>
+</html>

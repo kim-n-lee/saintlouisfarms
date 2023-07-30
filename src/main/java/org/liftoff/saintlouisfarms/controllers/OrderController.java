@@ -1,9 +1,6 @@
 package org.liftoff.saintlouisfarms.controllers;
 
-import org.liftoff.saintlouisfarms.data.OrderRepository;
-import org.liftoff.saintlouisfarms.data.ProductRepository;
-import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
-import org.liftoff.saintlouisfarms.data.UserRepository;
+import org.liftoff.saintlouisfarms.data.*;
 import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.FarmOrder;
 import org.liftoff.saintlouisfarms.models.ShoppingBasket;
@@ -26,18 +23,19 @@ import java.util.stream.Collectors;
 public class OrderController {
     private AuthenticationController authenticationController;
     private ProductRepository productRepository;
-
     private ShoppingBasketRepository shoppingBasketRepository;
     private UserRepository userRepository;
     private OrderRepository orderRepository;
+    private BasketItemRepository basketItemRepository;
 
     @Autowired
-    public OrderController(AuthenticationController authenticationController, ProductRepository productRepository, ShoppingBasketRepository shoppingBasketRepository, UserRepository userRepository, OrderRepository orderRepository) {
+    public OrderController(AuthenticationController authenticationController, ProductRepository productRepository, ShoppingBasketRepository shoppingBasketRepository, UserRepository userRepository, OrderRepository orderRepository, BasketItemRepository basketItemRepository) {
         this.authenticationController = authenticationController;
         this.productRepository = productRepository;
         this.shoppingBasketRepository = shoppingBasketRepository;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
+        this.basketItemRepository =basketItemRepository;
     }
 
 
@@ -65,8 +63,12 @@ public class OrderController {
                                         client,
                                         shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()),
                                         shoppingBasket.getTotalAmount());
-
+    basketItemRepository.saveAll(newOrder.getOrderItems());
     orderRepository.save(newOrder);
+
+    newOrder.getOrderItems().stream().forEach(item-> item.setFarmOrderItem(newOrder));
+    basketItemRepository.saveAll(newOrder.getOrderItems());
+
     model.addAttribute("basketId", basketId);
     model.addAttribute("loggedIn", client != null);
     model.addAttribute("newOrder", newOrder);

@@ -152,7 +152,9 @@ public abstract class MainUser  {
         this.phone = phone;
     }
 
-
+    public String getName(){
+        return firstName+' '+lastName;
+    }
 
 }
 
