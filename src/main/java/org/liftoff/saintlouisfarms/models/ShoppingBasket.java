@@ -1,5 +1,7 @@
 package org.liftoff.saintlouisfarms.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,10 +13,10 @@ public class ShoppingBasket extends AbstractEntity {
     @OneToOne
     private Client client;
 
-    @OneToMany(mappedBy = "shoppingBasket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
     private List<BasketItem> basketItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shoppingBasketAvailable", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
     private List<BasketItem> basketItemsAvailable = new ArrayList<>();
 
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
@@ -90,7 +92,11 @@ public class ShoppingBasket extends AbstractEntity {
 //        }//. newItem.setShoppingBasket(this);By setting this as the shopping basket for the new item, the new item becomes part of the shopping basket.
 //    }
     public void addProduct(BasketItem basketItem) {
-        this.basketItems.add(basketItem);
+        if (basketItems.contains(basketItem)) {
+            basketItems.get(basketItems.indexOf(basketItem)).setQuantity(basketItem.getQuantity());
+        } else {
+            this.basketItems.add(basketItem);
+        }
     }
 
 

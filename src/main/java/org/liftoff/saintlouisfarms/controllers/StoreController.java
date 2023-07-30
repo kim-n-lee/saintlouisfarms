@@ -1,6 +1,7 @@
 package org.liftoff.saintlouisfarms.controllers;
 
 import org.imgscalr.Scalr;
+import org.liftoff.saintlouisfarms.data.BasketItemRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
 import org.liftoff.saintlouisfarms.data.UserRepository;
@@ -16,33 +17,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("store")
 public class StoreController {
 
-    @Autowired
     private AuthenticationController authenticationController;
-    @Autowired
     private ProductRepository productRepository;
-    @Autowired
     private ShoppingBasketRepository shoppingBasketRepository;
-    @Autowired
     private UserRepository userRepository;
+    private BasketItemRepository basketItemRepository;
+@Autowired
+    public StoreController(AuthenticationController authenticationController, ProductRepository productRepository, ShoppingBasketRepository shoppingBasketRepository, UserRepository userRepository, BasketItemRepository basketItemRepository) {
+        this.authenticationController = authenticationController;
+        this.productRepository = productRepository;
+        this.shoppingBasketRepository = shoppingBasketRepository;
+        this.userRepository = userRepository;
+        this.basketItemRepository = basketItemRepository;
+    }
 
 
-/*
-//
-//
-// I actually think we should put this on the home page instead
-//
-//
- */
+
+    /*
+    //
+    //
+    // I actually think we should put this on the home page instead
+    //
+    //
+     */
     @GetMapping("")
     public String displayAllAvailableProductsWithFarmsName(Model model,
                                                            HttpServletRequest request){
@@ -81,9 +85,11 @@ public class StoreController {
        }
 
        productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasket.addProductsToBuy(new BasketItem(product,0)));
+
+       basketItemRepository.saveAll(shoppingBasket.getBasketItemsAvailable());
        shoppingBasketRepository.save(shoppingBasket);
 
-       model.addAttribute("currentShoppingBasket", shoppingBasket);
+
        model.addAttribute("shoppingBasket",shoppingBasket);
        model.addAttribute("basketId", shoppingBasket.getId());
        model.addAttribute("title", farmName+" Store");
@@ -98,36 +104,49 @@ public class StoreController {
                                                                 @RequestParam int basketId,
                                                                 @ModelAttribute ShoppingBasket shoppingBasket){
 
+//        Make sure farm exists
         if (!userRepository.existsByFarmName(farmName)){
             return "redirect:../";
         }
+
         HttpSession session = request.getSession(false);
 
+//        Handling if user is not logged in
         if(session == null)
 //        ShoppingBasket should be saved until they login, after which client is set as the person that logged in
          {return "redirect:../login";}
 
         Client client = authenticationController.getClientFromSession(session);
 
+//        Gets values that have been set on ShoppingBasket passed in
         List<BasketItem> basketItems = shoppingBasket.getBasketItemsAvailable();
         List<BasketItem> addedItems = basketItems.stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
 
+//        Retrives the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
         if (basketOptional.isEmpty()) {
-            redirectAttrs.addFlashAttribute("NotFound", "ProductOrBasketNotFound");
+            redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
             return "redirect:../";
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
+        System.out.println(currentShoppingBasket.getBasketItems().size());
+
+//        Need to see if there is enough stock of an item before it can be added to the cart
+//        Clears current Basket and adds products to the user's basket
+        currentShoppingBasket.getBasketItems().removeAll(currentShoppingBasket.getBasketItems());
         addedItems.forEach(currentShoppingBasket::addProduct);
+
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
+
+        basketItemRepository.saveAll(currentShoppingBasket.getBasketItems());
         shoppingBasketRepository.save(currentShoppingBasket);
 
+
         model.addAttribute("loggedIn", client != null);
-        model.addAttribute("currentShoppingBasket", currentShoppingBasket);
-        model.addAttribute("shoppingBasket", shoppingBasket);
+        model.addAttribute("shoppingBasket", currentShoppingBasket);
         model.addAttribute("basketId", basketId);
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
