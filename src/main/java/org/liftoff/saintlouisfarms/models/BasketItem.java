@@ -11,17 +11,17 @@ public class BasketItem extends AbstractEntity {
     @ManyToOne
     private Product product;
     private Integer quantity;
-    @ManyToMany(mappedBy = "basketItems", cascade = CascadeType.ALL)
-    private List<ShoppingBasket> shoppingBasket=new ArrayList<>();
-    @ManyToMany(mappedBy = "basketItemsAvailable", cascade = CascadeType.ALL)
-    private List<ShoppingBasket> shoppingBasketAvailable=new ArrayList<>();
+    @ManyToOne
+    private ShoppingBasket shoppingBasket;
+    @ManyToOne
+    private ShoppingBasket shoppingBasketAvailable;
     @ManyToOne
     private FarmOrder farmOrderItem;
 
     public BasketItem(Product product, int quantity, ShoppingBasket shoppingBasket) {
         this.product = product;
         this.quantity = quantity;
-        this.shoppingBasket.add(shoppingBasket);
+        this.shoppingBasket=shoppingBasket;
     }
 
     public BasketItem(Product product, int quantity) {
@@ -36,22 +36,12 @@ public class BasketItem extends AbstractEntity {
         return product;
     }
 
-    public List<ShoppingBasket> getShoppingBasket() {
-        return shoppingBasket;
-    }
 
-    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
-        this.shoppingBasket.add(shoppingBasket);
-    }
 
     public void setProduct(Product product) {
         this.product = product;
     }
 
-
-    public List<ShoppingBasket> getShoppingBasketAvailable() {
-        return shoppingBasketAvailable;
-    }
 
     public FarmOrder getFarmOrderItem() {
         return farmOrderItem;
@@ -65,8 +55,24 @@ public class BasketItem extends AbstractEntity {
         this.quantity = quantity;
     }
 
+    public ShoppingBasket getShoppingBasket() {
+        return shoppingBasket;
+    }
+
+    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
+
+    public ShoppingBasket getShoppingBasketAvailable() {
+        return shoppingBasketAvailable;
+    }
+
     public void setShoppingBasketAvailable(ShoppingBasket shoppingBasketAvailable) {
-        this.shoppingBasketAvailable.add(shoppingBasketAvailable);
+        this.shoppingBasketAvailable = shoppingBasketAvailable;
+    }
+
+    public void setFarmOrderItem(FarmOrder farmOrderItem) {
+        this.farmOrderItem = farmOrderItem;
     }
 
     public FarmOrder getOrderItem() {

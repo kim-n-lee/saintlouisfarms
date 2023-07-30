@@ -58,7 +58,7 @@ public class OrderController {
 
 //    Create a FarmOrder item which also removes items from Farmer's inventory
     ShoppingBasket shoppingBasket = basketOptional.get();
-    System.out.println(shoppingBasket.getBasketItemsAvailable().size());
+    System.out.println(shoppingBasket.getBasketItems().get(0).getOrderItem().getFarmer());
     FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getOrderItem().getFarmer(), client, shoppingBasket.getBasketItems(), shoppingBasket.getTotalAmount());
 
 

@@ -6,6 +6,7 @@ import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
 import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.*;
+import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,15 +84,21 @@ public class StoreController {
        }else{
            shoppingBasket = new ShoppingBasket();
        }
+       ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
 
-       productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasket.addProductsToBuy(new BasketItem(product,0)));
-
-       basketItemRepository.saveAll(shoppingBasket.getBasketItemsAvailable());
        shoppingBasketRepository.save(shoppingBasket);
+       productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+       basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+       if(shoppingBasket.getBasketItems().isEmpty()){
+           shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+           shoppingBasketRepository.save(shoppingBasket);}
+       basketItemRepository.saveAll(shoppingBasket.getBasketItems());
 
 
-       model.addAttribute("shoppingBasket",shoppingBasket);
-       model.addAttribute("basketId", shoppingBasket.getId());
+
+       model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
+       model.addAttribute("currentShoppingBasket", shoppingBasket);
+       model.addAttribute("shoppingBasket",shoppingBasketDTO);
        model.addAttribute("title", farmName+" Store");
        return "store/clientStore";
    }
@@ -102,7 +109,7 @@ public class StoreController {
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
-                                                                @ModelAttribute ShoppingBasket shoppingBasket){
+                                                                @ModelAttribute ShoppingBasketDTO shoppingBasket){
 
 //        Make sure farm exists
         if (!userRepository.existsByFarmName(farmName)){
@@ -119,8 +126,8 @@ public class StoreController {
         Client client = authenticationController.getClientFromSession(session);
 
 //        Gets values that have been set on ShoppingBasket passed in
-        List<BasketItem> basketItems = shoppingBasket.getBasketItemsAvailable();
-        List<BasketItem> addedItems = basketItems.stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
+//        List<BasketItem> basketItems = shoppingBasket.getBasketItemsAvailable();
+//        List<BasketItem> addedItems = basketItems;
 
 //        Retrives the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
@@ -130,12 +137,14 @@ public class StoreController {
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
-        System.out.println(currentShoppingBasket.getBasketItems().size());
 
 //        Need to see if there is enough stock of an item before it can be added to the cart
 //        Clears current Basket and adds products to the user's basket
-        currentShoppingBasket.getBasketItems().removeAll(currentShoppingBasket.getBasketItems());
-        addedItems.forEach(currentShoppingBasket::addProduct);
+//        currentShoppingBasket.getBasketItems().removeAll(currentShoppingBasket.getBasketItems());
+//        addedItems.forEach(currentShoppingBasket::addProduct);
+        for(Integer i =0; i<shoppingBasket.getBasketItemsAvailable().size();i++){
+            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasket.getBasketItemsAvailable().get(i).getQuantity());
+        }
 
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
@@ -146,8 +155,9 @@ public class StoreController {
 
 
         model.addAttribute("loggedIn", client != null);
-        model.addAttribute("shoppingBasket", currentShoppingBasket);
-        model.addAttribute("basketId", basketId);
+        model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
+        model.addAttribute("currentShoppingBasket", currentShoppingBasket);
+        model.addAttribute("shoppingBasket", shoppingBasket);
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }
