@@ -34,8 +34,9 @@
                 <th colspan="4" th:text="${'Total Amount $'+newOrder.totalAmount}"></th>
             </tr>
         </table>
-        <form method="post">
+        <form method="post"  th:action="@{/order/confirmed}">
             <input type="hidden" name="basketId" th:value="${basketId}">
+            <input type="hidden" name="orderId" th:value="${newOrder.id}">
             <input type="submit" value="Confirm Order" class="btn btn-primary">
         </form>
 

@@ -15,9 +15,10 @@ public class FarmOrder extends AbstractEntity {
     @OneToMany(mappedBy = "farmOrderItem")
     private List<BasketItem> orderItems = new ArrayList<>();
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
-    private LocalDateTime localDateTime;
-    private Boolean confirmed;
-    private Boolean fulfilled;
+    private LocalDateTime localDateTime = LocalDateTime.now();
+    private Boolean sent = false;
+    private Boolean confirmed = false;
+    private Boolean fulfilled = false;
 
     public FarmOrder() {
     }
@@ -85,5 +86,11 @@ public class FarmOrder extends AbstractEntity {
         this.totalAmount = totalAmount;
     }
 
+    public Boolean getSent() {
+        return sent;
+    }
 
+    public void setSent(Boolean sent) {
+        this.sent = sent;
+    }
 }

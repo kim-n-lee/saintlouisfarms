@@ -10,6 +10,7 @@ import org.liftoff.saintlouisfarms.models.ShoppingBasket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("order")
@@ -58,13 +60,41 @@ public class OrderController {
 
 //    Create a FarmOrder item which also removes items from Farmer's inventory
     ShoppingBasket shoppingBasket = basketOptional.get();
-    System.out.println(shoppingBasket.getBasketItems().get(0).getOrderItem().getFarmer());
-    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getOrderItem().getFarmer(), client, shoppingBasket.getBasketItems(), shoppingBasket.getTotalAmount());
 
+    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
+                                        client,
+                                        shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()),
+                                        shoppingBasket.getTotalAmount());
 
-//    model.addAttribute("loggedIn", client != null);
-//    model.addAttribute("newOrder", newOrder);
-//    model.addAttribute("client", client);
+    orderRepository.save(newOrder);
+    model.addAttribute("basketId", basketId);
+    model.addAttribute("loggedIn", client != null);
+    model.addAttribute("newOrder", newOrder);
+    model.addAttribute("client", client);
     return"order/confirm";
 }
+
+    @PostMapping("confirmed")
+    public String handleOrderConfirmed(@RequestParam int basketId,
+                                       @RequestParam int orderId,
+                               HttpServletRequest request,
+                               RedirectAttributes redirectAttrs){
+        HttpSession session = request.getSession(false);
+        Client client = authenticationController.getClientFromSession(session);
+
+        Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(orderId);
+        if (optionalFarmOrder.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:../";
+        }
+//    Check to see if there is enough stock
+
+//    Create a FarmOrder item which also removes items from Farmer's inventory
+        FarmOrder order = optionalFarmOrder.get();
+        order.setSent(true);
+        orderRepository.save(order);
+
+        redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
+        return "redirect:../store";
+    }
 }
