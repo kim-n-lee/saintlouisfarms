@@ -11,6 +11,12 @@
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
+        <div th:if="${orderInfo}" class="alert alert-success fade show" role="alert">
+            <strong th:text="${orderInfo}"></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
         <table class="table table-striped" th:each="order : ${orders}" th:object="${order}">
                 <tr>
@@ -29,7 +35,27 @@
                 <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
             </tr>
             <tr>
-                <th colspan="4" th:text="${'Total Amount $'+order.totalAmount}"></th>
+                <td colspan="2" th:text="${'Total Amount $'+order.totalAmount}" class="font-weight-bold"></td>
+                <td>
+                    <span>
+                    <form th:if="${!order.confirmed}" method="post" th:action="@{/orders/confirm}" >
+                        <input type="hidden" name="id" th:value="${order.id}">
+                        <input type="hidden" name="farmName" th:value="${farmName}">
+                        <input type="submit" value="Confirm" class="btn btn-primary">
+                    </form>
+                    <button th:if="${order.confirmed}" class="btn btn-secondary" disabled>Confirmed</button>
+                    <form th:if="${!order.fulfilled}" method="post" th:action="@{/orders/fulfilled}" >
+                        <input type="hidden" name="id" th:value="${order.id}">
+                        <input type="hidden" name="farmName" th:value="${farmName}">
+                        <input type="submit" value="Fulfill" class="btn btn-success">
+                    </form>
+                    <form th:if="${order.fulfilled}" method="post" th:action="@{/orders/fulfilled}" >
+                        <input type="hidden" name="id" th:value="${order.id}">
+                        <input type="hidden" name="farmName" th:value="${farmName}">
+                        <input type="submit" value="Set As Not Filled" class="btn btn-danger">
+                    </form>
+                    </span>
+                </td>
             </tr>
                 <br>
         </table>

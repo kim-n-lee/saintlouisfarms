@@ -1,13 +1,11 @@
 package org.liftoff.saintlouisfarms.controllers;
 
-import org.imgscalr.Scalr;
 import org.liftoff.saintlouisfarms.data.BasketItemRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
 import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
-import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,6 +87,8 @@ public class StoreController {
        shoppingBasketRepository.save(shoppingBasket);
        productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
        basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+
+
        if(shoppingBasket.getBasketItems().isEmpty()){
            shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
            shoppingBasketRepository.save(shoppingBasket);}
@@ -157,7 +157,7 @@ public class StoreController {
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }
-
+//  Have you thought about doing this as a db query
     private BigDecimal calculateTotalAmount(ShoppingBasket shoppingBasket) {
         BigDecimal total = BigDecimal.ZERO;
         for (BasketItem item : shoppingBasket.getBasketItems()) {

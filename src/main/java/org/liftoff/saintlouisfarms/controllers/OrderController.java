@@ -56,9 +56,9 @@ public class OrderController {
     }
 //    Check to see if there is enough stock
 
-//    Create a FarmOrder item which also removes items from Farmer's inventory
     ShoppingBasket shoppingBasket = basketOptional.get();
 
+    //    Create a FarmOrder items which should also removes items from Farmer's inventory
     FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
                                         client,
                                         shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()),

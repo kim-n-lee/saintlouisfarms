@@ -39,53 +39,19 @@ public class FarmerOrdersController {
         this.orderRepository = orderRepository;
     }
 
-
-
-//
-//@GetMapping("{farmName}")
-//    public String handleOrders(@RequestParam int basketId,
-//                               HttpServletRequest request,
-//                               RedirectAttributes redirectAttrs,
-//                               Model model){
-//    HttpSession session = request.getSession(false);
-//    Client client = authenticationController.getClientFromSession(session);
-//
-//    Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
-//    if (basketOptional.isEmpty()) {
-//        redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
-//        return "redirect:../";
-//    }
-////    Check to see if there is enough stock
-//
-////    Create a FarmOrder item which also removes items from Farmer's inventory
-//    ShoppingBasket shoppingBasket = basketOptional.get();
-//
-//    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
-//                                        client,
-//                                        shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()),
-//                                        shoppingBasket.getTotalAmount());
-//
-//    orderRepository.save(newOrder);
-//    model.addAttribute("basketId", basketId);
-//    model.addAttribute("loggedIn", client != null);
-//    model.addAttribute("newOrder", newOrder);
-//    model.addAttribute("client", client);
-//    return"order/confirm";
-//}
-
     @GetMapping("{farmName}")
     public String handleOrderConfirmed(
-                                @PathVariable String farmName,
-                                HttpServletRequest request,
-                                Model model,
-                                RedirectAttributes redirectAttrs){
+            @PathVariable String farmName,
+            HttpServletRequest request,
+            Model model,
+            RedirectAttributes redirectAttrs) {
         HttpSession session = request.getSession(false);
         User farmer = authenticationController.getUserFromSession(session);
 
         Optional<List<FarmOrder>> optionalFarmOrders = orderRepository.findByFarmerAndSentTrue(farmer);
         if (optionalFarmOrders.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
-            return "redirect:../";
+            return "redirect:..farmer/dashboard";
         }
 //    Check to see if there is enough stock
 
@@ -94,7 +60,51 @@ public class FarmerOrdersController {
 
         model.addAttribute("title", "Current Orders");
         model.addAttribute("orders", orders);
+        model.addAttribute("farmName", farmName);
         model.addAttribute("loggedIn", farmer != null);
         return "farmer/orders";
     }
+
+    @PostMapping("confirm")
+    public String confirmOrder(@RequestParam int id,
+                               @RequestParam String farmName,
+                               HttpServletRequest request,
+                               RedirectAttributes redirectAttrs) {
+        HttpSession session = request.getSession(false);
+        User farmer = authenticationController.getUserFromSession(session);
+
+        Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(id);
+        if (optionalFarmOrder.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:..farmer/dashboard";
+        }
+
+        FarmOrder order = optionalFarmOrder.get();
+        order.setConfirmed(true);
+        orderRepository.save(order);
+        redirectAttrs.addFlashAttribute("orderInfo", "Order #"+order.getId()+" Confirmed");
+        return "redirect:" + farmName;
+    }
+
+    @PostMapping("fulfilled")
+    public String fulfillOrder(@RequestParam int id,
+                               @RequestParam String farmName,
+                               HttpServletRequest request,
+                               RedirectAttributes redirectAttrs) {
+        HttpSession session = request.getSession(false);
+        User farmer = authenticationController.getUserFromSession(session);
+
+        Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(id);
+        if (optionalFarmOrder.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:..farmer/dashboard";
+        }
+
+        FarmOrder order = optionalFarmOrder.get();
+        order.setFulfilled(!order.getFulfilled());
+        orderRepository.save(order);
+        redirectAttrs.addFlashAttribute("orderInfo", "Order #"+order.getId()+" status changed");
+        return "redirect:" + farmName;
+    }
+
 }
