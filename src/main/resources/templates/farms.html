@@ -8,13 +8,14 @@
 </nav>
 
 
-<div class="card bg-dark text-white" th:each="farm : ${user}">
-    <img  th:src="@{'/'+${farm.picture}}" class="img-thumbnail" th:alt="${farm.farmName}">
+<span class="card bg-transparent text-white" th:each="farm : ${user}" th:object="${farm}">
+    <img th:if="*{picture != null}" th:src="@{'/'+*{picture}}" th:alt="'Picture of '+*{farmName}" style="width:600px;"  class="img-thumbnail" >
+    <img th:unless="*{picture != null}" th:alt="'Picture of '+*{farmName}" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/profilePlaceholder.jpg}">
     <div class="card-img-overlay">
-        <h5 class="card-title" th:text="${farm.farmName}"></h5>
+        <h1 class="card-title" th:text="${farm.farmName}"></h1>
         <a th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary">Go to store</a>
     </div>
-</div>
+</span>
 
 
 </body>
