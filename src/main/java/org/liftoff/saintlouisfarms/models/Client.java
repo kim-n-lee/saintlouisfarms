@@ -10,12 +10,15 @@ import java.util.List;
 public class Client extends MainUser {
 
 
-    public List<User> getUsers() {
-        return users;
-    }
+//    public List<User> getUsers() {
+//        return users;
+//    }
+
+//    @OneToMany(mappedBy = "client")
+//    private final List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "client")
-    private final List<User> users = new ArrayList<>();
+    private List<FarmOrder> farmOrders = new ArrayList<>();
 
     public Client() {
 
@@ -25,5 +28,12 @@ public class Client extends MainUser {
         super(email, pwHash, firstName, lastName, address, zip, city, phone);
     }
 
+    public List<FarmOrder> getOrders() {
+        return farmOrders;
+    }
+
+    public void setOrders(List<FarmOrder> farmOrders) {
+        this.farmOrders = farmOrders;
+    }
 }
 

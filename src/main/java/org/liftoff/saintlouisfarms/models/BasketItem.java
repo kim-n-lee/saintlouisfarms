@@ -1,7 +1,8 @@
 package org.liftoff.saintlouisfarms.models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 
@@ -9,18 +10,16 @@ public class BasketItem extends AbstractEntity {
 
     @ManyToOne
     private Product product;
-
     private Integer quantity;
     @ManyToOne
     private ShoppingBasket shoppingBasket;
-
     @ManyToOne
-    private ShoppingBasket shoppingBasketAvailable;
+    private FarmOrder farmOrderItem;
 
     public BasketItem(Product product, int quantity, ShoppingBasket shoppingBasket) {
         this.product = product;
         this.quantity = quantity;
-        this.shoppingBasket = shoppingBasket;
+        this.shoppingBasket=shoppingBasket;
     }
 
     public BasketItem(Product product, int quantity) {
@@ -35,21 +34,15 @@ public class BasketItem extends AbstractEntity {
         return product;
     }
 
-    public ShoppingBasket getShoppingBasket() {
-        return shoppingBasket;
-    }
 
-    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
-        this.shoppingBasket = shoppingBasket;
-    }
 
     public void setProduct(Product product) {
         this.product = product;
     }
 
 
-    public ShoppingBasket getShoppingBasketAvailable() {
-        return shoppingBasketAvailable;
+    public FarmOrder getFarmOrderItem() {
+        return farmOrderItem;
     }
 
     public Integer getQuantity() {
@@ -60,7 +53,23 @@ public class BasketItem extends AbstractEntity {
         this.quantity = quantity;
     }
 
-    public void setShoppingBasketAvailable(ShoppingBasket shoppingBasketAvailable) {
-        this.shoppingBasketAvailable = shoppingBasketAvailable;
+    public ShoppingBasket getShoppingBasket() {
+        return shoppingBasket;
+    }
+
+    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
+        this.shoppingBasket = shoppingBasket;
+    }
+
+    public void setFarmOrderItem(FarmOrder farmOrderItem) {
+        this.farmOrderItem = farmOrderItem;
+    }
+
+    public FarmOrder getOrderItem() {
+        return farmOrderItem;
+    }
+
+    public void setOrderItem(FarmOrder farmOrderItem) {
+        this.farmOrderItem = farmOrderItem;
     }
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation">
+</nav>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+<!--        Display current shopping basket here-->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th colspan="4">Shopping Cart</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Total Price</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tr th:each="productToBuy : ${newOrder.orderItems}" th:object="${productToBuy}">
+                <td><img th:if="${productToBuy.product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>
+                <td th:text="*{product.name}"></td>
+                <td th:text="'$'+*{product.ProductDetails.price*quantity}"></td>
+                <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
+            </tr>
+            <tr>
+                <th colspan="4" th:text="${'Total Amount $'+newOrder.totalAmount}"></th>
+            </tr>
+        </table>
+        <form method="post"  th:action="@{/order/confirmed}">
+            <input type="hidden" name="basketId" th:value="${basketId}">
+            <input type="hidden" name="orderId" th:value="${newOrder.id}">
+            <input type="submit" value="Confirm Order" class="btn btn-primary">
+        </form>
+
+    </div>
+</div>
+<footer th:replace="fragments :: footer">
+</footer>
+</body>
+</html>
