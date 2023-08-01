@@ -47,6 +47,9 @@ public class OrderController {
                                RedirectAttributes redirectAttrs,
                                Model model){
     HttpSession session = request.getSession(false);
+    //        Handling if user is not logged in, or is not client
+    if(session == null | !authenticationController.clientInSession(session))
+    {return "redirect:../login";}
     Client client = authenticationController.getClientFromSession(session);
 
     Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);

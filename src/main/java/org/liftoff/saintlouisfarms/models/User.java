@@ -25,7 +25,7 @@ public  class User extends MainUser {
     private final List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<ProductCategory>productCategories=new ArrayList<>(Arrays.asList(new ProductCategory("Featured",this),new ProductCategory("Vegetables",this),new ProductCategory("Fruit",this),new ProductCategory("Dry Goods",this),new ProductCategory("Featured",this)));
+    private final List<ProductCategory>productCategories=new ArrayList<>(Arrays.asList(new ProductCategory("Vegetables",this),new ProductCategory("Fruit",this),new ProductCategory("Dry Goods",this),new ProductCategory("Featured",this)));
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private final List<MeasurementCategory>measurementCategories=new ArrayList<>(Arrays.asList(new MeasurementCategory("each", this),new MeasurementCategory("lbs", this),new MeasurementCategory("cs", this),new MeasurementCategory("pint", this),new MeasurementCategory("qt", this)));
 
