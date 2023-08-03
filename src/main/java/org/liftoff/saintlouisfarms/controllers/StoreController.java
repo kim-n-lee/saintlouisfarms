@@ -174,6 +174,7 @@ public class StoreController {
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }
+
 //  Have you thought about doing this as a db query
     private BigDecimal calculateTotalAmount(ShoppingBasket shoppingBasket) {
         BigDecimal total = BigDecimal.ZERO;
