@@ -119,7 +119,7 @@ public class StoreController {
         HttpSession session = request.getSession(false);
 
 //        Handling if user is not logged in, or is not client
-        if(session == null | !authenticationController.clientInSession(session))
+        if(session == null | authenticationController.clientInSession(session))
 //        ShoppingBasket should be saved until they login, after which client is set as the person that logged in
          {return "redirect:../login";}
 
@@ -146,8 +146,7 @@ public class StoreController {
 
              if (requestedQuantity > availableQuantityFromFarmer) {
                  String errorMessage = "This quantity is not available for " + currentBasketItem.getProduct().getName();
-                 redirectAttrs.addFlashAttribute("InsufficientQuantity", errorMessage);
-                 return "/store/clientStore";
+                 model.addAttribute("InsufficientQuantity", errorMessage);
             } else {
                 currentBasketItem.setQuantity(requestedQuantity);
                  currentShoppingBasket.getBasketItems().get(i).setQuantity(requestedQuantity);
