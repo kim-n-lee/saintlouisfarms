@@ -145,8 +145,8 @@ public class StoreController {
 
         HttpSession session = request.getSession(false);
 
-//        Handling if user is not logged in
-        if(session == null)
+//        Handling if user is not logged in, or is not client
+        if(session == null | !authenticationController.clientInSession(session))
 //        ShoppingBasket should be saved until they login, after which client is set as the person that logged in
          {return "redirect:../login";}
 

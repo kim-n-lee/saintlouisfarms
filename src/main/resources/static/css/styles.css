@@ -1,5 +1,26 @@
 @charset "UTF-8";
 
+.padding-right{
+  padding-right: 10px;
+}
+
+.card{
+	background-color: #fff;
+	border:none;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin-bottom: 20px;
+}
+
+.image-container{
+	position: relative;
+}
+
+.thumbnail-image{
+	border-radius: 10px !important;
+}
+
+
 a:hover, a:visited, a:link, a:active{
     text-decoration: none;
 }
