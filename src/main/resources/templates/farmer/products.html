@@ -7,71 +7,51 @@
 <nav th:replace="fragments :: navigation">
 </nav>
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-3" th:each="currentProduct : ${products}" th:object="${currentProduct}">
-            <div class="card">
-                <div class="image-container">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span><i class=""></i></span>
-                        </div>
-                    </div>
-                    <img th:if="${currentProduct.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{name}" width="100%"/>
-                </div>
-                <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 th:text="*{name}"></h5>
-                        <div class="d-flex flex-column mb-2">
-                            <small class="text-right" th:text="*{productDetails.price}">$0.00</small>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center pt-1">
-                        <div>
-                            Available: <span th:text="*{productDetails.quantity}">0</span>
-                        </div>
-                        <span th:text="*{productCategory}">Category</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center pt-1">
-                        <input type="submit" class="btn btn-warning" value="Add to Cart" />
-                        <input type="submit" class="btn btn-success" value="More Info" />
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <h1 th:replace="fragments :: banner"></h1>
+        <hr/>
+
+        <form  method="post">
+            <label >Product Info:</label>
+            <input type="text" id="info" name="info">
+
+            <input type="submit" value="Search">
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Product Category</th>
+                <th>Product Description</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tr th:each="product : ${products}" th:object="${product}">
+                <td><img th:if="${product.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{'Picture of'+name}" width="90" height="100"/></td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{productCategory}"></td>
+                <td th:text="*{ProductDetails.description}"></td>
+                <td th:text="'$'+*{ProductDetails.price}"></td>
+                <td th:text="*{ ProductDetails.quantity+' '+measurementCategory.name }"></td>
+                <td>
+                    <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/farmer/products}]]";
+    }
+</script>
     </div>
 </div>
-<!--<div class="container px-4 px-lg-5">-->
-<!--    <div class="row gx-4 gx-lg-5 p-5 pe-5">-->
-<!--        <h1 th:replace="fragments :: banner"></h1>-->
-<!--        <hr/>-->
-<!--        <table class="table table-striped">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th></th>-->
-<!--                <th>Name</th>-->
-<!--                <th>Product Category</th>-->
-<!--                <th>Product Description</th>-->
-<!--                <th>Price</th>-->
-<!--                <th>Availability</th>-->
-<!--                <th>Edit</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tr th:each="product : ${products}" th:object="${product}">-->
-<!--                <td><img th:if="${product.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{'Picture of'+name}" width="90" height="100"/></td>-->
-<!--                <td th:text="*{name}"></td>-->
-<!--                <td th:text="*{productCategory}"></td>-->
-<!--                <td th:text="*{ProductDetails.description}"></td>-->
-<!--                <td th:text="'$'+*{ProductDetails.price}"></td>-->
-<!--                <td th:text="*{ ProductDetails.quantity+' '+measurementCategory.name }"></td>-->
-<!--                <td>-->
-<!--                    <a th:href="@{/farmer/edit/{productToEditId}(productToEditId=${product.id})}">Edit</a>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--        </table>-->
-
-<!--    </div>-->
-<!--</div>-->
 <footer th:replace="fragments :: footer">
 </footer>
 </body>

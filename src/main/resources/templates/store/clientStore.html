@@ -38,6 +38,15 @@
         </form>
         </div>
 
+        <form  method="get"  th:action="@{/store/{farmName}(farmName=${fa})}">
+            <label >Product Info:</label>
+            <input type="text" id="info" name="info">
+
+            <input type="submit" value="Search">
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+
+        </form>
+
         <form method="post" th:object="${shoppingBasket}">
             <table class="table table-striped">
             <thead>
@@ -66,6 +75,12 @@
                 <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
             </tr>
             </table>
+
+            <script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
+    }
+</script>
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
             <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
 

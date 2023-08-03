@@ -28,7 +28,9 @@ public class ShoppingBasketDTO {
     public void setBasketItemsAvailable(List<BasketItem> basketItemsAvailable) {
         this.basketItemsAvailable = basketItemsAvailable;
     }
+
     public void updateBasketItemQuantity(int index, int newQuantity) {
         basketItemsAvailable.get(index).setQuantity(newQuantity);
     }
+
 }

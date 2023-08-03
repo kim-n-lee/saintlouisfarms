@@ -1,7 +1,10 @@
 package org.liftoff.saintlouisfarms.data;
 
 
+import org.liftoff.saintlouisfarms.models.BasketItem;
+import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.liftoff.saintlouisfarms.models.Product;
+import org.liftoff.saintlouisfarms.models.ShoppingBasket;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -39,4 +42,28 @@ List<Product>findNameOfProductBy(String name);
             "or productdetails.quantity like %?1%  " +
             "or productdetails.description  like %?1% )and product.user_id=?2",nativeQuery = true)
     List<Product> searchByInfo(String name,int id );
+
+    @Query(value = "select * from product" +
+            " left join productcategory on product.productCategory_id=productcategory.id" +
+            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
+            " left join productdetails on product.productDetails_id=productdetails.id " +
+            "where (product.name like %?1% or productcategory.name like %?1% " +
+            "or measurementcategory.name like %?1% " +
+            "or productdetails.price like %?1% " +
+            "or productdetails.quantity like %?1%  " +
+            "or productdetails.description  like %?1% )and product.user_id=?2 and productdetails.status=1",nativeQuery = true)
+    List<Product> searchOnAvailableProducts(String name,int id );
+
+    // query to search for product in client side
+    @Query(value = "select * from product " +
+            " left join productcategory on product.productCategory_id=productcategory.id " +
+            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
+            " left join productdetails on product.productDetails_id=productdetails.id " +
+            " left join user on product.user_id=user.id"+
+            " where (product.name like %?1% or productcategory.name like %?1% " +
+            " or measurementcategory.name like %?1% " +
+            " or productdetails.price like %?1% " +
+            " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
+    List<Product> searchByFarm(String info, String farmName);
+
 }
