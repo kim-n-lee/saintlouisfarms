@@ -4,9 +4,143 @@
 </head>
 <body class="container">
 
-<h1 th:replace="fragments :: bannerFarmerLoggedIn"></h1>
-<nav th:replace="fragments :: navigation" ></nav>
+<nav th:replace="fragments :: navigation">
+</nav>
 
+<div class="container mt-5">
+    <div class="row">
+        <h2>Edit: <span th:text="${productToEdit.name}">Item</span></h2>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="image-container">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="nf fa-heart-o"></i></span>
+                        </div>
+                    </div>
+                    <img th:if="${productToEdit.productDetails.picture != null}" th:src="@{'/'+${productToEdit.productDetails.picture}}" th:alt="'Picture of '+*{name}" width="auto" height="300"/>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 th:text="${productToEdit.name}">Name</h5>
+                        <div class="d-flex flex-column mb-2">
+                            <small class="text-right" th:text="'$' + ${productToEdit.productDetails.price}">$0.00</small>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-1">
+                        <div>
+                            Available: <span th:text="${productToEdit.productDetails.quantity}">0</span>
+                        </div>
+                        <span th:text="${productToEdit.productCategory}">Category</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-1">
+                        <input type="submit" class="btn btn-warning" value="Add to Cart" />
+                        <input type="submit" class="btn btn-success" value="More Info" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container col">
+            <form class="padding-bottom" method="post" enctype="multipart/form-data" th:object="${productToEdit}" style="width: 75% !important">
+                <div class="form-group padding-bottom">
+                        <span class="input-group-text"><i class="nf nf-md-new_box padding-right"></i>
+                            <input name="" class="form-control" placeholder="Name" type="text" th:for="name" th:field="*{name}">
+                        </span>
+                    <p class="error" th:errors="*{name}"></p>
+                </div>
+                <div class="form-group" style="padding-bottom: 10px;">
+                        <span class="input-group-text"><i class="nf nf-md-library_shelves padding-right"></i>
+                            <select class="form-control" name="productCategory" id="productCategory"  th:field="*{productCategory}">
+                                <option value="" th:selected="${true}" disabled>Select product category</option>
+                                <option th:each="category : ${productType}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}">
+                                </option>
+                            </select>
+                            <a style="margin-left: 10px;" class="btn btn-success" th:href="@{/productType/add}">Add More Categories</a>
+                        </span>
+                    <p class="error" th:errors="*{productCategory}"></p>
+                </div>
+                <div class="form-group" style="padding-bottom: 10px;">
+                        <span class="input-group-text"><i class="nf nf-md-tape_measure padding-right"></i>
+                            <select class="form-control" name="measurementCategory" id="measurementCategory" th:field="*{measurementCategory}">
+                                <option value="" th:selected="${true}" disabled>Select measurement category</option>
+                                <option th:each="measurement : ${measurements}"
+                                        th:value="${measurement.id}"
+                                        th:text="${measurement.name}">
+                                </option>
+                            </select>
+                            <a style="margin-left: 10px;" class="btn btn-success" th:href="@{/measurements/add}">Add Custom Measurements</a>
+                        </span>
+                    <p class="error" th:errors="*{measurementCategory}"></p>
+                </div>
+                <div class="form-group padding-bottom">
+                        <span class="input-group-text"><i class="nf nf-fa-money padding-right"></i>
+                            <input name="" class="form-control" placeholder="Price" th:field="*{productDetails.price}" type="number" step="any" min="0">
+                        </span>
+                    <p class="error" th:errors="*{productDetails.price}"></p>
+                </div>
+                <div class="form-group padding-bottom">
+                        <span class="input-group-text"><i class="nf nf-md-numeric padding-right"></i>
+                            <input name="" class="form-control" placeholder="Quantity" th:field="*{productDetails.quantity}" type="number" step="any" min="0">
+                        </span>
+                    <!--                        The placeholder field will not display the way I want and I'm not sure why. Will figure out later-->
+                    <p class="error" th:errors="*{productDetails.quantity}"></p>
+                </div>
+                <div class="form-group padding-bottom">
+                        <span class="input-group-text"><i class="nf nf-md-text padding-right"></i>
+                            <input name="" class="form-control" placeholder="Description" th:for="description" th:field="*{productDetails.description}" type="text">
+                        </span>
+                    <p class="error" th:errors="*{productDetails.description}"></p>
+                </div>
+                <div class="form-group padding-bottom">
+                        <span class="input-group-text"><i class="nf nf-fa-file_picture_o padding-right"></i>
+                            <input class="form-control" name="picture" value="picture" type="file" accept="image/jpeg" onchange="()=>{
+                                       if(this.files[0].size > 2097152){
+                                alert('File is too big!');
+                                this.value = '';
+                                };
+                                };">
+                        </span>
+                    <p class="error" th:if="${pictureError}" th:text="${pictureError}"></p>
+                </div>
+                <div class="form-group">
+                        <span class="input-group-text" th:for="status"><i class="nf nf-fa-question_circle_o padding-right"></i>
+                            <span class="padding-right">Currently Available</span>
+                            <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox">
+                        </span>
+                    <p class="error" th:errors="*{productDetails.status}"></p>
+                </div>
+                <br>
+                <input type="submit" class="btn btn-primary" value="Edit Product" />
+            </form>
+            <form method="DELETE" th:action="@{/farmer/{productToDeleteId}(productToDeleteId=${productToEdit.id})}">
+                <input type="hidden" name="productToDelete" th:value="${productToEdit}" />
+                <input onclick = "if (! confirm('Are you sure you want to delete this product?')) { return false; }" type="submit" class="btn btn-danger" value="Delete Product" />
+            </form>
+        </div>
+    </div>
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+        <div th:if="${productAdded}" class="alert alert-success fade show" role="alert">
+            <strong th:text="${productAdded}"></strong> was successfully added.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${measurementAdded}" class="alert alert-success fade show" role="alert">
+            <strong th:text="${measurementAdded}"></strong> was successfully added to measurements.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${categoryAdded}" class="alert alert-success fade show" role="alert">
+            <strong th:text="${categoryAdded}"></strong> was successfully added to categories.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
 
 <!--<div th:if="${productToEdit.productDetails.quantity lt 5}" class="alert alert-danger">-->
 <!--    <p>Alert: Quantity is less than 5!</p>-->
@@ -15,85 +149,7 @@
 <!-- The rest of your form code -->
 <!--<form method="post" th:object="${productToEdit}" >-->
 
-
-
-
-
-
 <!--Success banner here for when product added successfully-->
-    <img class="img-thumbnail" th:if="${productToEdit.productDetails.picture != null}" th:src="@{'/'+${productToEdit.productDetails.picture}}" th:alt="'Picture of '+*{name}" width="270" height="300">
-<form method="post" enctype="multipart/form-data" th:object="${productToEdit}" >
-    <div class="form-group">
-        <label th:for="name">Name
-            <input class="form-control" th:field="*{name}">
-        </label>
-        <p class="error" th:errors="*{name}"></p>
-    </div>
-    <div class="form-group">
-        <label th:for="picture">Picture
-            <input class="form-control" name="picture"  value="picture" type="file" data-max-size="2098" accept="image/jpeg" onsubmit="(event)=>{
-                        if(this.files[0].size > 2097152){
-                        event.preventDefault()
-                        alert('File is too big!');
-                        this.value = '';
-                        };
-                        };">
-            <p class="error" th:if="${pictureError}" th:text="${pictureError}"></p>
-        </label>
-    </div>
-    <div class="form-group">
-        <label th:for="productCategory">Product Category
-            <select class="form-control" th:field="*{productCategory}">
-                <option th:each="category : ${productType}"
-                        th:value="${category.id}"
-                        th:text="${category.name}">
-                </option>
-            </select>
-            <a th:href="@{/productType/add}">Add More Categories</a>
-        </label>
-        <p class="error" th:errors="*{productCategory}"></p>
-    </div>
-    <div class="form-group">
-        <label th:for="quantity">Quantity
-            <input class="form-control" th:field="*{productDetails.quantity}" type="number"  min="0" id="quantity">
-        </label>
-        <p class="error" th:errors="*{productDetails.quantity}"></p>
-    </div>
-    <div class="form-group">
-        <label th:for="measurementCategory">Measurement
-            <select class="form-control" th:field="*{measurementCategory}">
-
-                <option th:each="measurement : ${measurements}"
-                        th:value="${measurement.id}"
-                        th:text="${measurement.name}">
-                </option>
-            </select>
-            <a th:href="@{/measurements/add}">Add Custom Measurements</a>
-        </label>
-        <p class="error" th:errors="*{measurementCategory}"></p>
-    </div>
-
-    <div class="form-group">
-        <label th:for="price">Price
-            <input class="form-control" th:field="*{productDetails.price}" type="number" step="any">
-        </label>
-        <p class="error" th:errors="*{productDetails.price}"></p>
-    </div>
-    <div class="form-group">
-        <label th:for="description">Description
-            <input class="form-control" th:field="*{productDetails.description}" type="text">
-        </label>
-        <p class="error" th:errors="*{productDetails.description}"></p>
-    </div>
-    <div class="form-group">
-        <label th:for="status">Currently Available
-            <input class="form-control form-check-input" th:field="*{productDetails.status}" type="checkbox" id="statusCheckbox">
-        </label>
-        <p class="error" th:errors="*{productDetails.status}"></p>
-    </div>
-        <br>
-    <input type="submit" class="btn btn-primary" value="Edit Product" />
-</form>
 <script th:inline="javascript">
     /*<![CDATA[*/
     // Get the quantity field and status checkbox element
@@ -130,10 +186,6 @@
 </script>
     </script>
 </script>
-<form method="DELETE" th:action="@{/farmer/{productToDeleteId}(productToDeleteId=${productToEdit.id})}">
-    <input type="hidden" name="productToDelete" th:value="${productToEdit}" />
-    <input onclick = "if (! confirm('Are you sure you want to delete this product?')) { return false; }" type="submit" class="btn btn-danger" value="Delete Product" />
-</form>
 
 </body>
 <footer th:replace="fragments :: footer">
