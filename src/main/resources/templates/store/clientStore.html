@@ -11,11 +11,10 @@
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
+        <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-info" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
+        <div id="shoppingCart" style="display:none;">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th colspan="4">Shopping Cart</th>
-            </tr>
             <tr>
                 <th></th>
                 <th>Name</th>
@@ -37,7 +36,7 @@
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
             <input type="submit" value="Checkout" class="btn btn-primary">
         </form>
-
+        </div>
 
         <form method="post" th:object="${shoppingBasket}">
             <table class="table table-striped">
