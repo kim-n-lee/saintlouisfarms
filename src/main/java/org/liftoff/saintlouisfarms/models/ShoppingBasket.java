@@ -19,14 +19,7 @@ public class ShoppingBasket extends AbstractEntity {
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
 
     private LocalDateTime localDateTime;
-//
-//    public ShoppingBasket(Client client, List<BasketItem> basketItems, BigDecimal totalAmount, LocalDateTime localDateTime) {
-//        this.client = client;
-//        this.basketItems = basketItems;
-//        this.totalAmount = totalAmount;
-//        this.localDateTime = localDateTime;
-//    }
-//
+
     public ShoppingBasket(Client client, LocalDateTime localDateTime) {
         this.client = client;
         this.localDateTime = localDateTime;
