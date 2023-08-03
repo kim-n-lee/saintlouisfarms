@@ -154,7 +154,6 @@ public class StoreController {
                  shoppingBasketDTO.updateBasketItemQuantity(i, requestedQuantity);
             }
         }
-
 //        Sets quantity of cart to what is in DTO
 //        for(Integer i =0; i<shoppingBasketDTO.getBasketItemsAvailable().size();i++){
 //            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity());
