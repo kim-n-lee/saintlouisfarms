@@ -82,33 +82,50 @@ public class StoreController {
            Client client = authenticationController.getClientFromSession(session);
            model.addAttribute("loggedIn", client != null);
            shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
-       }else{
+       }
+
+       else
+       {
            shoppingBasket = new ShoppingBasket();
        }
        ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
 
        shoppingBasketRepository.save(shoppingBasket);
-       /////here
-       productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
-       basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
-
-
-       if(shoppingBasket.getBasketItems().isEmpty()){
-           shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
-           shoppingBasketRepository.save(shoppingBasket);}
-       basketItemRepository.saveAll(shoppingBasket.getBasketItems());
-       model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
-       model.addAttribute("currentShoppingBasket", shoppingBasket);
-       model.addAttribute("fa",farmName);
+       model.addAttribute("fa", farmName);
        if(info!=null){
-               List<ShoppingBasket> searchResult=shoppingBasketRepository.searchByFarm(info,farmName);
-////////////// I tried to send the list of product in querybut the problems from the ShoopingBasketDTO
-               model.addAttribute("shoppingBasket",searchResult);
+           productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+
+
+           if (shoppingBasket.getBasketItems().isEmpty()) {
+               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+               shoppingBasketRepository.save(shoppingBasket);
+           }
+           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+           model.addAttribute("currentShoppingBasket", shoppingBasket);
+           model.addAttribute("shoppingBasket",shoppingBasketDTO);
+
 
        }
+       /////here
+       else {
+           productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
-       else
-       model.addAttribute("shoppingBasket",shoppingBasketDTO);
+
+           if (shoppingBasket.getBasketItems().isEmpty()) {
+               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+               shoppingBasketRepository.save(shoppingBasket);
+           }
+           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+           model.addAttribute("currentShoppingBasket", shoppingBasket);
+
+
+
+           model.addAttribute("shoppingBasket", shoppingBasketDTO);
+       }
        model.addAttribute("title", farmName+" Store");
        return "store/clientStore";
    }
