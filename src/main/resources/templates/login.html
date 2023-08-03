@@ -13,14 +13,14 @@
             <form method="post" th:object="${loginFormDTO}">
                 <div class="form-group input-group padding-bottom">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-md-email"></i>   <input name="" class="form-control" placeholder="Email Address" type="text" th:for="username" th:field="*{email}"></span>
+                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-md-email padding-right"></i>   <input name="" class="form-control" placeholder="Email Address" type="text" th:for="username" th:field="*{email}"></span>
 
                     </div>
                     <small class="error form-text text-muted" th:errors="*{email}"></small>
                 </div>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-oct-key_asterisk"></i>   <input name="" class="form-control" placeholder="Password" type="password" th:field="*{password}"></span>
+                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-oct-key_asterisk padding-right"></i>   <input name="" class="form-control" placeholder="Password" type="password" th:field="*{password}"></span>
 
                     </div>
                     <small class="error form-text text-muted" th:errors="*{password}"></small>

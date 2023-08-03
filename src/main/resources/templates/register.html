@@ -20,13 +20,13 @@
             <form method="post" th:object="${registerFormDTO}">
                 <div class="form-group input-group padding-bottom">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-fa-user"></i>   <input name="" class="form-control" placeholder="Farm Name" type="text" th:field="*{farmName}"></span>
+                        <span class="input-group-text" style="width: 150%;"><i class="nf nf-fa-user padding-right"></i><input name="" class="form-control" placeholder="Farm Name" type="text" th:field="*{farmName}"></span>
                         <p class="error" th:errors="*{farmName}"></p>
                     </div>
                 </div>
                 <div class="form-group input-group padding-bottom">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="nf nf-fa-user"></i>   <input name="" class="form-control" placeholder="First Name" type="text" th:field="*{firstName}">
+                        <span class="input-group-text"><i class="nf nf-fa-user padding-right"></i><input name="" class="form-control" placeholder="First Name" type="text" th:field="*{firstName}">
                         <input name="" class="form-control" placeholder="Last Name" type="text" th:field="*{lastName}"></span>
                         <p class="error" th:errors="*{firstName}"></p>
                         <p class="error" th:errors="*{lastName}"></p>
