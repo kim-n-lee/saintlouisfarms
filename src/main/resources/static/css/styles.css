@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.padding-right{
+  padding-right: 10px;
+}
+
 .card{
 	background-color: #fff;
 	border:none;
