@@ -163,12 +163,29 @@ public class StoreController {
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
 
-//        Need to see if there is enough stock of an item before it can be added to the cart
+        //Need to see if there is enough stock of an item before it can be added to the cart
+        for (int i = 0; i < shoppingBasketDTO.getBasketItemsAvailable().size(); i++) {
+            int requestedQuantity = shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity();
 
-//        Sets quantity of cart to what is in DTO
-        for(Integer i =0; i<shoppingBasketDTO.getBasketItemsAvailable().size();i++){
-            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity());
+            BasketItem currentBasketItem = currentShoppingBasket.getBasketItems().get(i);
+
+            int availableQuantityFromFarmer = currentBasketItem.getProduct().getProductDetails().getQuantity();
+
+
+             if (requestedQuantity > availableQuantityFromFarmer) {
+                 String errorMessage = "This quantity is not available for " + currentBasketItem.getProduct().getName();
+                 redirectAttrs.addFlashAttribute("InsufficientQuantity", errorMessage);
+                 return "/store/clientStore";
+            } else {
+                currentBasketItem.setQuantity(requestedQuantity);
+                 currentShoppingBasket.getBasketItems().get(i).setQuantity(requestedQuantity);
+                 shoppingBasketDTO.updateBasketItemQuantity(i, requestedQuantity);
+            }
         }
+//        Sets quantity of cart to what is in DTO
+//        for(Integer i =0; i<shoppingBasketDTO.getBasketItemsAvailable().size();i++){
+//            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity());
+//        }
 
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
@@ -189,6 +206,7 @@ public class StoreController {
         model.addAttribute("title", farmName+" Store");
         return "store/clientStore";
     }
+
 //  Have you thought about doing this as a db query
     private BigDecimal calculateTotalAmount(ShoppingBasket shoppingBasket) {
         BigDecimal total = BigDecimal.ZERO;

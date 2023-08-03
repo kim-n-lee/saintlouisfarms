@@ -68,6 +68,10 @@
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
                                 <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" step="any"/> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
+                <td>
+                    <div th:if="${flash.InsufficientQuantity}">
+                        <p th:text="${flash.InsufficientQuantity}" class="error-message"></p>
+                    </div>
                 <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
             </tr>
             </table>

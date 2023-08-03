@@ -29,6 +29,8 @@ public class ShoppingBasketDTO {
         this.basketItemsAvailable = basketItemsAvailable;
     }
 
-
+    public void updateBasketItemQuantity(int index, int newQuantity) {
+        basketItemsAvailable.get(index).setQuantity(newQuantity);
+    }
 
 }
