@@ -57,7 +57,7 @@
                                         th:text="${category.name}">
                                 </option>
                             </select>
-                            <button style="margin-left: 10px;" class="btn btn-success" th:href="@{/productType/add}">Add More Categories</button>
+                            <a style="margin-left: 10px;" class="btn btn-success" th:href="@{/productType/add}">Add More Categories</a>
                         </span>
                     <p class="error" th:errors="*{productCategory}"></p>
                 </div>
@@ -70,7 +70,7 @@
                                         th:text="${measurement.name}">
                                 </option>
                             </select>
-                            <button style="margin-left: 10px;" class="btn btn-success" th:href="@{/measurements/add}">Add Custom Measurements</button>
+                            <a style="margin-left: 10px;" class="btn btn-success" th:href="@{/measurements/add}">Add Custom Measurements</a>
                         </span>
                     <p class="error" th:errors="*{measurementCategory}"></p>
                 </div>
