@@ -39,12 +39,7 @@ public class DashboardController {
         model.addAttribute("title","Dashboard");
         model.addAttribute("loggedIn", user != null);
 
-//      model.addAttribute("ProductType",productCategoryRepository.findById(user.getId()));
-//      model.addAttribute("Measurement",measurementCategoryRepository.findById(user.getId()));
-//      model.addAttribute("Product",productRepository.findById(user.getId()));
-//      model.addAttribute("profile",userRepository.findById(user.getId()));
-//      model.addAttribute("details",productDetailsRepository.findById(user.getId()));
-//
+
       return "farmer/dashboard";
     }
 
