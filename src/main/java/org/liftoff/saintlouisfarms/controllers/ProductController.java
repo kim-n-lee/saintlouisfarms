@@ -45,84 +45,9 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    //I think we need a method for farmer/store which displays products currently available
-    //display navbar of products type and the search field
-//    @RequestMapping("")
-//    public String searchProduct(Model model, HttpSession session) {
-//        model.addAttribute("loggedIn", session.getAttribute("user") != null);
-//        model.addAttribute("productType", productCategoryRepository.findAll());
-//        return "farmer/products";
-//    }
-
 
     //display result of searching
-    @PostMapping("results")
-    public String displayProductResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        User user = authenticationController.getUserFromSession(session);
-        Iterable<Product> products;
-        if (searchTerm.equals("")) {
-            products = productRepository.findAll();
-        } else {
-            products = ProductData.findByColumnAndValue(searchType, searchTerm, productRepository.findAll());
-        }
-        model.addAttribute("productType", productCategoryRepository.findAll());
-        model.addAttribute("title", "Products in " + productCategoryRepository.findByName(searchType) + ": " + searchTerm);
-        model.addAttribute("products", productRepository.findAll());
-        model.addAttribute("loggedIn", user != null);
-        return "redirect:";
-    }
-    // this method return all available products (product status =1)
-
-
-//    @PersistenceContext
-//    private EntityManager entityManager;
-
-//    @PostMapping("farmer/search")
-//    public String searchField(@RequestParam(required = false) String productName,
-//                              @RequestParam(required = false) String productCategoryName,
-//                              @RequestParam(required = false) String measurmaentCategoryName
-//            ,@RequestParam(required = false) BigDecimal price
-//            ,HttpServletRequest request,RedirectAttributes redirectAttrs){
-//        HttpSession session = request.getSession();
-//        User user = authenticationController.getUserFromSession(session);
-//        String query="SELECT * FROM farm.product\n" +
-//                "left join productcategory on product.productCategory_id=productcategory.id\n" +
-//                "left join measurementcategory on product.measurementCategory_id=measurementcategory.id\n" +
-//                "left join productdetails on product.productDetails_id=productdetails.id\n" +
-//                "where product.user_id="+user.getId();
-//        if(!(productName ==null)){
-//            query+=" and product.name='"+productName+"' ";
-//        }
-//        if (!(productCategoryName==null)){
-//            query+=" and productcategory.name='"+productCategoryName+"' ";
-//        }
-//        if(!(measurmaentCategoryName==null)){
-//            query+=" and measurementcategory.name='"+measurmaentCategoryName+"' ";
-//        }
-//        if(price!=null){
-//            query+=" and productdetails.price="+price+" ";
-//
-//        }
-//        Query q = entityManager.createNativeQuery(query);
-//        if(productName!=null){
-//            q.setParameter("name",productName);
-//        }
-//        if (productCategoryName!=null){
-//            q.setParameter("name", productCategoryName);
-//        }
-//        if(measurmaentCategoryName!=null){
-//            q.setParameter("name", measurmaentCategoryName);
-//        }
-//        if(price!=null){
-//            q.setParameter("price", price);
-//
-//        }
-//        List<Product> resultList = q.getResultList();
-//        redirectAttrs.addFlashAttribute("product", resultList);
-//        return "search";
-//    }
-    // this method return all available products (product status =1)
+    // this method search for specific products
 
 @RequestMapping(value = "/search",method = {RequestMethod.GET,RequestMethod.POST})
 public String searchProduct(@Param("info") String info
@@ -140,17 +65,26 @@ public String searchProduct(@Param("info") String info
         model.addAttribute("searchResult",productRepository.findProductById(user.getId()));
     return "farmer/search";
 }
-    @GetMapping("products")
-    public String displayAllProducts(Model model, HttpServletRequest request) {
+//    @GetMapping("products")
+
+    //display all available products
+    @RequestMapping(value = "/products",method = {RequestMethod.GET,RequestMethod.POST})
+    public String displayAllProducts(Model model, HttpServletRequest request,@Param("info") String info) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+        if(info!=null){
+            List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+
+            model.addAttribute("products",searchResult);}
+        else
         model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+
         model.addAttribute("loggedIn", user != null);
         return "farmer/products";
     }
     // add new product
     @GetMapping("add")
-    public String displayAddProductForm(Model model, HttpServletRequest request) {
+    public String displayAddProductForm(Model model, HttpServletRequest request,@Param("info") String info) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -158,9 +92,17 @@ public String searchProduct(@Param("info") String info
         model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
         model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
         model.addAttribute(new Product());
-        model.addAttribute("products", productRepository.findProductById(user.getId()));
+        if(info!=null){
+            List<Product> searchResult=productRepository.searchByInfo(info,user.getId());
+
+            model.addAttribute("products",searchResult);
+        }
+        else
+            model.addAttribute("products", productRepository.findProductById(user.getId()));
+
         model.addAttribute("loggedIn", user != null);
         return "farmer/add";
+
     }
 
     @PostMapping("add")

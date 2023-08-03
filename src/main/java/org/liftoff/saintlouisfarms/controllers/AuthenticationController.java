@@ -58,20 +58,20 @@ public class AuthenticationController {
         session.setAttribute(userSessionKey, user.getId());
     }
 
-//    public boolean clientInSession(HttpSession session){
-//        Integer clientId = (Integer) session.getAttribute(userSessionKey);
-//        if (clientId == null) {
-//            return false;
-//        }
-//
-//        Optional<Client> client = clientRepository.findById(clientId);
-//
-//        if (client.isEmpty()) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    public boolean clientInSession(HttpSession session){
+        Integer clientId = (Integer) session.getAttribute(userSessionKey);
+        if (clientId == null) {
+            return false;
+        }
+
+        Optional<Client> client = clientRepository.findById(clientId);
+
+        if (client.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 
 
 

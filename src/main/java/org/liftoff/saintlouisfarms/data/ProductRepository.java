@@ -1,6 +1,8 @@
 package org.liftoff.saintlouisfarms.data;
 
 
+import org.liftoff.saintlouisfarms.models.BasketItem;
+import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.liftoff.saintlouisfarms.models.Product;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,7 +26,7 @@ List<Product>findNameOfProductBy(String name);
 
     @Query(value = "SELECT * FROM farm.product p left join productdetails d on p.productDetails_id=d.id left join user u on p.user_id=u.id where d.status=1 order by u.farmName", nativeQuery = true)
     List<Product> findAllProduct();
-    @Query(value = "select * from product left join user on product.user_id=user.id where user.farmName= ?1", nativeQuery = true)
+    @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
     List<Product> findByNameOfFarmName( String farmName);
 
 
@@ -39,4 +41,18 @@ List<Product>findNameOfProductBy(String name);
             "or productdetails.quantity like %?1%  " +
             "or productdetails.description  like %?1% )and product.user_id=?2",nativeQuery = true)
     List<Product> searchByInfo(String name,int id );
+
+    @Query(value = "select * from product" +
+            " left join productcategory on product.productCategory_id=productcategory.id" +
+            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
+            " left join productdetails on product.productDetails_id=productdetails.id " +
+            "where (product.name like %?1% or productcategory.name like %?1% " +
+            "or measurementcategory.name like %?1% " +
+            "or productdetails.price like %?1% " +
+            "or productdetails.quantity like %?1%  " +
+            "or productdetails.description  like %?1% )and product.user_id=?2 and productdetails.status=1",nativeQuery = true)
+    List<Product> searchOnAvailableProducts(String name,int id );
+
+    // query to search for product in client side
+
 }
