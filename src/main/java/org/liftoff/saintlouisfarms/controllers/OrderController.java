@@ -113,7 +113,7 @@ public class OrderController {
         Optional<List<FarmOrder>> optionalFarmOrders = orderRepository.findByClientAndSentTrue(client);
         if (optionalFarmOrders.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
-            return "redirect:..farmer/dashboard";
+            return "redirect:../store";
         }
 
         List<FarmOrder> orders = optionalFarmOrders.get();
@@ -122,5 +122,33 @@ public class OrderController {
         model.addAttribute("orders", orders);
         model.addAttribute("loggedIn", client != null);
         return "order/allOrders";
+    }
+
+    @GetMapping("details/{orderId}")
+    public String orderDetails(
+            @PathVariable int orderId,
+            HttpServletRequest request,
+            Model model,
+            RedirectAttributes redirectAttrs) {
+        HttpSession session = request.getSession();
+        Client client = authenticationController.getClientFromSession(session);
+
+        Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(orderId);
+        if (optionalFarmOrder.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:../store";
+        }
+
+        FarmOrder order = optionalFarmOrder.get();
+
+        if (order.getClient() != client) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:../store";
+        }
+
+        model.addAttribute("title", "Order #"+orderId+" Details");
+        model.addAttribute("order", order);
+        model.addAttribute("loggedIn", client != null);
+        return "order/order";
     }
 }

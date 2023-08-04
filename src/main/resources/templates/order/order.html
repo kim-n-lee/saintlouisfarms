@@ -18,9 +18,9 @@
             </button>
         </div>
 
-        <table class="table table-striped" th:each="order : ${orders}" th:object="${order}">
+        <table class="table table-striped" th:object="${order}">
                 <tr>
-                    <th th:text="${'Order for: '+order.client.getName()}"></th>
+                    <th th:text="${'Order for: '+order.farmer.getFarmName()}"></th>
                     <th th:text="${'Order placed: '+order.localDateTime}"></th>
                     <th th:text="${'Order Number: '+order.id}"></th>
                 </tr>
@@ -37,24 +37,8 @@
             <tr>
                 <td colspan="2" th:text="${'Total Amount $'+order.totalAmount}" class="font-weight-bold"></td>
                 <td>
-                    <span>
-                    <form th:if="${!order.confirmed}" method="post" th:action="@{/orders/confirm}" >
-                        <input type="hidden" name="id" th:value="${order.id}">
-                        <input type="hidden" name="farmName" th:value="${farmName}">
-                        <input type="submit" value="Confirm" class="btn btn-primary">
-                    </form>
-                    <button th:if="${order.confirmed}" class="btn btn-secondary" disabled>Confirmed</button>
-                    <form th:if="${!order.fulfilled}" method="post" th:action="@{/orders/fulfilled}" >
-                        <input type="hidden" name="id" th:value="${order.id}">
-                        <input type="hidden" name="farmName" th:value="${farmName}">
-                        <input type="submit" value="Fulfill" class="btn btn-success">
-                    </form>
-                    <form th:if="${order.fulfilled}" method="post" th:action="@{/orders/fulfilled}" >
-                        <input type="hidden" name="id" th:value="${order.id}">
-                        <input type="hidden" name="farmName" th:value="${farmName}">
-                        <input type="submit" value="Set As Not Filled" class="btn btn-danger">
-                    </form>
-                    </span>
+                    <button th:text="${ order.confirmed ?  'Confirmed' : 'Not Confirmed' }" th:class="${ order.confirmed ?  'btn btn-success' : 'btn btn-danger' }" disabled></button>
+                    <button th:text="${ order.fulfilled ?  'Fulfilled' : 'Not Fulfilled' }" th:class="${ order.fulfilled ?  'btn btn-success' : 'btn btn-danger' }" disabled></button>
                 </td>
             </tr>
                 <br>
