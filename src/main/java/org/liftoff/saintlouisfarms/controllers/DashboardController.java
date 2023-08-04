@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("farmer/dashboard")
+@RequestMapping("farmer")
 public class DashboardController {
 //landingPage
 // provide description for each part of website
@@ -30,7 +30,7 @@ public class DashboardController {
     private ProductDetailsRepository productDetailsRepository;
     @Autowired
     private AuthenticationController authenticationController;
-    @GetMapping("")
+    @GetMapping("dashboard")
     public String viewDashboard(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
@@ -41,6 +41,19 @@ public class DashboardController {
 
 
       return "farmer/dashboard";
+    }
+
+    @GetMapping("settings")
+    public String viewSettings(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = authenticationController.getUserFromSession(session);
+
+        model.addAttribute("farmName", user.getFarmName());
+        model.addAttribute("title","Dashboard");
+        model.addAttribute("loggedIn", user != null);
+
+
+        return "farmer/settings";
     }
 
 
