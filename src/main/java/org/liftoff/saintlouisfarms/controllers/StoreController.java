@@ -7,7 +7,6 @@ import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Controller
@@ -68,8 +66,7 @@ public class StoreController {
    @GetMapping("/{farmName}")
    public  String displaySpecificFarmNameWithProduct(Model model,
                                                      HttpServletRequest request,
-                                                     @PathVariable String farmName
-   ,@Param("info") String info){
+                                                     @PathVariable String farmName){
 
        if (!userRepository.existsByFarmName(farmName)){
            return "redirect:../";
@@ -82,50 +79,26 @@ public class StoreController {
            Client client = authenticationController.getClientFromSession(session);
            model.addAttribute("loggedIn", client != null);
            shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
-       }
-
-       else
-       {
+       }else{
            shoppingBasket = new ShoppingBasket();
        }
        ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
 
        shoppingBasketRepository.save(shoppingBasket);
-       model.addAttribute("fa", farmName);
-       if(info!=null){
-           productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
-           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+       productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+       basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
-           if (shoppingBasket.getBasketItems().isEmpty()) {
-               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
-               shoppingBasketRepository.save(shoppingBasket);
-           }
-           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
-           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
-           model.addAttribute("currentShoppingBasket", shoppingBasket);
-           model.addAttribute("shoppingBasket",shoppingBasketDTO);
-
-
-       }
-       /////here
-       else {
-           productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
-           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
-
-
-           if (shoppingBasket.getBasketItems().isEmpty()) {
-               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
-               shoppingBasketRepository.save(shoppingBasket);
-           }
-           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
-           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
-           model.addAttribute("currentShoppingBasket", shoppingBasket);
+       if(shoppingBasket.getBasketItems().isEmpty()){
+           shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+           shoppingBasketRepository.save(shoppingBasket);}
+       basketItemRepository.saveAll(shoppingBasket.getBasketItems());
 
 
 
-           model.addAttribute("shoppingBasket", shoppingBasketDTO);
-       }
+       model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
+       model.addAttribute("currentShoppingBasket", shoppingBasket);
+       model.addAttribute("shoppingBasket",shoppingBasketDTO);
        model.addAttribute("title", farmName+" Store");
        return "store/clientStore";
    }
@@ -155,7 +128,6 @@ public class StoreController {
 
 //        Retrieves the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
-        System.out.println("hello"+basketOptional.get().toString());
         if (basketOptional.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
             return "redirect:../";
@@ -196,10 +168,6 @@ public class StoreController {
 
         model.addAttribute("loggedIn", client != null);
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
-//        basketItemRepository.findShoopingBasket(cl)
-        //model.addAttribute("currentShoppingBasketItems", basketItemRepository.findShoopingBasket(client.getId(),farmName));
-
-
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");
