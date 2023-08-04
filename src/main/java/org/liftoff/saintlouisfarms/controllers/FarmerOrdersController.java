@@ -53,9 +53,7 @@ public class FarmerOrdersController {
             redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
             return "redirect:..farmer/dashboard";
         }
-//    Check to see if there is enough stock
 
-//    Create a FarmOrder item which also removes items from Farmer's inventory
         List<FarmOrder> orders = optionalFarmOrders.get();
 
         model.addAttribute("title", "Current Orders");

@@ -4,17 +4,16 @@ import org.liftoff.saintlouisfarms.data.*;
 import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.FarmOrder;
 import org.liftoff.saintlouisfarms.models.ShoppingBasket;
+import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,9 +45,9 @@ public class OrderController {
                                HttpServletRequest request,
                                RedirectAttributes redirectAttrs,
                                Model model){
-    HttpSession session = request.getSession(false);
+    HttpSession session = request.getSession();
     //        Handling if user is not logged in, or is not client
-    if(session == null | !authenticationController.clientInSession(session))
+    if(!authenticationController.clientInSession(session))
     {return "redirect:../login";}
     Client client = authenticationController.getClientFromSession(session);
 
@@ -101,5 +100,27 @@ public class OrderController {
 
         redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
         return "redirect:../store";
+    }
+
+    @GetMapping("all")
+    public String allOrders(
+            HttpServletRequest request,
+            Model model,
+            RedirectAttributes redirectAttrs) {
+        HttpSession session = request.getSession(false);
+        Client client = authenticationController.getClientFromSession(session);
+
+        Optional<List<FarmOrder>> optionalFarmOrders = orderRepository.findByClientAndSentTrue(client);
+        if (optionalFarmOrders.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+            return "redirect:..farmer/dashboard";
+        }
+
+        List<FarmOrder> orders = optionalFarmOrders.get();
+
+        model.addAttribute("title", "Past Orders");
+        model.addAttribute("orders", orders);
+        model.addAttribute("loggedIn", client != null);
+        return "order/allOrders";
     }
 }
