@@ -162,8 +162,9 @@ public class StoreController {
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
+        List<String> insufficientQuantity = new ArrayList<>();
 
-        //Need to see if there is enough stock of an item before it can be added to the cart
+        //Looks to see if there is enough stock of an item before it can be added to the cart
         for (int i = 0; i < shoppingBasketDTO.getBasketItemsAvailable().size(); i++) {
             int requestedQuantity = shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity();
 
@@ -174,17 +175,13 @@ public class StoreController {
 
              if (requestedQuantity > availableQuantityFromFarmer) {
                  String errorMessage = "This quantity is not available for " + currentBasketItem.getProduct().getName();
-                 model.addAttribute("InsufficientQuantity", errorMessage);
+                 insufficientQuantity.add(errorMessage);
             } else {
                 currentBasketItem.setQuantity(requestedQuantity);
                  currentShoppingBasket.getBasketItems().get(i).setQuantity(requestedQuantity);
                  shoppingBasketDTO.updateBasketItemQuantity(i, requestedQuantity);
             }
         }
-//        Sets quantity of cart to what is in DTO
-//        for(Integer i =0; i<shoppingBasketDTO.getBasketItemsAvailable().size();i++){
-//            currentShoppingBasket.getBasketItems().get(i).setQuantity(shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity());
-//        }
 
 
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
@@ -196,10 +193,7 @@ public class StoreController {
 
         model.addAttribute("loggedIn", client != null);
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
-//        basketItemRepository.findShoopingBasket(cl)
-        //model.addAttribute("currentShoppingBasketItems", basketItemRepository.findShoopingBasket(client.getId(),farmName));
-
-
+        model.addAttribute("insufficientQuantity", insufficientQuantity);
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");

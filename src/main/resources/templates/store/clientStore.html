@@ -10,6 +10,14 @@
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
+        <div th:each="insufficientQuantityAlert : ${insufficientQuantity}" th:if="${insufficientQuantity}">
+            <div class="alert alert-danger fade show" role="alert">
+                <strong th:text="${insufficientQuantityAlert}"></strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <hr/>
         <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-info" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
         <div id="shoppingCart" style="display:none;">
@@ -67,11 +75,8 @@
                                 <td th:text="'$'+${basketItem.product.ProductDetails.price}"></td>
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
-                                <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" step="any"/> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
+                                <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" /> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
                 <td>
-                    <div th:if="${InsufficientQuantity}">
-                        <p th:text="${InsufficientQuantity}" class="error-message"></p>
-                    </div>
                 <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
             </tr>
             </table>
