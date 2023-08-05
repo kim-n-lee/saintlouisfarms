@@ -59,7 +59,7 @@ public class AuthenticationController {
     }
 
     public boolean clientInSession(HttpSession session){
-        Integer clientId = (Integer) session.getAttribute(userSessionKey);
+        Integer clientId = (Integer) session.getAttribute(clientSessionKey);
         if (clientId == null) {
             return false;
         }

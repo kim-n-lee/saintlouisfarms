@@ -75,6 +75,7 @@ public class FarmOrder extends AbstractEntity {
     }
 
     public void setFulfilled(Boolean fulfilled) {
+        this.confirmed = true;
         this.fulfilled = fulfilled;
     }
 

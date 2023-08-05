@@ -1,5 +1,6 @@
 package org.liftoff.saintlouisfarms.data;
 
+import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.FarmOrder;
 import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.User;
@@ -14,5 +15,6 @@ import java.util.Optional;
 public interface OrderRepository extends CrudRepository<FarmOrder, Integer> {
     @Query
     Optional<List<FarmOrder>> findByFarmerAndSentTrue(User farmer);
-
+    @Query
+    Optional<List<FarmOrder>> findByClientAndSentTrue(Client client);
 }
