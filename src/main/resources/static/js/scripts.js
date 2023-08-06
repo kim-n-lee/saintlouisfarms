@@ -12,6 +12,11 @@ function hideShoppingCart(id){
             div.style.display = div.style.display == "none" ? "block" : "none";
 }
 
+function hideOrder(class){
+       	    var div = document.getElementByClass(class);
+            div.style.display = div.style.display == "none" ? "block" : "none";
+}
+
 
 window.addEventListener('DOMContentLoaded', event => {
 

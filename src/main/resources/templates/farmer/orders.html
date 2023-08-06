@@ -18,8 +18,16 @@
             </button>
         </div>
 
+        <nav class="nav nav-pills">
+            <a th:class="${ title.contentEquals('Open Orders') ? 'nav-link active' : 'nav-link' }"  th:href="@{/orders/{farmName}/Open(farmName=${farmName})}">Open Orders</a>
+            <a th:class="${ title.contentEquals('Confirmed Orders') ? 'nav-link active' : 'nav-link' }" th:href="@{/orders/{farmName}/Confirmed(farmName=${farmName})}">Confirmed Orders</a>
+            <a th:class="${ title.contentEquals('Fulfilled Orders') ? 'nav-link active' : 'nav-link' }" th:href="@{/orders/{farmName}/Fulfilled(farmName=${farmName})}">Fulfilled Orders</a>
+            <a th:class="${ title.contentEquals('All Orders') ? 'nav-link active' : 'nav-link' }" th:href="@{/orders/{farmName}/All(farmName=${farmName})}">All Orders</a>
+        </nav>
+
         <table class="table table-striped" th:each="order : ${orders}" th:object="${order}">
                 <tr>
+<!--                    <button class="btn" type="button" th:text="${'Order for: '+order.client.getName()}" th:attr="onclick=|hideOrder('order${order.id}')|" aria-label="Close"></button>-->
                     <th th:text="${'Order for: '+order.client.getName()}"></th>
                     <th th:text="${'Order placed: '+order.localDateTime}"></th>
                     <th th:text="${'Order Number: '+order.id}"></th>
@@ -37,7 +45,6 @@
             <tr>
                 <td colspan="2" th:text="${'Total Amount $'+order.totalAmount}" class="font-weight-bold"></td>
                 <td>
-                    <span>
                     <form th:if="${!order.confirmed}" method="post" th:action="@{/orders/confirm}" >
                         <input type="hidden" name="id" th:value="${order.id}">
                         <input type="hidden" name="farmName" th:value="${farmName}">
@@ -54,7 +61,6 @@
                         <input type="hidden" name="farmName" th:value="${farmName}">
                         <input type="submit" value="Set As Not Filled" class="btn btn-danger">
                     </form>
-                    </span>
                 </td>
             </tr>
                 <br>

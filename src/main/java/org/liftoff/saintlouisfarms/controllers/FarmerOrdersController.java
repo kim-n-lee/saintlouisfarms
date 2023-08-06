@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,25 +40,62 @@ public class FarmerOrdersController {
         this.orderRepository = orderRepository;
     }
 
-    @GetMapping("{farmName}")
-    public String handleOrderConfirmed(
+    @GetMapping("{farmName}/{orderKind}")
+    public String currentOrders(
             @PathVariable String farmName,
+            @PathVariable String orderKind,
             HttpServletRequest request,
             Model model,
             RedirectAttributes redirectAttrs) {
         HttpSession session = request.getSession(false);
         User farmer = authenticationController.getUserFromSession(session);
 
-        Optional<List<FarmOrder>> optionalFarmOrders = orderRepository.findByFarmerAndSentTrue(farmer);
-        if (optionalFarmOrders.isEmpty()) {
-            redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
-            return "redirect:..farmer/dashboard";
+        Optional<List<FarmOrder>> optionalFarmOrders;
+        List<FarmOrder> orders;
+        String title;
+
+        switch (orderKind){
+            case "Fulfilled":
+                title = "Fulfilled Orders";
+                optionalFarmOrders = orderRepository.findByFarmerAndSentTrueAndFulfilledTrueAndConfirmedTrue(farmer);
+                if (optionalFarmOrders.isEmpty()) {
+                    redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+                    return "redirect:..farmer/dashboard";
+                }
+                orders = optionalFarmOrders.get();
+                break;
+            case "Open":
+                title = "Open Orders";
+                optionalFarmOrders = orderRepository.findByFarmerAndSentTrueAndFulfilledFalse(farmer);
+                if (optionalFarmOrders.isEmpty()) {
+                    redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+                    return "redirect:..farmer/dashboard";
+                }
+                orders = optionalFarmOrders.get();
+                model.addAttribute("openActive", "openActive");
+                break;
+            case "Confirmed":
+                optionalFarmOrders = orderRepository.findByFarmerAndSentTrueAndConfirmedTrueAndFulfilledFalse(farmer);
+                if (optionalFarmOrders.isEmpty()) {
+                    redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+                    return "redirect:..farmer/dashboard";
+                }
+                orders = optionalFarmOrders.get();
+                title ="Confirmed Orders";
+                break;
+            default:
+                title ="All Orders";
+                optionalFarmOrders = orderRepository.findByFarmerAndSentTrue(farmer);
+                if (optionalFarmOrders.isEmpty()) {
+                    redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
+                    return "redirect:..farmer/dashboard";
+                }
+                orders = optionalFarmOrders.get();
+
         }
 
-        List<FarmOrder> orders = optionalFarmOrders.get();
-
-        model.addAttribute("title", "Current Orders");
         model.addAttribute("orders", orders);
+        model.addAttribute("title", title);
         model.addAttribute("farmName", farmName);
         model.addAttribute("loggedIn", farmer != null);
         return "farmer/orders";
@@ -81,7 +119,7 @@ public class FarmerOrdersController {
         order.setConfirmed(true);
         orderRepository.save(order);
         redirectAttrs.addFlashAttribute("orderInfo", "Order #"+order.getId()+" Confirmed");
-        return "redirect:" + farmName;
+        return "redirect:" + farmName + "/Open";
     }
 
     @PostMapping("fulfilled")
@@ -102,7 +140,7 @@ public class FarmerOrdersController {
         order.setFulfilled(!order.getFulfilled());
         orderRepository.save(order);
         redirectAttrs.addFlashAttribute("orderInfo", "Order #"+order.getId()+" status changed");
-        return "redirect:" + farmName;
+        return "redirect:" + farmName + "/Open";
     }
 
 }
