@@ -79,54 +79,109 @@ public class StoreController {
        HttpSession session = request.getSession(false);
        if(session != null){
 //          Should see if they have an active shopping basket
-           Client client = authenticationController.getClientFromSession(session);
+           Client client= authenticationController.getClientFromSession(session);
            model.addAttribute("loggedIn", client != null);
+           //check if the this is the first time for the client and he doesnt have a cart
+           if(shoppingBasketRepository.findAboutClientCart(client.getId()) == null){
            shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
+           }
+           else{
+               shoppingBasket=shoppingBasketRepository.findAboutClientCart(client.getId());
+           }
+           ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
+
+           shoppingBasketRepository.save(shoppingBasket);
+           model.addAttribute("fa", farmName);
+           if(info!=null){
+               productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+               basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+
+
+               if (shoppingBasket.getBasketItems().isEmpty()) {
+                   shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+                   shoppingBasketRepository.save(shoppingBasket);
+               }
+               basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+//           model.addAttribute("currentShoppingBasketItems", shoppingBasketRepository.getAllshopingCart());
+List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
+               model.addAttribute("currentShoppingBasketItems", shopTest);
+               //model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+
+               model.addAttribute("currentShoppingBasket", shoppingBasket);
+               model.addAttribute("shoppingBasket",shoppingBasketDTO);
+
+
+           }
+           /////here
+           else {
+               productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+               basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+
+
+               if (shoppingBasket.getBasketItems().isEmpty()) {
+                   shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+                   shoppingBasketRepository.save(shoppingBasket);
+               }
+               basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+               List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
+              model.addAttribute("currentShoppingBasketItems", shopTest);
+              // model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+
+               model.addAttribute("currentShoppingBasket", shoppingBasket);
+
+
+
+               model.addAttribute("shoppingBasket", shoppingBasketDTO);
+           }
+           model.addAttribute("title", farmName+" Store");
        }
 
        else
        {
            shoppingBasket = new ShoppingBasket();
-       }
-       ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
+           ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
 
-       shoppingBasketRepository.save(shoppingBasket);
-       model.addAttribute("fa", farmName);
-       if(info!=null){
-           productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
-           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+           shoppingBasketRepository.save(shoppingBasket);
+           model.addAttribute("fa", farmName);
+           if(info!=null){
+               productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+               basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
-           if (shoppingBasket.getBasketItems().isEmpty()) {
-               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
-               shoppingBasketRepository.save(shoppingBasket);
+               if (shoppingBasket.getBasketItems().isEmpty()) {
+                   shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+                   shoppingBasketRepository.save(shoppingBasket);
+               }
+               basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+//           model.addAttribute("currentShoppingBasketItems", shoppingBasketRepository.getAllshopingCart());
+
+               model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+               model.addAttribute("currentShoppingBasket", shoppingBasket);
+               model.addAttribute("shoppingBasket",shoppingBasketDTO);
+
+
            }
-           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
-           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
-           model.addAttribute("currentShoppingBasket", shoppingBasket);
-           model.addAttribute("shoppingBasket",shoppingBasketDTO);
+           /////here
+           else {
+               productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+               basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
-       }
-       /////here
-       else {
-           productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
-           basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+               if (shoppingBasket.getBasketItems().isEmpty()) {
+                   shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
+                   shoppingBasketRepository.save(shoppingBasket);
+               }
+               basketItemRepository.saveAll(shoppingBasket.getBasketItems());
+               model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+               model.addAttribute("currentShoppingBasket", shoppingBasket);
 
 
-           if (shoppingBasket.getBasketItems().isEmpty()) {
-               shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
-               shoppingBasketRepository.save(shoppingBasket);
+
+               model.addAttribute("shoppingBasket", shoppingBasketDTO);
            }
-           basketItemRepository.saveAll(shoppingBasket.getBasketItems());
-           model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
-           model.addAttribute("currentShoppingBasket", shoppingBasket);
-
-
-
-           model.addAttribute("shoppingBasket", shoppingBasketDTO);
+           model.addAttribute("title", farmName+" Store");
        }
-       model.addAttribute("title", farmName+" Store");
+
        return "store/clientStore";
    }
 
@@ -136,6 +191,7 @@ public class StoreController {
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
+                                                                //@RequestParam String itemname,
                                                                 @ModelAttribute ShoppingBasketDTO shoppingBasketDTO){
 
 //        Make sure farm exists
@@ -155,31 +211,34 @@ public class StoreController {
 
 //        Retrieves the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
-        System.out.println("hello"+basketOptional.get().toString());
+        System.out.println("hello ggg"+basketId);
         if (basketOptional.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
             return "redirect:../";
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
+
         List<String> insufficientQuantity = new ArrayList<>();
+        //List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
 
         //Looks to see if there is enough stock of an item before it can be added to the cart
         for (int i = 0; i < shoppingBasketDTO.getBasketItemsAvailable().size(); i++) {
             int requestedQuantity = shoppingBasketDTO.getBasketItemsAvailable().get(i).getQuantity();
 
             BasketItem currentBasketItem = currentShoppingBasket.getBasketItems().get(i);
-
             int availableQuantityFromFarmer = currentBasketItem.getProduct().getProductDetails().getQuantity();
 
 
-             if (requestedQuantity > availableQuantityFromFarmer) {
+             if (requestedQuantity > availableQuantityFromFarmer ) {
                  String errorMessage = "This quantity is not available for " + currentBasketItem.getProduct().getName();
                  insufficientQuantity.add(errorMessage);
             } else {
+                 //if(currentBasketItem.getProduct().getName()==itemname){
                 currentBasketItem.setQuantity(requestedQuantity);
                  currentShoppingBasket.getBasketItems().get(i).setQuantity(requestedQuantity);
                  shoppingBasketDTO.updateBasketItemQuantity(i, requestedQuantity);
+
             }
         }
 
@@ -192,6 +251,7 @@ public class StoreController {
 
 
         model.addAttribute("loggedIn", client != null);
+        //model.addAttribute("currentShoppingBasketItems", shopTest);
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
         model.addAttribute("insufficientQuantity", insufficientQuantity);
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
@@ -203,6 +263,7 @@ public class StoreController {
 //  Have you thought about doing this as a db query
     private BigDecimal calculateTotalAmount(ShoppingBasket shoppingBasket) {
         BigDecimal total = BigDecimal.ZERO;
+        //List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
         for (BasketItem item : shoppingBasket.getBasketItems()) {
             BigDecimal productPrice = item.getProduct().getProductDetails().getPrice();
             total = total.add(productPrice.multiply(BigDecimal.valueOf(item.getQuantity())));

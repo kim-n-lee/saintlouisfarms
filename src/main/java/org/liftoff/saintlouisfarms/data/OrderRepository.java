@@ -17,4 +17,5 @@ public interface OrderRepository extends CrudRepository<FarmOrder, Integer> {
     Optional<List<FarmOrder>> findByFarmerAndSentTrue(User farmer);
     @Query
     Optional<List<FarmOrder>> findByClientAndSentTrue(Client client);
+
 }
