@@ -55,6 +55,41 @@
 
         </form>
 
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-3" th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
+                    <div class="card">
+                        <div class="image-container">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span><i class=""></i></span>
+                                </div>
+                            </div>
+                            <img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="100%"/>
+                        </div>
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 th:text="${basketItem.product.name}"></h5>
+                                <div class="d-flex flex-column mb-2">
+                                    <small class="text-right" th:text="'$'+${basketItem.product.ProductDetails.price}">$0.00</small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-1">
+                                <div>
+                                    Available: <span th:text="*{basketItem.product.productDetails.quantity}">0</span>
+                                </div>
+                                <span th:text="${basketItem.product.productCategory}">Category</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-1">
+                                <input type="submit" class="btn btn-warning" value="Update Cart" />
+                                <input type="number" class="" value="0" style="width: 50%"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <form method="post" th:object="${shoppingBasket}">
             <table class="table table-striped">
             <thead>
