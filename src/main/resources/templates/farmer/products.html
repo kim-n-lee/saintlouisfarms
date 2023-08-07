@@ -42,8 +42,13 @@
                             <span th:text="*{productCategory}">Category</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-1">
-                            <input type="submit" class="btn btn-warning" value="Add to Cart" />
-                            <input type="number" class="" value="0" style="width: 50%"/>
+                            <input type="submit" class="btn btn-warning" value="Add to Cart" disabled/>
+                            <input type="number" class="" value="0" style="width: 50%" disabled/>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-1">
+                            <p></p>
+                            <a class="btn btn-success" th:href="@{/farmer/edit/{currentProduct.id}(currentProduct.id=${currentProduct.id})}">Edit</a>
+                            <p></p>
                         </div>
                     </div>
                 </div>
