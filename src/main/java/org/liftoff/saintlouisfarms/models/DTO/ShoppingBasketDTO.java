@@ -1,7 +1,9 @@
 package org.liftoff.saintlouisfarms.models.DTO;
 
 import org.liftoff.saintlouisfarms.models.BasketItem;
+import org.liftoff.saintlouisfarms.models.Client;
 
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,8 @@ public class ShoppingBasketDTO {
     public ShoppingBasketDTO() {
     }
 
-
+    @OneToOne
+    private Client client;
 
         public BasketItem getBasketItem(BasketItem basketItem){
         return this.basketItemsAvailable.get(basketItemsAvailable.indexOf(basketItem));
@@ -33,4 +36,11 @@ public class ShoppingBasketDTO {
         basketItemsAvailable.get(index).setQuantity(newQuantity);
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

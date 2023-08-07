@@ -7,6 +7,7 @@ import org.liftoff.saintlouisfarms.data.ProductDetailsRepository;
 import org.liftoff.saintlouisfarms.data.ProductRepository;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("farmer/edit")
 public class EditProductController {
+    private static final int PAGE_SIZE = 15;
 
     // edit product name,Category,Measurement ,and all details of it .
     @Autowired
@@ -40,21 +42,25 @@ public class EditProductController {
     @Autowired
     private ProductDetailsRepository productDetailsRepository;
     @GetMapping("/{editProductId}")
-    public String editProduct(@PathVariable int editProductId, Model model, HttpServletRequest request) {
+    public String editProduct(@PathVariable int editProductId, @RequestParam(defaultValue = "0") int page, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
         Optional<Product> optProductToEdit = productRepository.findById(editProductId);
-        //check if product we want to edit not in the system!
+
         if (optProductToEdit.isEmpty()) {
             model.addAttribute("title", "Available Products");
-            model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+            model.addAttribute("products", productRepository.findProductByStatus(user.getId(), PageRequest.of(page, PAGE_SIZE)));
             model.addAttribute("availability", "ProductNotFound");
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "redirect:farmer/products";
         }
 
-        Product productToEdit = optProductToEdit.get();
+        // Rest of your edit logic...
+
+
+
+    Product productToEdit = optProductToEdit.get();
 
         model.addAttribute("title",
                 "Edit " + productToEdit.getName());
@@ -68,6 +74,7 @@ public class EditProductController {
 
     @PostMapping("/{productToEditId}")
     public String editProductProcessing(@PathVariable int productToEditId,
+                                        @RequestParam(defaultValue = "0") int page,
                                         Model model,
                                         @ModelAttribute("productToEdit") @Valid Product productEdit,
                                         Errors errors,
@@ -93,7 +100,7 @@ public class EditProductController {
 
         if (optProductToEdit.isEmpty()) {
             model.addAttribute("title", "Available Products");
-            model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+            model.addAttribute("products", productRepository.findProductByStatus(user.getId(), PageRequest.of(page, PAGE_SIZE)));
             model.addAttribute("availability", "ProductNotFound");
             model.addAttribute("loggedIn", session.getAttribute("user") != null);
             return "redirect:";

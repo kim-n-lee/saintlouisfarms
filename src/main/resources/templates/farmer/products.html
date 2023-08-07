@@ -45,6 +45,20 @@
                 </td>
             </tr>
         </table>
+
+        <ul class="pagination">
+            <li th:class="${products.first ? 'disabled' : ''}">
+                <a th:if="${not products.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
+            </li>
+            <li>
+                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.number + 1})}">Next Page </a>
+            </li>
+            <li th:class="${products.last ? 'disabled' : ''}">
+                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.totalPages - 1})}">&raquo;</a>
+            </li>
+        </ul>
+
+
         <script type="text/javascript">
     function clearSearch() {
         window.location = "[[@{/farmer/products}]]";

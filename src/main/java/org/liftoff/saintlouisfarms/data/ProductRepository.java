@@ -5,6 +5,8 @@ import org.liftoff.saintlouisfarms.models.BasketItem;
 import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.liftoff.saintlouisfarms.models.Product;
 import org.liftoff.saintlouisfarms.models.ShoppingBasket;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -15,20 +17,21 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, Integer> {
     @Query(value = "select * from product left join productdetails on product.productDetails_id=productdetails.id where  product.user_id = ?1", nativeQuery = true)
     List<Product> findProductById(int id);
-@Query(value = "select * from product left join productdetails on product.productDetails_id=productdetails.id where productdetails.status=true and product.user_id = ?1", nativeQuery = true)
-    List<Product> findProductByStatus(int ids);
+    @Query(value = "select * from product left join productdetails on product.productDetails_id=productdetails.id where productdetails.status=true and product.user_id = ?1", countQuery = "SELECT COUNT(*) FROM product left join productdetails on product.productDetails_id=productdetails.id where productdetails.status=true and product.user_id = ?1", nativeQuery = true)
+    Page<Product> findProductByStatus(int userId, Pageable pageable);
 
-@Query(value = "delete  from product where id= ?1", nativeQuery = true)
+
+    @Query(value = "delete  from product where id= ?1", nativeQuery = true)
     List<Product>deleteProductById(int id);
-
 @Query(value = "select *  from product where name= ?1", nativeQuery = true)
 
 List<Product>findNameOfProductBy(String name);
 
     @Query(value = "SELECT * FROM farm.product p left join productdetails d on p.productDetails_id=d.id left join user u on p.user_id=u.id where d.status=1 order by u.farmName", nativeQuery = true)
     List<Product> findAllProduct();
-    @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
-    List<Product> findByNameOfFarmName( String farmName);
+    @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", countQuery = "SELECT COUNT(*) FROM product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
+    Page<Product> findByNameOfFarmName(String farmName, Pageable pageable);
+
 
 
 
@@ -65,5 +68,4 @@ List<Product>findNameOfProductBy(String name);
             " or productdetails.price like %?1% " +
             " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
     List<Product> searchByFarm(String info, String farmName);
-
 }

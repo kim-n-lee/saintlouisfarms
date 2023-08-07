@@ -5,6 +5,9 @@ import org.imgscalr.Scalr;
 import org.liftoff.saintlouisfarms.data.*;
 import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +34,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("farmer")
 public class ProductController {
+    private static final int PAGE_SIZE = 10;
 
     @Autowired
     private AuthenticationController authenticationController;
@@ -68,20 +72,42 @@ public String searchProduct(@Param("info") String info
 //    @GetMapping("products")
 
     //display all available products
-    @RequestMapping(value = "/products",method = {RequestMethod.GET,RequestMethod.POST})
-    public String displayAllProducts(Model model, HttpServletRequest request,@Param("info") String info) {
+//    @RequestMapping(value = "/products",method = {RequestMethod.GET,RequestMethod.POST})
+//    public String displayAllProducts(@RequestParam(defaultValue = "0") int page,Model model, HttpServletRequest request,@Param("info") String info) {
+//        HttpSession session = request.getSession();
+//        User user = authenticationController.getUserFromSession(session);
+//
+//
+//        if(info!=null){
+//            List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+//
+//            model.addAttribute("products",searchResult);}
+//        else
+//        model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+//
+//        model.addAttribute("loggedIn", user != null);
+//        return "farmer/products";
+//    }
+    @RequestMapping(value = "/products", method = {RequestMethod.GET, RequestMethod.POST})
+    public String displayAllProducts(@RequestParam(defaultValue = "0") int page, Model model, HttpServletRequest request, @Param("info") String info) {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+
         if(info!=null){
-            List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+          List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
 
             model.addAttribute("products",searchResult);}
-        else
-        model.addAttribute("products", productRepository.findProductByStatus(user.getId()));
+        else {
+            Page<Product> products = productRepository.findProductByStatus(user.getId(), pageable);
+            model.addAttribute("products", products);
+        }
 
         model.addAttribute("loggedIn", user != null);
         return "farmer/products";
     }
+
     // add new product
     @GetMapping("add")
     public String displayAddProductForm(Model model, HttpServletRequest request,@Param("info") String info) {
