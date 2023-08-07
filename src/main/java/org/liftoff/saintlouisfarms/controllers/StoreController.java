@@ -90,6 +90,7 @@ public class StoreController {
        }
        ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
 
+
        shoppingBasketRepository.save(shoppingBasket);
        model.addAttribute("fa", farmName);
        if(info!=null){
