@@ -26,7 +26,13 @@
                                 <span><i class=""></i></span>
                             </div>
                         </div>
-                        <img th:if="${currentProduct.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{name}" width="100%"/>
+                        <div class="hover hover-2 text-white top-rounded">
+                            <img th:if="${currentProduct.productDetails.picture != null}" th:src="@{'/'+*{productDetails.picture}}" th:alt="*{name}" width="100%" height="100%"/>
+                            <div class="hover-overlay"></div>
+                            <div class="hover-2-content px-5 py-4">
+                                <p class="hover-2-description text-uppercase mb-0" th:text="*{ProductDetails.description}"></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="p-2">
                         <div class="d-flex justify-content-between align-items-center">
