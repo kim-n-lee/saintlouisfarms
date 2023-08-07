@@ -54,7 +54,7 @@
             <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
 
         </form>
-
+        <!-- Mike's design starts here-->
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-3" th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- Mike's design ends here-->
         <form method="post" th:object="${shoppingBasket}">
             <table class="table table-striped">
             <thead>
