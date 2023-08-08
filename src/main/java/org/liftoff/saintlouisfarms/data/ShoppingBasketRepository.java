@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ShoppingBasketRepository extends CrudRepository<ShoppingBasket, Integer> {
@@ -27,5 +28,30 @@ public interface ShoppingBasketRepository extends CrudRepository<ShoppingBasket,
             " or productdetails.price like %?1% " +
             " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
     List<ShoppingBasket> searchByFarm(String info, String farmName);
+@Query(value = " select * from shoppingbasket " +
+        " left join   basketitem on basketitem.shoppingBasket_id=shoppingbasket.id " +
+        " left join client on shoppingbasket.client_id=client.id " +
+        " left join product on basketitem.product_id=product.id " +
+        " left join productdetails on productdetails.id=product.productDetails_id " +
+        " left join user on product.user_id=user.id " +
+        " where basketitem.farmOrderItem_id is null and shoppingbasket.client_id=?1 and basketitem.quantity!=0 and user.farmName=?2 ",nativeQuery = true)
+ List<ShoppingBasket> theCart(int id, String farmName);
 
+@Query(value = "SELECT * FROM shoppingbasket " +
+        " left join basketitem on basketitem.shoppingBasket_id=shoppingbasket.id " +
+        " left join product on product.id=basketitem.product_id " +
+        " left join user on user.id=product.user_id " +
+        " where shoppingbasket.client_id=?1 and  user.farmName=?2",nativeQuery = true)
+ShoppingBasket findAboutClientCart(int id,String farmName);
+
+    @Query(value = " SELECT * FROM shoppingbasket " +
+            " left join basketitem on shoppingbasket.id=basketitem.shoppingBasket_id " +
+            " left join product on basketitem.product_id=product.id " +
+        " where shoppingbasket.id=?1 and shoppingbasket.client_id=?2 and product.name=?3",nativeQuery = true)
+    Optional<ShoppingBasket> findByIdAndClient(int basketId, int id,String productName);
+
+//@Query(value = "select *from shoppingbasket  " +
+//        " left join   basketitem on basketitem.shoppingBasket_id=shoppingbasket.id " +
+//        " where basketitem.id=?1",nativeQuery = true)
+//    List<ShoppingBasket> findByBasketId(int basketId);
 }

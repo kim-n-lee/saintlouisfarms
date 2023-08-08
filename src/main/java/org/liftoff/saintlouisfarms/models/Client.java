@@ -19,9 +19,18 @@ public class Client extends MainUser {
 
     @OneToMany(mappedBy = "client")
     private List<FarmOrder> farmOrders = new ArrayList<>();
-
+    @OneToMany(mappedBy = "client")
+    private List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
     public Client() {
 
+    }
+
+    public List<ShoppingBasket> getShoppingBaskets() {
+        return shoppingBaskets;
+    }
+
+    public void setShoppingBaskets(List<ShoppingBasket> shoppingBaskets) {
+        this.shoppingBaskets = shoppingBaskets;
     }
 
     public Client(String email, String pwHash, String firstName, String lastName, String address, String zip, String city, String phone) {
@@ -36,4 +45,3 @@ public class Client extends MainUser {
         this.farmOrders = farmOrders;
     }
 }
-
