@@ -34,7 +34,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("farmer")
 public class ProductController {
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 20;
 
     @Autowired
     private AuthenticationController authenticationController;

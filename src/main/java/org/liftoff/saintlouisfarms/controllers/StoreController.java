@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("store")
 public class StoreController {
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 20;
     private AuthenticationController authenticationController;
     private ProductRepository productRepository;
     private ShoppingBasketRepository shoppingBasketRepository;
@@ -211,9 +211,9 @@ public class StoreController {
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");
-            model.addAttribute("page", productsPage);
-            String baseUrl = "/store/" + farmName;
-            model.addAttribute("baseUrl", baseUrl);
+        model.addAttribute("page", productsPage);
+        String baseUrl = "/store/" + farmName;
+        model.addAttribute("baseUrl", baseUrl);
         return "store/clientStore";
     }
 
