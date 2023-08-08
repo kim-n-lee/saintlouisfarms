@@ -77,7 +77,11 @@
                                 <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
                                 <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" /> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
                 <td>
-                <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
+                <td><input type="submit" class="btn btn-primary" value="Update Cart" />
+<!--                <input type="hidden" name="productName" th:value="${basketItem.product.id}" />-->
+            </td>
+
+
             </tr>
             </table>
 

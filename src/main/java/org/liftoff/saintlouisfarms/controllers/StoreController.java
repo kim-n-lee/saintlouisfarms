@@ -77,23 +77,40 @@ public class StoreController {
 
        ShoppingBasket shoppingBasket;
        HttpSession session = request.getSession(false);
+       // if a client (not a guest)
        if(session != null){
 //          Should see if they have an active shopping basket
            Client client= authenticationController.getClientFromSession(session);
            model.addAttribute("loggedIn", client != null);
            //check if the this is the first time for the client and he doesnt have a cart
+
            if(shoppingBasketRepository.findAboutClientCart(client.getId()) == null){
            shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
+
            }
            else{
                shoppingBasket=shoppingBasketRepository.findAboutClientCart(client.getId());
+
            }
            ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
-
            shoppingBasketRepository.save(shoppingBasket);
            model.addAttribute("fa", farmName);
            if(info!=null){
-               productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+
+                  List<Product> product=productRepository.searchByFarm(info, farmName);
+
+                  for(int i=0;i<product.size();i++){
+                      if(basketItemRepository.findBasketForProduct(product.get(i).getId(),client.getId())==null){
+                          BasketItem basketItem=  new BasketItem(product.get(i), 0, shoppingBasket);
+                          shoppingBasketDTO.addBasketItem(basketItem);
+                      }
+                      else{
+                          BasketItem basketItem=basketItemRepository.findBasketForProduct(product.get(i).getId(),client.getId());
+                          shoppingBasketDTO.addBasketItem(basketItem);
+                      }
+
+                  }
+
                basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
@@ -103,7 +120,7 @@ public class StoreController {
                }
                basketItemRepository.saveAll(shoppingBasket.getBasketItems());
 //           model.addAttribute("currentShoppingBasketItems", shoppingBasketRepository.getAllshopingCart());
-List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
+                List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
                model.addAttribute("currentShoppingBasketItems", shopTest);
                //model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
 
@@ -114,8 +131,20 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
            }
            /////here
            else {
-               productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
-               basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+               List<Product> product=productRepository.findByNameOfFarmName( farmName);
+
+               for(int i=0;i<product.size();i++){
+                   if(basketItemRepository.findBasketForProduct(product.get(i).getId(),client.getId())==null){
+                       BasketItem basketItem=  new BasketItem(product.get(i), 0, shoppingBasket);
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+                   else{
+                       BasketItem basketItem=basketItemRepository.findBasketForProduct(product.get(i).getId(),client.getId());
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+
+               }
+                    basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
                if (shoppingBasket.getBasketItems().isEmpty()) {
@@ -125,7 +154,7 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
                basketItemRepository.saveAll(shoppingBasket.getBasketItems());
                List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
               model.addAttribute("currentShoppingBasketItems", shopTest);
-              // model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
+               //model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
 
                model.addAttribute("currentShoppingBasket", shoppingBasket);
 
@@ -135,7 +164,7 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
            }
            model.addAttribute("title", farmName+" Store");
        }
-
+////// if a guest // I think if the guest can add to the cart so, it needs a work to make a special cart for everyone
        else
        {
            shoppingBasket = new ShoppingBasket();
@@ -144,7 +173,23 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
            shoppingBasketRepository.save(shoppingBasket);
            model.addAttribute("fa", farmName);
            if(info!=null){
-               productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
+
+                   //productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+
+               List<Product> product=productRepository.searchByFarm(info, farmName);
+
+               for(int i=0;i<product.size();i++){
+                   if(basketItemRepository.findBasketForProductguest(product.get(i).getId())==null){
+                       BasketItem basketItem=  new BasketItem(product.get(i), 0, shoppingBasket);
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+                   else{
+                       BasketItem basketItem=basketItemRepository.findBasketForProductguest(product.get(i).getId());
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+
+               }
+               // productRepository.searchByFarm(info,farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product,0, shoppingBasket)));
                basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
@@ -163,7 +208,24 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
            }
            /////here
            else {
-               productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+               List<Product> product=productRepository.findByNameOfFarmName(farmName);
+
+               for(int i=0;i<product.size();i++){
+                   if(basketItemRepository.findBasketForProductguest(product.get(i).getId())==null){
+                       BasketItem basketItem=  new BasketItem(product.get(i), 0, shoppingBasket);
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+                   else{
+                       BasketItem basketItem=basketItemRepository.findBasketForProductguest(product.get(i).getId());
+                       shoppingBasketDTO.addBasketItem(basketItem);
+                   }
+
+               }
+
+                   //productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+
+
+               //productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
                basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
@@ -191,9 +253,10 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
-                                                                //@RequestParam String itemname,
-                                                                @ModelAttribute ShoppingBasketDTO shoppingBasketDTO){
-
+//                                                                @RequestParam int productName,
+                                                                @ModelAttribute ShoppingBasketDTO shoppingBasketDTO
+            ,@Param("info") String info){
+//System.out.println(productName);
 //        Make sure farm exists
         if (!userRepository.existsByFarmName(farmName)){
             return "redirect:../";
@@ -211,6 +274,8 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
 
 //        Retrieves the current ShoppingBasket attached to the client
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
+                //.findByIdAndClient(basketId,client.getId(),productName);
+
         System.out.println("hello ggg"+basketId);
         if (basketOptional.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
@@ -220,7 +285,6 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
         ShoppingBasket currentShoppingBasket = basketOptional.get();
 
         List<String> insufficientQuantity = new ArrayList<>();
-        //List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
 
         //Looks to see if there is enough stock of an item before it can be added to the cart
         for (int i = 0; i < shoppingBasketDTO.getBasketItemsAvailable().size(); i++) {
@@ -234,15 +298,17 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
                  String errorMessage = "This quantity is not available for " + currentBasketItem.getProduct().getName();
                  insufficientQuantity.add(errorMessage);
             } else {
-                 //if(currentBasketItem.getProduct().getName()==itemname){
-                currentBasketItem.setQuantity(requestedQuantity);
+                 //if(currentBasketItem.getProduct().getName().equals(productName)) {
+                     currentBasketItem.setQuantity(requestedQuantity);
+
+                 //}
                  currentShoppingBasket.getBasketItems().get(i).setQuantity(requestedQuantity);
                  shoppingBasketDTO.updateBasketItemQuantity(i, requestedQuantity);
 
+
             }
         }
-
-
+        model.addAttribute("fa", farmName);
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
 
@@ -251,8 +317,11 @@ List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmNa
 
 
         model.addAttribute("loggedIn", client != null);
-        //model.addAttribute("currentShoppingBasketItems", shopTest);
+//        List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
+//        model.addAttribute("currentShoppingBasketItems", shopTest);
+
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
+
         model.addAttribute("insufficientQuantity", insufficientQuantity);
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);

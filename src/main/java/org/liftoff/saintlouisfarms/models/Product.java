@@ -19,8 +19,8 @@ public class Product extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
-//    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
-//    private final List<BasketItem> basketItems = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+    private final List<BasketItem> basketItems = new ArrayList<>();
 
 
 //    @ManyToOne

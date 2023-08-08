@@ -101,8 +101,8 @@ public class OrderController {
         for (int i = 0; i < allBasketINOrder.size(); i++) {
             int ProductQuantityOnOrder = allBasketINOrder.get(i).getQuantity();
             Optional<Product> product = productRepository.findById(allBasketINOrder.get(i).getProduct().getId());
-            int quantityinFarmer = product.get().getId();
-            if (quantityinFarmer > ProductQuantityOnOrder) {
+            int quantityinFarmer = product.get().getProductDetails().getQuantity();
+            if (quantityinFarmer >= ProductQuantityOnOrder) {
                 //    Create a FarmOrder item which also removes items from Farmer's inventory
                 FarmOrder order = optionalFarmOrder.get();
                 order.setSent(true);

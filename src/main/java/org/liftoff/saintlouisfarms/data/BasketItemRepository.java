@@ -33,5 +33,14 @@ public interface BasketItemRepository extends CrudRepository<BasketItem, Integer
         " where basketitem.farmOrderItem_id=?1 and farmorder.client_id=?2" ,nativeQuery = true)
     List<BasketItem> findAllBasketAsoociatedWithOrder(int orderId, int id);
 
+@Query(value = " select basketitem.quantity from basketitem " +
+        "left join product on basketitem.product_id=product.id=?1",nativeQuery = true)
+    int checkQuantity(int id);
+    @Query(value = " select * from basketitem  " +
+            " left join shoppingbasket on basketitem.shoppingBasket_id=shoppingbasket.id " +
+            " where basketitem.product_id=?1 and shoppingbasket.client_id=?2",nativeQuery = true)
+    BasketItem findBasketForProduct(int id,int id2);
 
+    @Query(value = " select * from basketitem  where basketitem.product_id=?1 ",nativeQuery = true)
+    BasketItem findBasketForProductguest(int id);
 }

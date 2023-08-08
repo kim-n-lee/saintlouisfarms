@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BasketItem extends AbstractEntity {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Product product;
     private Integer quantity;
     @ManyToOne
