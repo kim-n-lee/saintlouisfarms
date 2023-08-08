@@ -19,7 +19,7 @@
             </div>
         </div>
         <hr/>
-        <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-info" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
+        <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-success" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
         <div id="shoppingCart" style="display:none;">
         <table class="table table-striped">
             <thead>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
-                    <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
+                    <input type="submit" class="btn btn-success" value="Add Items to Cart" />
                 </div>
             </div>
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
