@@ -54,7 +54,7 @@
             <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
 
         </form>
-        <!-- Mike's design starts here-->
+
         <form method="post" th:object="${shoppingBasket}">
             <div class="container mt-5">
                 <div class="row">
@@ -90,46 +90,17 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
+                    <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
                 </div>
             </div>
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
         </form>
-        <!-- Mike's design ends here-->
-        <form method="post" th:object="${shoppingBasket}">
-            <table class="table table-striped">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Product Category</th>
-                <th>Product Description</th>
-                <th>Price</th>
-                <th>Purchase</th>
-            </tr>
-            </thead>
-            <tr th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
-                                <td><img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="90" height="100"/></td>
-                                <td th:text="${basketItem.product.name}"></td>
-                                <td th:text="${basketItem.product.productCategory}"></td>
-                                <td th:text="${basketItem.product.ProductDetails.description}"></td>
-                                <td th:text="'$'+${basketItem.product.ProductDetails.price}"></td>
-                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
-                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
-                                <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" /> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
-                <td>
-                <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
-            </tr>
-            </table>
-
-            <script type="text/javascript">
-    function clearSearch() {
-        window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
-    }
-</script>
-            <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
-            <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
-
-        </form>
+        <script type="text/javascript">
+            function clearSearch() {
+                window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
+            }
+        </script>
     </div>
 </div>
 <footer th:replace="fragments :: footer">
