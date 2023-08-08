@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+<nav th:replace="fragments :: navigation">
+</nav>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+    <h1 th:replace="fragments :: banner"></h1>
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Measurements</h5>
+                        <p class="card-text">Adjust Units of Measurement You Have Available to Use</p>
+                        <a th:href="@{/measurements/add}" class="btn btn-primary">See Your Measurements</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product Categories</h5>
+                        <p class="card-text">Edit Categories You Have Available to Use</p>
+                        <a th:href="@{/productType/add}" class="btn btn-primary">See Your Categories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<footer th:replace="fragments :: footer">
+</footer>
+</body>
+</html>

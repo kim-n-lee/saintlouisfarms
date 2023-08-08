@@ -240,6 +240,7 @@ public class StoreController {
 
                 }
 
+
                 //productRepository.findByNameOfFarmName(farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
 
 
