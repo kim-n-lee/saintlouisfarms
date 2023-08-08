@@ -66,8 +66,13 @@
                                         <span><i class=""></i></span>
                                     </div>
                                 </div>
-                                <img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="100%"/>
-                            </div>
+                                <div class="hover hover-2 text-white top-rounded">
+                                    <img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="100%"/>
+                                    <div class="hover-overlay"></div>
+                                    <div class="hover-2-content px-5 py-4">
+                                        <p class="hover-2-description text-uppercase mb-0" th:text="${basketItem.product.ProductDetails.description}"></p>
+                                    </div>
+                                </div>                            </div>
                             <div class="p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5 th:text="${basketItem.product.name}"></h5>
