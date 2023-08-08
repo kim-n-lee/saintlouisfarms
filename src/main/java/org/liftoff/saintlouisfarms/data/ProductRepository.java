@@ -27,7 +27,7 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 
 List<Product>findNameOfProductBy(String name);
 
-    @Query(value = "SELECT * FROM farm.product p left join productdetails d on p.productDetails_id=d.id left join user u on p.user_id=u.id where d.status=1 order by u.farmName", nativeQuery = true)
+    @Query(value = "SELECT * FROM product p left join productdetails d on p.productDetails_id=d.id left join user u on p.user_id=u.id where d.status=1 order by u.farmName", nativeQuery = true)
     List<Product> findAllProduct();
     @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", countQuery = "SELECT COUNT(*) FROM product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
     Page<Product> findByNameOfFarmName(String farmName, Pageable pageable);
