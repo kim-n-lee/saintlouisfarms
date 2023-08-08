@@ -141,6 +141,7 @@ public class StoreController {
 
         @PostMapping("/{farmName}")
     public  String displaySpecificFarmNameWithProductFormHandel(Model model,
+                                                                @RequestParam(defaultValue = "0") int page,
                                                                 RedirectAttributes redirectAttrs,
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
@@ -192,8 +193,12 @@ public class StoreController {
             }
         }
 
+            Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+            Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+            List<Product> products = productsPage.getContent();
 
-        BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
+
+            BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
 
         basketItemRepository.saveAll(currentShoppingBasket.getBasketItems());
@@ -206,6 +211,9 @@ public class StoreController {
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");
+            model.addAttribute("page", productsPage);
+            String baseUrl = "/store/" + farmName;
+            model.addAttribute("baseUrl", baseUrl);
         return "store/clientStore";
     }
 
