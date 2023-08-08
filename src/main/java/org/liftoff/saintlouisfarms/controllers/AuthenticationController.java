@@ -3,15 +3,12 @@ package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.ClientRepository;
 
-import org.liftoff.saintlouisfarms.data.ShoppingBasketRepository;
 import org.liftoff.saintlouisfarms.data.UserRepository;
 import org.liftoff.saintlouisfarms.models.Client;
 import org.liftoff.saintlouisfarms.models.DTO.LoginFormDTO;
 import org.liftoff.saintlouisfarms.models.DTO.RegisterFormClientDTO;
 import org.liftoff.saintlouisfarms.models.DTO.RegisterFormDTO;
-import org.liftoff.saintlouisfarms.models.DTO.ShoppingBasketDTO;
 import org.liftoff.saintlouisfarms.models.MainUser;
-import org.liftoff.saintlouisfarms.models.ShoppingBasket;
 import org.liftoff.saintlouisfarms.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -35,8 +31,7 @@ public class AuthenticationController {
     UserRepository userRepository;
     @Autowired
     ClientRepository clientRepository;
-    @Autowired
-    ShoppingBasketRepository shoppingBasketRepository;
+
 
     // The key to store user IDs
     private static final String userSessionKey = "user";
@@ -232,26 +227,25 @@ public class AuthenticationController {
     public String processLoginForm(@ModelAttribute @Valid LoginFormDTO loginFormDTO,
                                    Errors errors, HttpServletRequest request,
                                    Model model) {
-        // Send user back to form if errors are found
+// Send user back to form if errors are found
         if (errors.hasErrors()) {
             model.addAttribute("title", "Log In");
             return "login";
         }
-
-        // Look up user in the database using the email provided in the form
+        // Look up user in database using email they provided in the form
         User theUser = userRepository.findByEmail(loginFormDTO.getEmail());
-        Client theClient = clientRepository.findByEmail(loginFormDTO.getEmail());
-
-        if (theUser == null && theClient == null) {
+        Client theClient=clientRepository.findByEmail((loginFormDTO.getEmail()));
+        if (theUser == null && theClient==null) {
             errors.rejectValue("email", "email.invalid", "The given email does not exist");
             model.addAttribute("title", "Log In");
             return "login";
         }
 
-        HttpSession session = request.getSession();
+        //if farmer
+        if(theUser!=null && theClient==null){
 
-        if (theUser != null) {
             String password = loginFormDTO.getPassword();
+
 
             if (!theUser.isMatchingPassword(password)) {
                 errors.rejectValue("password", "password.invalid", "Invalid password");
@@ -259,11 +253,15 @@ public class AuthenticationController {
                 return "login";
             }
 
-            // Create a new session for the user and take them to the home page
-            setUserInSession(session, theUser);
+            // OTHERWISE, create a new session for the user and take them to the home page
+            setUserInSession(request.getSession(), theUser);
+
 
             return "redirect:farmer/dashboard";
-        } else if (theClient != null) {
+
+        }
+        //if client
+        else {
             String password = loginFormDTO.getPassword();
 
             if (!theClient.isMatchingPassword(password)) {
@@ -272,34 +270,14 @@ public class AuthenticationController {
                 return "login";
             }
 
-            // Retrieve the ShoppingBasket for the client if it exists, otherwise create a new one
-            ShoppingBasket shoppingBasket = theClient.getShoppingBasket();
-            if (shoppingBasket == null) {
-                shoppingBasket = new ShoppingBasket(theClient, LocalDateTime.now());
-                shoppingBasketRepository.save(shoppingBasket);
-                theClient.setShoppingBasket(shoppingBasket);
-                clientRepository.save(theClient);
-            }
+            // OTHERWISE, create a new session for the user and take them to the home page
+            setClientInSession(request.getSession(), theClient);
 
-            // Create a ShoppingBasketDTO and set the client and basket items
-            ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
-            shoppingBasketDTO.setClient(theClient);
-            shoppingBasketDTO.setBasketItemsAvailable(shoppingBasket.getBasketItems());
-
-            // Store the ShoppingBasketDTO in the session
-            session.setAttribute("shoppingBasketDTO", shoppingBasketDTO);
-
-            // Create a new session for the client and take them to the store page
-            setClientInSession(session, theClient);
-
+// go to the page of available products of farms
             return "redirect:store";
+
         }
-
-        return "redirect:/"; // Redirect to the home page or appropriate URL
     }
-
-
-
     // Handler for logout
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){

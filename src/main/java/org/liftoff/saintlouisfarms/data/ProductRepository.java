@@ -31,7 +31,8 @@ List<Product>findNameOfProductBy(String name);
     List<Product> findAllProduct();
     @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", countQuery = "SELECT COUNT(*) FROM product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
     Page<Product> findByNameOfFarmName(String farmName, Pageable pageable);
-
+    @Query(value = "select * from product left join user on product.user_id=user.id  left join productdetails  on product.productDetails_id=productdetails.id where user.farmName= ?1 and productdetails.status=1", nativeQuery = true)
+    List<Product> findByNameOfFarmNames( String farmName);
 
 
 

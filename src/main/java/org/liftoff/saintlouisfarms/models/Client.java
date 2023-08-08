@@ -3,7 +3,6 @@ package org.liftoff.saintlouisfarms.models;
 import javax.persistence.Entity;
 
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +19,18 @@ public class Client extends MainUser {
 
     @OneToMany(mappedBy = "client")
     private List<FarmOrder> farmOrders = new ArrayList<>();
-
-    @OneToOne
-    private ShoppingBasket shoppingBasket;
-
+    @OneToMany(mappedBy = "client")
+    private List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
     public Client() {
 
+    }
+
+    public List<ShoppingBasket> getShoppingBaskets() {
+        return shoppingBaskets;
+    }
+
+    public void setShoppingBaskets(List<ShoppingBasket> shoppingBaskets) {
+        this.shoppingBaskets = shoppingBaskets;
     }
 
     public Client(String email, String pwHash, String firstName, String lastName, String address, String zip, String city, String phone) {
@@ -39,13 +44,4 @@ public class Client extends MainUser {
     public void setOrders(List<FarmOrder> farmOrders) {
         this.farmOrders = farmOrders;
     }
-
-    public ShoppingBasket getShoppingBasket() {
-        return shoppingBasket;
-    }
-
-    public void setShoppingBasket(ShoppingBasket shoppingBasket) {
-        this.shoppingBasket = shoppingBasket;
-    }
 }
-

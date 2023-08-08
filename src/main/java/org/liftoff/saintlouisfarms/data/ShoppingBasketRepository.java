@@ -37,8 +37,12 @@ public interface ShoppingBasketRepository extends CrudRepository<ShoppingBasket,
         " where basketitem.farmOrderItem_id is null and shoppingbasket.client_id=?1 and basketitem.quantity!=0 and user.farmName=?2 ",nativeQuery = true)
  List<ShoppingBasket> theCart(int id, String farmName);
 
-@Query(value = "select *from shoppingbasket where client_id=?1",nativeQuery = true)
-ShoppingBasket findAboutClientCart(int id);
+@Query(value = "SELECT * FROM test.shoppingbasket " +
+        " left join basketitem on basketitem.shoppingBasket_id=shoppingbasket.id " +
+        " left join product on product.id=basketitem.product_id " +
+        " left join user on user.id=product.user_id " +
+        " where shoppingbasket.client_id=?1 and  user.farmName=?2",nativeQuery = true)
+ShoppingBasket findAboutClientCart(int id,String farmName);
 
     @Query(value = " SELECT * FROM shoppingbasket " +
             " left join basketitem on shoppingbasket.id=basketitem.shoppingBasket_id " +
