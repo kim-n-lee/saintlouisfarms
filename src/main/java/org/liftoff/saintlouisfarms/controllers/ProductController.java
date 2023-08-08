@@ -34,7 +34,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("farmer")
 public class ProductController {
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 10;
 
     @Autowired
     private AuthenticationController authenticationController;
@@ -96,11 +96,26 @@ public String searchProduct(@Param("info") String info
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
         if(info!=null){
-          List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+            Page<Product> products = productRepository.searchOnAvailableProducts(info, user.getId(), pageable);
 
-            model.addAttribute("products",searchResult);}
+            model.addAttribute("productsPage", products);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", products.getTotalPages());
+            model.addAttribute("totalItems", products.getTotalElements());
+
+            model.addAttribute("products", products.getContent());
+
+        }
+//          List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+//
+//            model.addAttribute("products",searchResult);}
         else {
             Page<Product> products = productRepository.findProductByStatus(user.getId(), pageable);
+            model.addAttribute("productsPage", products);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", products.getTotalPages());
+            model.addAttribute("totalItems", products.getTotalElements());
+
             model.addAttribute("products", products);
         }
 

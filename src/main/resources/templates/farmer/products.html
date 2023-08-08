@@ -12,16 +12,19 @@
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
         <ul class="pagination">
-            <li th:class="${products.first ? 'disabled' : ''}">
-                <a th:if="${not products.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
+            <li th:class="${productsPage.first ? 'disabled' : ''}">
+                <a th:if="${not productsPage.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
             </li>
             <li>
-                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.number + 1})}">Next Page </a>
+                <a th:if="${not productsPage.last}" th:href="@{/farmer/products(page=${productsPage.number + 1})}">Next Page </a>
             </li>
-            <li th:class="${products.last ? 'disabled' : ''}">
-                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.totalPages - 1})}">&raquo;</a>
+            <li th:class="${productsPage.last ? 'disabled' : ''}">
+                <a th:if="${not productsPage.last}" th:href="@{/farmer/products(page=${productsPage.totalPages - 1})}">&raquo;</a>
             </li>
         </ul>
+
+
+
         <form  method="post">
             <label >Product Info:</label>
             <input type="text" id="info" name="info">
@@ -56,17 +59,7 @@
             </tr>
         </table>
 
-        <ul class="pagination">
-            <li th:class="${products.first ? 'disabled' : ''}">
-                <a th:if="${not products.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
-            </li>
-            <li>
-                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.number + 1})}">Next Page </a>
-            </li>
-            <li th:class="${products.last ? 'disabled' : ''}">
-                <a th:if="${not products.last}" th:href="@{/farmer/products(page=${products.totalPages - 1})}">&raquo;</a>
-            </li>
-        </ul>
+
 
 
         <script type="text/javascript">

@@ -35,6 +35,7 @@ List<Product>findNameOfProductBy(String name);
 
 
 
+
     @Query(value = "select * from product" +
             " left join productcategory on product.productCategory_id=productcategory.id" +
             " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
@@ -46,26 +47,77 @@ List<Product>findNameOfProductBy(String name);
             "or productdetails.description  like %?1% )and product.user_id=?2",nativeQuery = true)
     List<Product> searchByInfo(String name,int id );
 
-    @Query(value = "select * from product" +
-            " left join productcategory on product.productCategory_id=productcategory.id" +
-            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
-            " left join productdetails on product.productDetails_id=productdetails.id " +
-            "where (product.name like %?1% or productcategory.name like %?1% " +
-            "or measurementcategory.name like %?1% " +
-            "or productdetails.price like %?1% " +
-            "or productdetails.quantity like %?1%  " +
-            "or productdetails.description  like %?1% )and product.user_id=?2 and productdetails.status=1",nativeQuery = true)
-    List<Product> searchOnAvailableProducts(String name,int id );
+//    @Query(value = "select * from product" +
+//            " left join productcategory on product.productCategory_id=productcategory.id" +
+//            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
+//            " left join productdetails on product.productDetails_id=productdetails.id " +
+//            "where (product.name like %?1% or productcategory.name like %?1% " +
+//            "or measurementcategory.name like %?1% " +
+//            "or productdetails.price like %?1% " +
+//            "or productdetails.quantity like %?1%  " +
+//            "or productdetails.description  like %?1% )and product.user_id=?2 and productdetails.status=1",nativeQuery = true)
+//    List<Product> searchOnAvailableProducts(String name,int id );
+
+
+    @Query(value = "SELECT * FROM product" +
+            " LEFT JOIN productcategory ON product.productCategory_id=productcategory.id" +
+            " LEFT JOIN measurementcategory ON product.measurementCategory_id=measurementcategory.id" +
+            " LEFT JOIN productdetails ON product.productDetails_id=productdetails.id" +
+            " WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1%" +
+            " OR measurementcategory.name LIKE %?1%" +
+            " OR productdetails.price LIKE %?1%" +
+            " OR productdetails.quantity LIKE %?1%" +
+            " OR productdetails.description LIKE %?1%)" +
+            " AND product.user_id=?2 AND productdetails.status=1",
+            countQuery = "SELECT COUNT(*) FROM product" +
+                    " LEFT JOIN productcategory ON product.productCategory_id=productcategory.id" +
+                    " LEFT JOIN measurementcategory ON product.measurementCategory_id=measurementcategory.id" +
+                    " LEFT JOIN productdetails ON product.productDetails_id=productdetails.id" +
+                    " WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1%" +
+                    " OR measurementcategory.name LIKE %?1%" +
+                    " OR productdetails.price LIKE %?1%" +
+                    " OR productdetails.quantity LIKE %?1%" +
+                    " OR productdetails.description LIKE %?1%)" +
+                    " AND product.user_id=?2 AND productdetails.status=1",
+            nativeQuery = true)
+    Page<Product> searchOnAvailableProducts(String name, int userId, Pageable pageable);
 
     // query to search for product in client side
-    @Query(value = "select * from product " +
-            " left join productcategory on product.productCategory_id=productcategory.id " +
-            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
-            " left join productdetails on product.productDetails_id=productdetails.id " +
-            " left join user on product.user_id=user.id"+
-            " where (product.name like %?1% or productcategory.name like %?1% " +
-            " or measurementcategory.name like %?1% " +
-            " or productdetails.price like %?1% " +
-            " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
-    List<Product> searchByFarm(String info, String farmName);
+//    @Query(value = "select * from product " +
+//            " left join productcategory on product.productCategory_id=productcategory.id " +
+//            " left join measurementcategory on product.measurementCategory_id=measurementcategory.id " +
+//            " left join productdetails on product.productDetails_id=productdetails.id " +
+//            " left join user on product.user_id=user.id"+
+//            " where (product.name like %?1% or productcategory.name like %?1% " +
+//            " or measurementcategory.name like %?1% " +
+//            " or productdetails.price like %?1% " +
+//            " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
+//    List<Product> searchByFarm(String info, String farmName);
+
+
+// ...
+
+    @Query(value = "SELECT * FROM product " +
+            "LEFT JOIN productcategory ON product.productCategory_id = productcategory.id " +
+            "LEFT JOIN measurementcategory ON product.measurementCategory_id = measurementcategory.id " +
+            "LEFT JOIN productdetails ON product.productDetails_id = productdetails.id " +
+            "LEFT JOIN user ON product.user_id = user.id " +
+            "WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1% " +
+            "OR measurementcategory.name LIKE %?1% " +
+            "OR productdetails.price LIKE %?1% " +
+            "OR productdetails.description LIKE %?1%) " +
+            "AND user.farmName = ?2 AND productdetails.status = 1",
+            countQuery = "SELECT COUNT(*) FROM product " +
+                    "LEFT JOIN productcategory ON product.productCategory_id = productcategory.id " +
+                    "LEFT JOIN measurementcategory ON product.measurementCategory_id = measurementcategory.id " +
+                    "LEFT JOIN productdetails ON product.productDetails_id = productdetails.id " +
+                    "LEFT JOIN user ON product.user_id = user.id " +
+                    "WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1% " +
+                    "OR measurementcategory.name LIKE %?1% " +
+                    "OR productdetails.price LIKE %?1% " +
+                    "OR productdetails.description LIKE %?1%) " +
+                    "AND user.farmName = ?2 AND productdetails.status = 1",
+            nativeQuery = true)
+    Page<Product> searchByFarm(String info, String farmName, Pageable pageable);
+
 }

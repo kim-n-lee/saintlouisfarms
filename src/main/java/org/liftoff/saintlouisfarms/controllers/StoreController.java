@@ -96,8 +96,14 @@ public class StoreController {
 
 
         if (info != null) {
-            productRepository.searchByFarm(info, farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+            Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+            Page<Product> productsPage = productRepository.searchByFarm(info, farmName, pageable);
+            List<Product> products = productsPage.getContent();
+
+            products.forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
             basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
+//            productRepository.searchByFarm(info, farmName).forEach(product -> shoppingBasketDTO.addBasketItem(new BasketItem(product, 0, shoppingBasket)));
+//            basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
 
             if (shoppingBasket.getBasketItems().isEmpty()) {
@@ -108,6 +114,17 @@ public class StoreController {
             model.addAttribute("currentShoppingBasketItems", shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList()));
             model.addAttribute("currentShoppingBasket", shoppingBasket);
             model.addAttribute("shoppingBasket", shoppingBasketDTO);
+            //pagination
+            model.addAttribute("productsPage", productsPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productsPage.getTotalPages());
+            model.addAttribute("totalItems", productsPage.getTotalElements());
+
+            model.addAttribute("title", farmName + " Store");
+            model.addAttribute("page", productsPage);
+
+            model.addAttribute("products", productsPage.getContent());
+
 
 
         }
