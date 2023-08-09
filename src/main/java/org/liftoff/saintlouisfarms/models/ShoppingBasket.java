@@ -13,7 +13,7 @@ public class ShoppingBasket extends AbstractEntity {
     @ManyToOne()
     private Client client;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<BasketItem> basketItems = new ArrayList<>();
 
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
