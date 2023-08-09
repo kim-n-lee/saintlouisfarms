@@ -103,6 +103,7 @@ public class StoreController {
 
 //          Creates a list of products depending on whether client searched for something
             List<Product> products;
+            model.addAttribute("fa", farmName);
             if(info != null){
                 products = productRepository.searchByFarm(info, farmName);
             } else {
@@ -142,7 +143,7 @@ public class StoreController {
         }
 ////// if a guest // I think if the guest can add to the cart so, it needs a work to make a special cart for everyone
         else
-        {
+        { model.addAttribute("fa", farmName);
             shoppingBasket = new ShoppingBasket();
             ShoppingBasketDTO shoppingBasketDTO = new ShoppingBasketDTO();
             shoppingBasketRepository.save(shoppingBasket);
