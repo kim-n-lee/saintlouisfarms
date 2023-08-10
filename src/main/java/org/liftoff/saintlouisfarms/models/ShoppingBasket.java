@@ -10,7 +10,7 @@ import java.util.*;
 @Entity
 public class ShoppingBasket extends AbstractEntity {
 
-    @OneToOne
+    @ManyToOne()
     private Client client;
 
     @OneToMany
@@ -61,7 +61,7 @@ public class ShoppingBasket extends AbstractEntity {
 
 
 
-//
+    //
     public void addProduct(BasketItem basketItem) {
         if (basketItems.contains(basketItem)) {
             basketItems.get(basketItems.indexOf(basketItem)).setQuantity(basketItem.getQuantity());
@@ -83,7 +83,3 @@ public class ShoppingBasket extends AbstractEntity {
 
 
 }
-
-
-
-

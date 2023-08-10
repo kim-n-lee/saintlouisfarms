@@ -14,7 +14,16 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends CrudRepository<FarmOrder, Integer> {
     @Query
+    Optional<List<FarmOrder>> findByFarmerAndSentTrueAndConfirmedTrueAndFulfilledFalse(User farmer);
+    @Query
+    Optional<List<FarmOrder>> findByFarmerAndSentTrueAndFulfilledFalse(User farmer);
+
+    @Query
+    Optional<List<FarmOrder>> findByFarmerAndSentTrueAndFulfilledTrueAndConfirmedTrue(User farmer);
+
+    @Query
     Optional<List<FarmOrder>> findByFarmerAndSentTrue(User farmer);
     @Query
     Optional<List<FarmOrder>> findByClientAndSentTrue(Client client);
+
 }

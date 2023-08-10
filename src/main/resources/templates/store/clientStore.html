@@ -18,8 +18,10 @@
                 </button>
             </div>
         </div>
+
         <hr/>
         <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-success" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
+
         <div id="shoppingCart" style="display:none;">
             <table class="table table-striped">
                 <thead>

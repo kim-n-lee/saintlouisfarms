@@ -13,9 +13,13 @@ java {
 
 repositories {
 	mavenCentral()
+
 }
 
 dependencies {
+
+
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -36,6 +40,7 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j'
 	// https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib
 	implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+
 }
 
 tasks.named('test') {

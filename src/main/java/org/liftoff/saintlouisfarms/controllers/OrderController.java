@@ -1,10 +1,7 @@
 package org.liftoff.saintlouisfarms.controllers;
 
 import org.liftoff.saintlouisfarms.data.*;
-import org.liftoff.saintlouisfarms.models.Client;
-import org.liftoff.saintlouisfarms.models.FarmOrder;
-import org.liftoff.saintlouisfarms.models.ShoppingBasket;
-import org.liftoff.saintlouisfarms.models.User;
+import org.liftoff.saintlouisfarms.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -82,7 +86,7 @@ public class OrderController {
     public String handleOrderConfirmed(@RequestParam int basketId,
                                        @RequestParam int orderId,
                                HttpServletRequest request,
-                               RedirectAttributes redirectAttrs){
+                               RedirectAttributes redirectAttrs) {
         HttpSession session = request.getSession(false);
         Client client = authenticationController.getClientFromSession(session);
 
@@ -92,13 +96,30 @@ public class OrderController {
             return "redirect:../";
         }
 //    Check to see if there is enough stock
+        List<BasketItem> allBasketINOrder = basketItemRepository.findAllBasketAsoociatedWithOrder(orderId, client.getId());
 
-//    Create a FarmOrder item which also removes items from Farmer's inventory
-        FarmOrder order = optionalFarmOrder.get();
-        order.setSent(true);
-        orderRepository.save(order);
+        for (int i = 0; i < allBasketINOrder.size(); i++) {
+            int ProductQuantityOnOrder = allBasketINOrder.get(i).getQuantity();
+            Optional<Product> product = productRepository.findById(allBasketINOrder.get(i).getProduct().getId());
+            int quantityinFarmer = product.get().getProductDetails().getQuantity();
+            if (quantityinFarmer >= ProductQuantityOnOrder) {
+                //    Create a FarmOrder item which also removes items from Farmer's inventory
+                FarmOrder order = optionalFarmOrder.get();
+                order.setSent(true);
+                orderRepository.save(order);
 
-        redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
+                redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
+                product.get().getProductDetails().setQuantity(product.get().getProductDetails().getQuantity() - ProductQuantityOnOrder);
+
+
+            } else {
+                //should change the quantity
+                return "redirect:../store";
+
+            }
+        }
+
+
         return "redirect:../store";
     }
 
