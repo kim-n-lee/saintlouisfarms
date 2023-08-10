@@ -116,13 +116,13 @@ public class OrderController {
 
         FarmOrder order = optionalFarmOrder.get();
         order.setSent(true);
-        orderRepository.save(order);
+
         basketItemsInOrder.forEach(basketItem -> basketItem.setShoppingBasket(null));
-        List<BasketItem> itemsToDelete = basketItemsInOrder.stream().filter(basketItem -> basketItem.getShoppingBasket()!=null).collect(Collectors.toList());
-//        System.out.println(itemsToDelete.get(0).getProduct().getName());
-        itemsToDelete.forEach(basketItem -> basketItem.setShoppingBasket(null));
+        basketItemRepository.saveAll(basketItemsInOrder);
+
+        orderRepository.save(order);
         productRepository.saveAll(productsToUpdate);
-        basketItemRepository.deleteAll(itemsToDelete);
+
         shoppingBasketRepository.deleteById(basketId);
 
 
