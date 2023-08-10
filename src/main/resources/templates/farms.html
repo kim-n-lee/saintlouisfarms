@@ -13,7 +13,7 @@
     <img th:unless="*{picture != null}" th:alt="'Picture of '+*{farmName}" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/profilePlaceholder.jpg}">
     <div class="card-img-overlay">
         <h1 class="card-title" th:text="${farm.farmName}"></h1>
-        <a th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary">Go to store</a>
+        <a  th:if="*{products.size()>0}" th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary" >Go to store</a>
     </div>
 </span>
 
