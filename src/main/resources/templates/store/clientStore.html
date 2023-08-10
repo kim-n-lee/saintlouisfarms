@@ -19,31 +19,31 @@
             </div>
         </div>
         <hr/>
-        <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-info" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
+        <button onclick="hideShoppingCart('shoppingCart')" class="btn btn-outline-success" data-toggle="button" aria-pressed="false" autocomplete="off" th:text="${'Shopping Basket Currently has '+ currentShoppingBasketItems.size() +' items'}"></button>
         <div id="shoppingCart" style="display:none;">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Total Price</th>
-                <th>Amount</th>
-            </tr>
-            </thead>
-            <tr th:each="productToBuy : ${currentShoppingBasketItems}" th:object="${productToBuy}">
-                <td><img th:if="*{product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>
-                <td th:text="*{product.name}"></td>
-                <td th:text="'$'+*{product.ProductDetails.price*quantity}"></td>
-                <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
-            </tr>
-            <tr>
-                <th colspan="4" th:text="${'Total Amount $'+currentShoppingBasket.totalAmount}"></th>
-            </tr>
-        </table>
-        <form method="post" th:action="@{/order/{basketId}(basketId=${currentShoppingBasket.id})}" >
-            <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
-            <input type="submit" value="Checkout" class="btn btn-primary">
-        </form>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Total Price</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tr th:each="productToBuy : ${currentShoppingBasketItems}" th:object="${productToBuy}">
+                    <td><img th:if="*{product.productDetails.picture != null}" th:src="@{'/'+*{product.productDetails.picture}}" th:alt="*{'Picture of'+product.name}" width="90" height="100"/></td>
+                    <td th:text="*{product.name}"></td>
+                    <td th:text="'$'+*{product.ProductDetails.price*quantity}"></td>
+                    <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
+                </tr>
+                <tr>
+                    <th colspan="4" th:text="${'Total Amount $'+currentShoppingBasket.totalAmount}"></th>
+                </tr>
+            </table>
+            <form method="post" th:action="@{/order/{basketId}(basketId=${currentShoppingBasket.id})}" >
+                <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
+                <input type="submit" value="Checkout" class="btn btn-primary">
+            </form>
         </div>
 
         <form  method="get"  th:action="@{/store/{farmName}(farmName=${fa})}">
@@ -56,40 +56,56 @@
         </form>
 
         <form method="post" th:object="${shoppingBasket}">
-            <table class="table table-striped">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Product Category</th>
-                <th>Product Description</th>
-                <th>Price</th>
-                <th>Purchase</th>
-            </tr>
-            </thead>
-            <tr th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
-                                <td><img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="90" height="100"/></td>
-                                <td th:text="${basketItem.product.name}"></td>
-                                <td th:text="${basketItem.product.productCategory}"></td>
-                                <td th:text="${basketItem.product.ProductDetails.description}"></td>
-                                <td th:text="'$'+${basketItem.product.ProductDetails.price}"></td>
-                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
-                                <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
-                                <td><input  th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}"  type="number" min="0" /> <p th:text="${basketItem.product.measurementCategory.name}"></p></td>
-                <td>
-                <td><input type="submit" class="btn btn-primary" value="Update Cart" /></td>
-            </tr>
-            </table>
-
-            <script type="text/javascript">
-    function clearSearch() {
-        window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
-    }
-</script>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-3" th:each="basketItem, itemStat : ${shoppingBasket.basketItemsAvailable}">
+                        <div class="card">
+                            <div class="image-container">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class=""></i></span>
+                                    </div>
+                                </div>
+                                <div class="hover hover-2 text-white top-rounded">
+                                    <img th:if="${basketItem.product.productDetails.picture != null}" th:src="@{'/'+${basketItem.product.productDetails.picture}}" th:alt="${'Picture of'+basketItem.product.name}" width="100%"/>
+                                    <div class="hover-overlay"></div>
+                                    <div class="hover-2-content px-5 py-4">
+                                        <p class="hover-2-description text-uppercase mb-0" th:text="${basketItem.product.ProductDetails.description}"></p>
+                                    </div>
+                                </div>                            </div>
+                            <div class="p-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 th:text="${basketItem.product.name}"></h5>
+                                    <div class="d-flex flex-column mb-2">
+                                        <small class="text-right" th:text="'$'+${basketItem.product.ProductDetails.price}">$0.00</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center pt-1">
+                                    <div>
+                                        Available: <span th:text="${basketItem.product.productDetails.quantity}">0</span>
+                                    </div>
+                                    <span th:text="${basketItem.product.productCategory}">Category</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center pt-1">
+                                    <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
+                                    <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
+                                    <input type="submit" class="btn btn-warning" value="Update Cart" />
+                                    <input th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}" type="number" class="" value="0" style="width: 50%"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
+                    <input type="submit" class="btn btn-success" value="Add Items to Cart" />
+                </div>
+            </div>
             <input type="hidden" name="basketId" th:value="${currentShoppingBasket.id}">
-            <input type="submit" class="btn btn-primary" value="Add Items to Cart" />
-
         </form>
+        <script type="text/javascript">
+            function clearSearch() {
+                window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
+            }
+        </script>
     </div>
 </div>
 <footer th:replace="fragments :: footer">
