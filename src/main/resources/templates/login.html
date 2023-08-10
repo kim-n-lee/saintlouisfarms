@@ -8,8 +8,7 @@
 
     <div class="container">
         <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center">Register Account</h4>
-            <p class="text-center">Get started with your free account</p>
+            <h4 class="card-title mt-3 text-center">Login to Your Account</h4>
             <form method="post" th:object="${loginFormDTO}">
                 <div class="form-group input-group padding-bottom">
                     <div class="input-group-prepend">
@@ -29,8 +28,13 @@
                 <div class="text-center"><input type="submit" class="btn btn-primary" value="Login" /></div>
             </form>
 
-            <h6 class="text-center"><br>Don't have an account? If Farmer <br><a href="/register">Register for one here</a></h6>
-            <h6 class="text-center"><br>Don't have an account? If Client<br><a href="/registerClient">Register for one here</a></h6>
+            <h6 class="text-center"><br>Don't have an account? Looking to:<br>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Registration buttons">
+                    <button class="btn btn-primary" th:href="@{/registerClient}" aria-label="Register as Client">Buy</button>
+                    <button class="btn btn-primary" th:href="@{/register}" aria-label="Register as Farmer">Sell</button>
+                </div>
+            </h6>
+
         </article>
 
     </div>

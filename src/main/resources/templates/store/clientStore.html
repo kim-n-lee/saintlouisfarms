@@ -47,7 +47,7 @@
             </form>
         </div>
 
-        <form  method="get"  th:action="@{/store/{farmName}(farmName=${fa})}">
+        <form  method="get"  th:action="@{/store/{farmName}(farmName=${farmName})}">
             <label >Product Info:</label>
             <input type="text" id="info" name="info">
 
@@ -91,7 +91,7 @@
                                     <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].id}">
                                     <input type="hidden" th:field="*{basketItemsAvailable[__${itemStat.index}__].product}">
                                     <input type="submit" class="btn btn-warning" value="Update Cart" />
-                                    <input th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}" type="number" class="" value="0" style="width: 50%"/>
+                                    <input th:field="*{basketItemsAvailable[__${itemStat.index}__].quantity}" type="number" class="" value="0" style="width: 50%" min="0"/>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
         </form>
         <script type="text/javascript">
             function clearSearch() {
-                window.location = "[[@{/store/{farmName}(farmName=${fa})}]]";
+                window.location = "[[@{/store/{farmName}(farmName=${farmName})}]]";
             }
         </script>
     </div>

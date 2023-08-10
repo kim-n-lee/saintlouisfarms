@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -96,30 +93,40 @@ public class OrderController {
             return "redirect:../";
         }
 //    Check to see if there is enough stock
-        List<BasketItem> allBasketINOrder = basketItemRepository.findAllBasketAsoociatedWithOrder(orderId, client.getId());
+        List<BasketItem> allBasketInOrder = basketItemRepository.findAllBasketAsoociatedWithOrder(orderId, client.getId());
+        List<Product> productsToUpdate = new ArrayList<>();
+        List<BasketItem> basketItemsInOrder = new ArrayList<>();
 
-        for (int i = 0; i < allBasketINOrder.size(); i++) {
-            int ProductQuantityOnOrder = allBasketINOrder.get(i).getQuantity();
-            Optional<Product> product = productRepository.findById(allBasketINOrder.get(i).getProduct().getId());
-            int quantityinFarmer = product.get().getProductDetails().getQuantity();
-            if (quantityinFarmer >= ProductQuantityOnOrder) {
+        for (BasketItem basketItem : allBasketInOrder) {
+            int ProductQuantityOnOrder = basketItem.getQuantity();
+            Optional<Product> optionalProduct = productRepository.findById(basketItem.getProduct().getId());
+            Product product = optionalProduct.get();
+            int quantityFarmer = product.getProductDetails().getQuantity();
+            if (quantityFarmer >= ProductQuantityOnOrder) {
                 //    Create a FarmOrder item which also removes items from Farmer's inventory
-                FarmOrder order = optionalFarmOrder.get();
-                order.setSent(true);
-                orderRepository.save(order);
-
-                redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
-                product.get().getProductDetails().setQuantity(product.get().getProductDetails().getQuantity() - ProductQuantityOnOrder);
-
-
+                product.getProductDetails().setQuantity(product.getProductDetails().getQuantity() - ProductQuantityOnOrder);
+                productsToUpdate.add(product);
+                basketItemsInOrder.add(basketItem);
             } else {
+                redirectAttrs.addFlashAttribute("orderFail", "Some items are no longer in stock please update your order!");
                 //should change the quantity
                 return "redirect:../store";
-
             }
         }
 
+        FarmOrder order = optionalFarmOrder.get();
+        order.setSent(true);
+        orderRepository.save(order);
+        basketItemsInOrder.forEach(basketItem -> basketItem.setShoppingBasket(null));
+        List<BasketItem> itemsToDelete = basketItemsInOrder.stream().filter(basketItem -> basketItem.getShoppingBasket()!=null).collect(Collectors.toList());
+//        System.out.println(itemsToDelete.get(0).getProduct().getName());
+        itemsToDelete.forEach(basketItem -> basketItem.setShoppingBasket(null));
+        productRepository.saveAll(productsToUpdate);
+        basketItemRepository.deleteAll(itemsToDelete);
+        shoppingBasketRepository.deleteById(basketId);
 
+
+        redirectAttrs.addFlashAttribute("orderSuccess", "Order Successfully Placed!");
         return "redirect:../store";
     }
 
