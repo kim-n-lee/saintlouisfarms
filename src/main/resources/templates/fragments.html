@@ -39,15 +39,17 @@
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
-
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/search">Search </a></li>
 
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
-                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/logout">Logout</a></li>
-                <li th:unless="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
+<!--                <li th:if="${clientLoggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/">any client-oriented links</a></li>-->
+<!--                <li class="nav-item navbar-brand"><a class="nav-link" href="about">About Us</a></li>-->
+
+                <li th:if="${loggedIn == true or clientLoggedIn == true}" class="nav-item navbar-brand"><a class="nav-link" href="/logout">Logout</a></li>
+                <li th:unless="${loggedIn == true or clientLoggedIn == true}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
             </ul>
         </div>
     </div>

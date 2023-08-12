@@ -64,7 +64,7 @@ public class StoreController {
         //display all products order by farmName
 //          I displayed all farms with inks to their pages instead
         model.addAttribute("user", userRepository.findAll());
-        model.addAttribute("loggedIn", client != null);
+        model.addAttribute("clientLoggedIn", client != null);
 
         //return to available product order by farm name for all farmer
         return "farms";
