@@ -19,8 +19,6 @@ public  class User extends MainUser {
     private String farmName;
     @OneToMany(mappedBy = "farmer")
     private List<FarmOrder> farmOrders = new ArrayList<>();
-//    @ManyToOne
-//    private Client client;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private final List<Product> products = new ArrayList<>();
 
