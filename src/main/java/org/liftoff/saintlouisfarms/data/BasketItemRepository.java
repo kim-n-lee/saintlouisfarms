@@ -43,4 +43,7 @@ public interface BasketItemRepository extends CrudRepository<BasketItem, Integer
 
     @Query(value = " select * from basketitem  where basketitem.product_id=?1 ",nativeQuery = true)
     BasketItem findBasketForProductguest(int id);
+
+    @Query
+    List<BasketItem> findByShoppingBasket(ShoppingBasket shoppingBasket);
 }

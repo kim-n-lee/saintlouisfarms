@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.UnaryOperator;
 
 @Entity
 public class ShoppingBasket extends AbstractEntity {
@@ -70,6 +71,10 @@ public class ShoppingBasket extends AbstractEntity {
         }
     }
 
+    public void addBasketItem(BasketItem basketItem){
+        this.basketItems.add(basketItem);
+    }
+
 
     public void removeProduct(Product product) {
         basketItems.removeIf(item -> item.getProduct().equals(product));
@@ -78,6 +83,10 @@ public class ShoppingBasket extends AbstractEntity {
     public List<BasketItem> getBasketItems() {
         return basketItems;
     }
+
+//    public void replaceAllBasketItems(List<BasketItem> basketItems){
+//        this.basketItems.r((UnaryOperator<BasketItem>) basketItems);
+//    }
 
 
 

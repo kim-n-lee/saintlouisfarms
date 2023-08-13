@@ -100,6 +100,21 @@ public class StoreController {
             else{
                 shoppingBasket=shoppingBasketRepository.findAboutClientCart(client.getId(),farmName);
             }
+
+
+//          Removes items that are no longer in stock
+            if(shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())){
+//                If there are items that went out of stock, it deletes them from db as well
+                List<BasketItem> basketItemsToDelete = new ArrayList<>();
+                List<BasketItem> allItemsAssociatedWithOrder = basketItemRepository.findByShoppingBasket(shoppingBasket);
+                for(BasketItem item : allItemsAssociatedWithOrder){
+                    if(!shoppingBasket.getBasketItems().contains(item)){basketItemsToDelete.add(item);}
+                }
+                basketItemRepository.deleteAll(basketItemsToDelete);
+                BigDecimal totalAmount = calculateTotalAmount (shoppingBasket);
+                shoppingBasket.setTotalAmount(totalAmount);
+                model.addAttribute("itemsRemoved", "Since you created your basket, the availability of some items has changed.");
+            }
             shoppingBasketRepository.save(shoppingBasket);
 
 //          Creates a list of products depending on whether client searched for something
@@ -116,12 +131,12 @@ public class StoreController {
                 if (basketItemRepository.findBasketForProduct(value.getId(), clientId) == null) {
                     BasketItem basketItem = new BasketItem(value, 0, shoppingBasket);
                     shoppingBasketDTO.addBasketItem(basketItem);
-                } else {
+                    shoppingBasket.addBasketItem(basketItem);
+                }else {
                     BasketItem basketItem = basketItemRepository.findBasketForProduct(value.getId(), clientId);
                     shoppingBasketDTO.addBasketItem(basketItem);
                 }
             }
-
 
             basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
@@ -169,7 +184,6 @@ public class StoreController {
     @PostMapping("/{farmName}")
     public  String displaySpecificFarmNameWithProductFormHandel(Model model,
                                                                 RedirectAttributes redirectAttrs,
-                                                                //@RequestParam(defaultValue = "0") int page,
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
@@ -200,7 +214,6 @@ public class StoreController {
         }
 
         ShoppingBasket currentShoppingBasket = basketOptional.get();
-
         List<String> insufficientQuantity = new ArrayList<>();
 
         //Looks to see if there is enough stock of an item before it can be added to the cart
@@ -229,7 +242,7 @@ public class StoreController {
 //        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 //        Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
 //        List<Product> products = productsPage.getContent();
-        model.addAttribute("fa", farmName);
+        model.addAttribute("farmName", farmName);
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
 
@@ -242,7 +255,6 @@ public class StoreController {
 //        model.addAttribute("currentShoppingBasketItems", shopTest);
 
         model.addAttribute("currentShoppingBasketItems", currentShoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()));
-
         model.addAttribute("insufficientQuantity", insufficientQuantity);
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);

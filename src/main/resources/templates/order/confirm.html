@@ -11,7 +11,67 @@
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
-<!--        Display current shopping basket here-->
+        <div class="alert alert-danger fade show" role="alert">
+            <strong>Orders not confirmed in 10 minutes will be deleted and must be resubmitted.</strong>
+        </div>
+
+
+            <div class="container bootstrap snippets">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md">
+                            <div class="table-responsive">
+                                <table class="table table-user-information" th:object="${client}">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                Name
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <p th:text="*{name}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                Address
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span th:text="*{address}"></span></br>
+                                            <span th:text="*{city}"></span>, MO <span th:text="*{zip}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                Phone Number
+                                            </strong>
+                                        </td>
+                                        <td class=>
+                                            <p th:text="*{phone}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                Email
+                                            </strong>
+                                        </td>
+                                        <td class>
+                                            <p th:text="*{email}"></p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <table class="table table-striped">
             <thead>
             <tr>
