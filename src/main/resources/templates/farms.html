@@ -6,17 +6,19 @@
 
 <nav th:replace="fragments :: navigation">
 </nav>
-
-
-<span class="card bg-transparent text-white" th:each="farm : ${user}" th:object="${farm}">
-    <img th:if="*{picture != null}" th:src="@{'/'+*{picture}}" th:alt="'Picture of '+*{farmName}" style="width:600px;"  class="img-thumbnail" >
-    <img th:unless="*{picture != null}" th:alt="'Picture of '+*{farmName}" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/profilePlaceholder.jpg}">
-    <div class="card-img-overlay">
-        <h1 class="card-title" th:text="${farm.farmName}"></h1>
-        <a  th:if="*{products.size()>0}" th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary" >Go to store</a>
+<h1>All Farms</h1></br>
+<div class="row">
+    <div class="col-4" th:each="farm : ${user}" th:object="${farm}">
+        <div class="card bg-transparent text-white">
+            <img th:if="*{picture != null}" th:src="@{'/'+*{picture}}" th:alt="'Picture of '+*{farmName}" style="width:600px;"  class="img-thumbnail" >
+            <img th:unless="*{picture != null}" th:alt="'Picture of '+*{farmName}" style="width:600px;" title="" class="img-thumbnail" th:src="@{/assets/img/profilePlaceholder.jpg}">
+            <div class="card-img-overlay">
+                <h1 class="card-title drop-shadow" th:text="${farm.farmName}"></h1>
+                <a  th:if="*{products.size()>0}" th:href="@{/store/{farmName}(farmName=${farm.farmName})}" class="btn btn-primary" >Go to store</a>
+            </div>
+        </div>
     </div>
-</span>
-
+</div>
 
 </body>
 <footer th:replace="fragments :: footer"></footer>
