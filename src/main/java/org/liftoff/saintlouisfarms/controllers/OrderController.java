@@ -49,9 +49,9 @@ public class OrderController {
                                RedirectAttributes redirectAttrs,
                                Model model){
     HttpSession session = request.getSession();
-    //        Handling if user is not logged in, or is not client
-    if(!authenticationController.clientInSession(session))
-    {return "redirect:../login";}
+//        Handling if user is not logged in, or is not client
+    if(!authenticationController.clientInSession(session)){return "redirect:../login";}
+
     Client client = authenticationController.getClientFromSession(session);
 
     Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
@@ -61,8 +61,8 @@ public class OrderController {
     }
 
     ShoppingBasket shoppingBasket = basketOptional.get();
-//    Check to see if there is enough stock
 
+//    Check to see if there is enough stock
     List<BasketItem> basketItemsOnOrder = shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
     List<Product> productsToUpdate = new ArrayList<>();
 
@@ -82,33 +82,50 @@ public class OrderController {
         }
     }
 
-
-
-    //    Create a FarmOrder items which should also removes items from Farmer's inventory
+//    Create a FarmOrder items
     FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
             client,
             shoppingBasket.getTotalAmount());
 
-//  Saves Items to Order
+//  Adds Items to Order
     basketItemsOnOrder.forEach(newOrder::addOrderItems);
-//    newOrder.
-//    List<OrderItem> orderItemsOnOrder = new ArrayList<>(basketItemsOnOrder.stream().map(OrderItem::new).collect(Collectors.toList()));
-//
-//    orderItemRepository.saveAll(orderItemsOnOrder);
     orderRepository.save(newOrder);
+    orderItemRepository.saveAll(newOrder.getOrderItems());
+
+
+//  Removes products from inventory
     productRepository.saveAll(productsToUpdate);
 
-//    new java.util.Timer().schedule(
-//            new java.util.TimerTask() {
-//                @Override
-//                public void run() {
-//                    if(!newOrder.getSent()){
-//                       orderRepository.delete(newOrder);
-//                    }
-//                }
-//            },
-//            600000
-//    );
+
+//    If order is not confirmed it is deleted after 10 minutes.
+    new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(newOrder.getId());
+                    if(optionalFarmOrder.isPresent()) {
+                        FarmOrder farmOrder = optionalFarmOrder.get();
+                        if (!farmOrder.getSent()) {
+
+                            List<OrderItem> productsToReturn = farmOrder.getOrderItems();
+
+//                          Puts items back in inventory
+                            for (OrderItem orderItem : productsToReturn) {
+                                int productQuantityOnOrder = orderItem.getQuantity();
+                                Optional<Product> optionalProduct = productRepository.findById(orderItem.getProduct().getId());
+                                Product product = optionalProduct.get();
+                                int quantityFarmer = product.getProductDetails().getQuantity();
+                                product.getProductDetails().setQuantity(quantityFarmer + productQuantityOnOrder);
+                            }
+                            productRepository.saveAll(productsToUpdate);
+                            orderItemRepository.deleteAll(newOrder.getOrderItems());
+                            orderRepository.delete(newOrder);
+                        }
+                    }
+                }
+            },
+            6000
+    );
 
 
     model.addAttribute("basketId", basketId);
@@ -121,11 +138,8 @@ public class OrderController {
     @PostMapping("confirmed")
     public String handleOrderConfirmed(@RequestParam int basketId,
                                        @RequestParam int orderId,
-                                       HttpServletRequest request,
                                        RedirectAttributes redirectAttrs) {
 
-//        HttpSession session = request.getSession(false);
-//        Client client = authenticationController.getClientFromSession(session);
 
         Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
         if (basketOptional.isEmpty()) {
@@ -142,42 +156,6 @@ public class OrderController {
 
         FarmOrder order = optionalFarmOrder.get();
         order.setSent(true);
-
-//
-//
-//
-////    Check to see if there is enough stock
-//        List<BasketItem> basketItemsOnOrder = shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
-//        List<Product> productsToUpdate = new ArrayList<>();
-//
-//        for (BasketItem basketItem : basketItemsOnOrder) {
-//            int ProductQuantityOnOrder = basketItem.getQuantity();
-//            Optional<Product> optionalProduct = productRepository.findById(basketItem.getProduct().getId());
-//            Product product = optionalProduct.get();
-//            int quantityFarmer = product.getProductDetails().getQuantity();
-//            if (quantityFarmer >= ProductQuantityOnOrder) {
-//                //    Create a FarmOrder item which also removes items from Farmer's inventory
-//                product.getProductDetails().setQuantity(product.getProductDetails().getQuantity() - ProductQuantityOnOrder);
-//                productsToUpdate.add(product);
-//            } else {
-//                redirectAttrs.addFlashAttribute("orderFail", "Some items are no longer in stock please update your order!");
-//                //should change the quantity
-//                return "redirect:../store";
-//            }
-//        }
-//
-//        List<OrderItem> orderItemsOnOrder = new ArrayList<>(basketItemsOnOrder.stream().map(OrderItem::new).collect(Collectors.toList()));
-//
-//
-//        //    Create a FarmOrder items which should also removes items from Farmer's inventory
-//        FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
-//                client,
-//                orderItemsOnOrder,
-//                shoppingBasket.getTotalAmount());
-//
-//        newOrder.setSent(true);
-//
-//
         basketItemRepository.deleteAll(shoppingBasket.getBasketItems());
         orderRepository.save(order);
         shoppingBasketRepository.deleteById(basketId);

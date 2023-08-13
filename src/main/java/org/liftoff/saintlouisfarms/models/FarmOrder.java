@@ -12,7 +12,7 @@ public class FarmOrder extends AbstractEntity {
     private User farmer;
     @ManyToOne()
     private Client client;
-    @OneToMany(mappedBy = "orderItem",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
     private LocalDateTime localDateTime = LocalDateTime.now();
