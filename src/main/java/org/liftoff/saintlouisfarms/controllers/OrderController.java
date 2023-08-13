@@ -133,7 +133,7 @@ public class OrderController {
 
     model.addAttribute("title", "Confirm Order For: "+farmer.getFarmName());
     model.addAttribute("basketId", basketId);
-    model.addAttribute("loggedIn", client != null);
+    model.addAttribute("clientLoggedIn", client != null);
     model.addAttribute("newOrder", newOrder);
     model.addAttribute("client", client);
     return"order/confirm";
