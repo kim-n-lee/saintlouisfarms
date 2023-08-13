@@ -13,10 +13,10 @@ import java.util.List;
 public class Product extends AbstractEntity {
 
 
-    @NotBlank
-    @Size(min = 3, max = 45, message = "name must be between 3 and 45 character")
-    private String name;
 
+    @Size(min = 3, max = 45, message = "Name must be between 3 and 45 characters.")
+    private String name;
+    @NotNull(message="Category is required.")
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ProductCategory productCategory;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
@@ -32,8 +32,7 @@ public class Product extends AbstractEntity {
 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @Valid
-    @NotNull
+    @NotNull(message = "Measurement is required.")
     private MeasurementCategory measurementCategory;
 
     public void setProductDetails(ProductDetails productDetails) {
@@ -44,7 +43,7 @@ public class Product extends AbstractEntity {
     private User user;
 
 
-    public Product(@Size(min = 3, max = 45, message = "name must be between 3 and 45 character") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
+    public Product(@Size(min = 3, max = 45, message = "Name must be between 3 and 45 characters.") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user) {
         this.name = name;
 
         this.measurementCategory = measurementCategory;
