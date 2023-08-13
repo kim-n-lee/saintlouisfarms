@@ -83,9 +83,10 @@ public class OrderController {
     }
 
 //    Create a FarmOrder items
-    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
-            client,
-            shoppingBasket.getTotalAmount());
+    User farmer = shoppingBasket.getBasketItems().get(0).getProduct().getUser();
+    FarmOrder newOrder = new FarmOrder(farmer,
+                                       client,
+                                       shoppingBasket.getTotalAmount());
 
 //  Adds Items to Order
     basketItemsOnOrder.forEach(newOrder::addOrderItems);
@@ -130,6 +131,7 @@ public class OrderController {
     );
 
 
+    model.addAttribute("title", "Confirm Order For: "+farmer.getFarmName());
     model.addAttribute("basketId", basketId);
     model.addAttribute("loggedIn", client != null);
     model.addAttribute("newOrder", newOrder);

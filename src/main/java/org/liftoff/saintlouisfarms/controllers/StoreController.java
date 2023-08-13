@@ -100,6 +100,21 @@ public class StoreController {
             else{
                 shoppingBasket=shoppingBasketRepository.findAboutClientCart(client.getId(),farmName);
             }
+
+
+//          Removes items that are no longer in stock
+            if(shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())){
+//                If there are items that went out of stock, it deletes them from db as well
+                List<BasketItem> basketItemsToDelete = new ArrayList<>();
+                List<BasketItem> allItemsAssociatedWithOrder = basketItemRepository.findByShoppingBasket(shoppingBasket);
+                for(BasketItem item : allItemsAssociatedWithOrder){
+                    if(!shoppingBasket.getBasketItems().contains(item)){basketItemsToDelete.add(item);}
+                }
+                basketItemRepository.deleteAll(basketItemsToDelete);
+                BigDecimal totalAmount = calculateTotalAmount (shoppingBasket);
+                shoppingBasket.setTotalAmount(totalAmount);
+                model.addAttribute("itemsRemoved", "Since you created your basket, the availability of some items has changed.");
+            }
             shoppingBasketRepository.save(shoppingBasket);
 
 //          Creates a list of products depending on whether client searched for something
@@ -122,7 +137,6 @@ public class StoreController {
                     shoppingBasketDTO.addBasketItem(basketItem);
                 }
             }
-
 
             basketItemRepository.saveAll(shoppingBasketDTO.getBasketItemsAvailable());
 
