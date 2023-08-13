@@ -10,6 +10,7 @@
     <div class="row gx-4 gx-lg-5 p-5 pe-5">
         <h1 th:replace="fragments :: banner"></h1>
         <hr/>
+        <div id="search"></div>
         <ul class="pagination">
             <li th:class="${products.first ? 'disabled' : ''}">
                 <a th:if="${not products.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
@@ -74,6 +75,7 @@
             </div>
         </div>
     </div>
+        <div>
           <ul class="pagination">
             <li th:class="${products.first ? 'disabled' : ''}">
                 <a th:if="${not products.first}" th:href="@{/farmer/products(page=0)}">&laquo;</a>
@@ -90,6 +92,8 @@
             window.location = "[[@{/farmer/products}]]";
         }
     </script>
+</div>
+    </div>
 </div>
 
 <footer th:replace="fragments :: footer">

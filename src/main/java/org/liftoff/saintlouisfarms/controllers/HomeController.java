@@ -14,12 +14,14 @@ public class HomeController {
     @GetMapping
     public String displayHomePage(Model model, HttpSession session) {
         model.addAttribute("loggedIn", session.getAttribute("user") != null);
+        model.addAttribute("clientLoggedIn", session.getAttribute("client") != null);
         return "index";
     }
 
     @GetMapping("/about")
     public String displayAboutPage(Model model, HttpSession session) {
         model.addAttribute("loggedIn", session.getAttribute("user") != null);
+        model.addAttribute("clientLoggedIn", session.getAttribute("client") != null);
         return "/about";
     }
 
