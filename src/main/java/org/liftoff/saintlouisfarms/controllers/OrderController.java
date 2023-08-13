@@ -27,15 +27,17 @@ public class OrderController {
     private UserRepository userRepository;
     private OrderRepository orderRepository;
     private BasketItemRepository basketItemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
-    public OrderController(AuthenticationController authenticationController, ProductRepository productRepository, ShoppingBasketRepository shoppingBasketRepository, UserRepository userRepository, OrderRepository orderRepository, BasketItemRepository basketItemRepository) {
+    public OrderController(AuthenticationController authenticationController, ProductRepository productRepository, ShoppingBasketRepository shoppingBasketRepository, UserRepository userRepository, OrderRepository orderRepository, BasketItemRepository basketItemRepository,OrderItemRepository orderItemRepository) {
         this.authenticationController = authenticationController;
         this.productRepository = productRepository;
         this.shoppingBasketRepository = shoppingBasketRepository;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.basketItemRepository =basketItemRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
 
@@ -47,9 +49,9 @@ public class OrderController {
                                RedirectAttributes redirectAttrs,
                                Model model){
     HttpSession session = request.getSession();
-    //        Handling if user is not logged in, or is not client
-    if(!authenticationController.clientInSession(session))
-    {return "redirect:../login";}
+//        Handling if user is not logged in, or is not client
+    if(!authenticationController.clientInSession(session)){return "redirect:../login";}
+
     Client client = authenticationController.getClientFromSession(session);
 
     Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
@@ -57,20 +59,76 @@ public class OrderController {
         redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
         return "redirect:../";
     }
-//    Check to see if there is enough stock
 
     ShoppingBasket shoppingBasket = basketOptional.get();
 
-    //    Create a FarmOrder items which should also removes items from Farmer's inventory
-    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
-                                        client,
-                                        shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList()),
-                                        shoppingBasket.getTotalAmount());
-    basketItemRepository.saveAll(newOrder.getOrderItems());
-    orderRepository.save(newOrder);
+//    Check to see if there is enough stock
+    List<BasketItem> basketItemsOnOrder = shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity()>0).collect(Collectors.toList());
+    List<Product> productsToUpdate = new ArrayList<>();
 
-    newOrder.getOrderItems().stream().forEach(item-> item.setFarmOrderItem(newOrder));
-    basketItemRepository.saveAll(newOrder.getOrderItems());
+    for (BasketItem basketItem : basketItemsOnOrder) {
+        int ProductQuantityOnOrder = basketItem.getQuantity();
+        Optional<Product> optionalProduct = productRepository.findById(basketItem.getProduct().getId());
+        Product product = optionalProduct.get();
+        int quantityFarmer = product.getProductDetails().getQuantity();
+        if (quantityFarmer >= ProductQuantityOnOrder) {
+            //    Create a FarmOrder item which also removes items from Farmer's inventory
+            product.getProductDetails().setQuantity(product.getProductDetails().getQuantity() - ProductQuantityOnOrder);
+            productsToUpdate.add(product);
+        } else {
+            redirectAttrs.addFlashAttribute("orderFail", "Some items are no longer in stock please update your order!");
+            //should change the quantity
+            return "redirect:../store";
+        }
+    }
+
+//    Create a FarmOrder items
+    FarmOrder newOrder = new FarmOrder(shoppingBasket.getBasketItems().get(0).getProduct().getUser(),
+            client,
+            shoppingBasket.getTotalAmount());
+
+//  Adds Items to Order
+    basketItemsOnOrder.forEach(newOrder::addOrderItems);
+    orderRepository.save(newOrder);
+    orderItemRepository.saveAll(newOrder.getOrderItems());
+
+
+//  Removes products from inventory
+    productRepository.saveAll(productsToUpdate);
+
+
+//    If order is not confirmed it is deleted after 10 minutes.
+    new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(newOrder.getId());
+                    if(optionalFarmOrder.isPresent()) {
+                        FarmOrder farmOrder = optionalFarmOrder.get();
+                        if (!farmOrder.getSent()) {
+
+                            List<OrderItem> orderItemsToReturn = farmOrder.getOrderItems();
+                            List<Product> productsToReturn = new ArrayList<>();
+
+//                          Puts items back in inventory
+                            for (OrderItem orderItem : orderItemsToReturn) {
+                                int productQuantityOnOrder = orderItem.getQuantity();
+                                Optional<Product> optionalProduct = productRepository.findById(orderItem.getProduct().getId());
+                                Product product = optionalProduct.get();
+                                int quantityFarmer = product.getProductDetails().getQuantity();
+                                product.getProductDetails().setQuantity(quantityFarmer + productQuantityOnOrder);
+                                productsToReturn.add(product);
+                            }
+                            productRepository.saveAll(productsToReturn);
+                            orderItemRepository.deleteAll(farmOrder.getOrderItems());
+                            orderRepository.delete(farmOrder);
+                        }
+                    }
+                }
+            },
+            600000
+    );
+
 
     model.addAttribute("basketId", basketId);
     model.addAttribute("loggedIn", client != null);
@@ -82,47 +140,26 @@ public class OrderController {
     @PostMapping("confirmed")
     public String handleOrderConfirmed(@RequestParam int basketId,
                                        @RequestParam int orderId,
-                               HttpServletRequest request,
-                               RedirectAttributes redirectAttrs) {
-        HttpSession session = request.getSession(false);
-        Client client = authenticationController.getClientFromSession(session);
+                                       RedirectAttributes redirectAttrs) {
+
+
+        Optional<ShoppingBasket> basketOptional = shoppingBasketRepository.findById(basketId);
+        if (basketOptional.isEmpty()) {
+            redirectAttrs.addFlashAttribute("NotFound", "Shopping Basket Not Found");
+            return "redirect:../";
+        }
+        ShoppingBasket shoppingBasket = basketOptional.get();
 
         Optional<FarmOrder> optionalFarmOrder = orderRepository.findById(orderId);
         if (optionalFarmOrder.isEmpty()) {
             redirectAttrs.addFlashAttribute("NotFound", "Order Not Found");
             return "redirect:../";
         }
-//    Check to see if there is enough stock
-        List<BasketItem> allBasketInOrder = basketItemRepository.findAllBasketAsoociatedWithOrder(orderId, client.getId());
-        List<Product> productsToUpdate = new ArrayList<>();
-        List<BasketItem> basketItemsInOrder = new ArrayList<>();
-
-        for (BasketItem basketItem : allBasketInOrder) {
-            int ProductQuantityOnOrder = basketItem.getQuantity();
-            Optional<Product> optionalProduct = productRepository.findById(basketItem.getProduct().getId());
-            Product product = optionalProduct.get();
-            int quantityFarmer = product.getProductDetails().getQuantity();
-            if (quantityFarmer >= ProductQuantityOnOrder) {
-                //    Create a FarmOrder item which also removes items from Farmer's inventory
-                product.getProductDetails().setQuantity(product.getProductDetails().getQuantity() - ProductQuantityOnOrder);
-                productsToUpdate.add(product);
-                basketItemsInOrder.add(basketItem);
-            } else {
-                redirectAttrs.addFlashAttribute("orderFail", "Some items are no longer in stock please update your order!");
-                //should change the quantity
-                return "redirect:../store";
-            }
-        }
 
         FarmOrder order = optionalFarmOrder.get();
         order.setSent(true);
-
-        basketItemsInOrder.forEach(basketItem -> basketItem.setShoppingBasket(null));
-        basketItemRepository.saveAll(basketItemsInOrder);
-
+        basketItemRepository.deleteAll(shoppingBasket.getBasketItems());
         orderRepository.save(order);
-        productRepository.saveAll(productsToUpdate);
-
         shoppingBasketRepository.deleteById(basketId);
 
 

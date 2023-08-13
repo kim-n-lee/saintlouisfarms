@@ -10,13 +10,6 @@ import java.util.List;
 public class Client extends MainUser {
 
 
-//    public List<User> getUsers() {
-//        return users;
-//    }
-
-//    @OneToMany(mappedBy = "client")
-//    private final List<User> users = new ArrayList<>();
-
     @OneToMany(mappedBy = "client")
     private List<FarmOrder> farmOrders = new ArrayList<>();
     @OneToMany(mappedBy = "client")

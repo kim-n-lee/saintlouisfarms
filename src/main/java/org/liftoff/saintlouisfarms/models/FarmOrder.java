@@ -12,8 +12,8 @@ public class FarmOrder extends AbstractEntity {
     private User farmer;
     @ManyToOne()
     private Client client;
-    @OneToMany(mappedBy = "farmOrderItem")
-    private List<BasketItem> orderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OrderItem> orderItems = new ArrayList<>();
     private BigDecimal totalAmount = BigDecimal.valueOf(0);
     private LocalDateTime localDateTime = LocalDateTime.now();
     private Boolean sent = false;
@@ -39,18 +39,25 @@ public class FarmOrder extends AbstractEntity {
         this.client = client;
     }
 
-    public FarmOrder(User farmer, Client client, List<BasketItem> orderItems, BigDecimal totalAmount) {
+    public FarmOrder(User farmer, Client client, BigDecimal totalAmount) {
+        this.farmer = farmer;
+        this.client = client;
+        this.totalAmount = totalAmount;
+    }
+
+    public FarmOrder(User farmer, Client client, List<OrderItem> orderItems, BigDecimal totalAmount) {
         this.farmer = farmer;
         this.client = client;
         this.orderItems = orderItems;
         this.totalAmount = totalAmount;
+
     }
 
-    public List<BasketItem> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<BasketItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -93,5 +100,9 @@ public class FarmOrder extends AbstractEntity {
 
     public void setSent(Boolean sent) {
         this.sent = sent;
+    }
+
+    public void addOrderItems(BasketItem basketItem){
+        orderItems.add(new OrderItem(basketItem, this));
     }
 }
