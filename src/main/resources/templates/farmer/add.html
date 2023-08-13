@@ -116,22 +116,22 @@
             </form>
         </div>
     </div>
-    <div class="row gx-4 gx-lg-5 p-5 pe-5">
+    <div id="alert" class="row gx-4 gx-lg-5 p-5 pe-5">
         <div th:if="${productAdded}" class="alert alert-success fade show" role="alert">
             <strong th:text="${productAdded}"></strong> was successfully added.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" onclick="hide()" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div th:if="${measurementAdded}" class="alert alert-success fade show" role="alert">
             <strong th:text="${measurementAdded}"></strong> was successfully added to measurements.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" onclick="hide()" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div th:if="${categoryAdded}" class="alert alert-success fade show" role="alert">
             <strong th:text="${categoryAdded}"></strong> was successfully added to categories.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" onclick="hide()" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -193,6 +193,11 @@
 <script type="text/javascript">
     function clearSearch() {
         window.location = "[[@{/farmer/add}]]";
+    }
+
+    function hide() {
+        var x = document.getElementById("alert");
+        x.style.display = "none";
     }
 </script>
 </div>
