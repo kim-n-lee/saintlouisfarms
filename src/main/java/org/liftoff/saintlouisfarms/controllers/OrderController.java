@@ -107,24 +107,26 @@ public class OrderController {
                         FarmOrder farmOrder = optionalFarmOrder.get();
                         if (!farmOrder.getSent()) {
 
-                            List<OrderItem> productsToReturn = farmOrder.getOrderItems();
+                            List<OrderItem> orderItemsToReturn = farmOrder.getOrderItems();
+                            List<Product> productsToReturn = new ArrayList<>();
 
 //                          Puts items back in inventory
-                            for (OrderItem orderItem : productsToReturn) {
+                            for (OrderItem orderItem : orderItemsToReturn) {
                                 int productQuantityOnOrder = orderItem.getQuantity();
                                 Optional<Product> optionalProduct = productRepository.findById(orderItem.getProduct().getId());
                                 Product product = optionalProduct.get();
                                 int quantityFarmer = product.getProductDetails().getQuantity();
                                 product.getProductDetails().setQuantity(quantityFarmer + productQuantityOnOrder);
+                                productsToReturn.add(product);
                             }
-                            productRepository.saveAll(productsToUpdate);
-                            orderItemRepository.deleteAll(newOrder.getOrderItems());
-                            orderRepository.delete(newOrder);
+                            productRepository.saveAll(productsToReturn);
+                            orderItemRepository.deleteAll(farmOrder.getOrderItems());
+                            orderRepository.delete(farmOrder);
                         }
                     }
                 }
             },
-            6000
+            600000
     );
 
 
