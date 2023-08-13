@@ -70,6 +70,10 @@ public class ShoppingBasket extends AbstractEntity {
         }
     }
 
+    public void addBasketItem(BasketItem basketItem){
+        this.basketItems.add(basketItem);
+    }
+
 
     public void removeProduct(Product product) {
         basketItems.removeIf(item -> item.getProduct().equals(product));
