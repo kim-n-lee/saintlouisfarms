@@ -64,7 +64,7 @@ public class StoreController {
         //display all products order by farmName
 //          I displayed all farms with inks to their pages instead
         model.addAttribute("user", userRepository.findAll());
-        model.addAttribute("loggedIn", client != null);
+        model.addAttribute("clientLoggedIn", client != null);
 
         //return to available product order by farm name for all farmer
         return "farms";
@@ -134,7 +134,7 @@ public class StoreController {
 
 //          Lists items that have set quantity as the active shopping basket
             shoppingBasketItems = shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList());
-            model.addAttribute("loggedIn", client != null);
+            model.addAttribute("clientLoggedIn", client != null);
         }
 ////// If not logged in cart that is not saved anywhere.
         else
@@ -237,7 +237,7 @@ public class StoreController {
         shoppingBasketRepository.save(currentShoppingBasket);
 
 
-        model.addAttribute("loggedIn", client != null);
+        model.addAttribute("clientLoggedIn", client != null);
 //        List<BasketItem> shopTest=basketItemRepository.findTheCart(client.getId(),farmName);
 //        model.addAttribute("currentShoppingBasketItems", shopTest);
 
