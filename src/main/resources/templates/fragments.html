@@ -48,7 +48,7 @@
 
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
                 <li th:if="${clientLoggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/store">View All Farms</a></li>
-                <li th:unless="${loggedIn == true or clientLoggedIn == true}" class="nav-item navbar-brand"><a class="nav-link" href="about">About Us</a></li>
+                <li class="nav-item navbar-brand"><a class="nav-link" href="../../../../about">About Us</a></li>
 
                 <li th:if="${loggedIn == true or clientLoggedIn == true}" class="nav-item navbar-brand"><a class="nav-link" href="/logout">Logout</a></li>
                 <li th:unless="${loggedIn == true or clientLoggedIn == true}" class="nav-item navbar-brand"><a class="nav-link" href="/login">Login</a></li>
