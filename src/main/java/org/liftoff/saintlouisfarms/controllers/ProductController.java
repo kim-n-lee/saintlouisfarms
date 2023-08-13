@@ -105,6 +105,8 @@ public String searchProduct(@Param("info") String info
         }
 
         model.addAttribute("loggedIn", user != null);
+        model.addAttribute("searchOverride", true);
+
         return "farmer/products";
     }
 
@@ -117,6 +119,7 @@ public String searchProduct(@Param("info") String info
         model.addAttribute("title", "Add Product");
         model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
         model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
+        model.addAttribute("searchOverride", true);
         model.addAttribute(new Product());
         if(info!=null){
             List<Product> searchResult=productRepository.searchByInfo(info,user.getId());
@@ -144,6 +147,7 @@ public String searchProduct(@Param("info") String info
             model.addAttribute("measurements", measurementCategoryRepository.findAll());
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
+            model.addAttribute("searchOverride", true);
             return "farmer/add";
         }
 
@@ -164,6 +168,7 @@ public String searchProduct(@Param("info") String info
                 model.addAttribute("products", productRepository.findProductById(user.getId()));
                 model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
                 model.addAttribute("loggedIn", user != null);
+                model.addAttribute("searchOverride", true);
                 return "farmer/add";
             }
         }
@@ -174,6 +179,7 @@ public String searchProduct(@Param("info") String info
 //        Should also set userid to user logged in
         model.addAttribute("product", productRepository.findAll());
         model.addAttribute("loggedIn", user != null);
+        model.addAttribute("searchOverride", true);
         return "redirect:add";
     }
     @RequestMapping(value = "{productToDeleteId}",method = {RequestMethod.POST, RequestMethod.GET})

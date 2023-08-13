@@ -13,7 +13,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="image-container">
-                    <div>
+                            <div>
                         <div class="d-flex justify-content-between align-items-center">
                             <span><i class="nf fa-heart-o"></i></span>
                         </div>
@@ -137,10 +137,10 @@
         </div>
     </div>
 </div>
-
+<div id="search"></div>
 <div class="overflow-auto" style="max-width: 100%; max-height: 600px; overflow-x: hidden !important;">
     <h2>All Items</h2>
-    <form  method="get" th:action="@{/farmer/add}">
+    <form method="get" th:action="@{/farmer/add}">
     <label >Product Info:</label>
     <input type="text" id="info" name="info">
     <input type="submit" value="Search">
