@@ -186,7 +186,7 @@ public class OrderController {
 
         model.addAttribute("title", "Past Orders");
         model.addAttribute("orders", orders);
-        model.addAttribute("loggedIn", client != null);
+        model.addAttribute("clientLoggedIn", client != null);
         return "order/allOrders";
     }
 
