@@ -54,8 +54,10 @@ public class ProductController {
     // this method search for specific products
 
 @RequestMapping(value = "/search",method = {RequestMethod.GET,RequestMethod.POST})
-public String searchProduct(@Param("info") String info
-        , HttpServletRequest request ,Model model){
+public String searchProduct(@Param("info") String info,
+                            HttpServletRequest request,
+                            Model model){
+
     HttpSession session = request.getSession();
     User user = authenticationController.getUserFromSession(session);
     model.addAttribute("title","Search");
@@ -89,7 +91,11 @@ public String searchProduct(@Param("info") String info
 //        return "farmer/products";
 //    }
     @RequestMapping(value = "/products", method = {RequestMethod.GET, RequestMethod.POST})
-    public String displayAllProducts(@RequestParam(defaultValue = "0") int page, Model model, HttpServletRequest request, @Param("info") String info) {
+    public String displayAllProducts(@RequestParam(defaultValue = "0") int page,
+                                     Model model,
+                                     HttpServletRequest request,
+                                     @Param("info") String info) {
+
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -112,7 +118,10 @@ public String searchProduct(@Param("info") String info
 
     // add new product
     @GetMapping("add")
-    public String displayAddProductForm(Model model, HttpServletRequest request,@Param("info") String info) {
+    public String displayAddProductForm(Model model,
+                                        HttpServletRequest request,
+                                        @Param("info") String info) {
+
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
@@ -136,15 +145,19 @@ public String searchProduct(@Param("info") String info
 
     @PostMapping("add")
     public String processAddProductForm(@ModelAttribute @Valid Product newProduct,
-                                        Errors errors, Model model, HttpServletRequest request, @RequestParam(required = false) MultipartFile picture, RedirectAttributes redirectAttrs) throws IOException
+                                        Errors errors,
+                                        Model model,
+                                        HttpServletRequest request,
+                                        @RequestParam(required = false) MultipartFile picture,
+                                        RedirectAttributes redirectAttrs) throws IOException
     {
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Product");
-            model.addAttribute("productType", productCategoryRepository.findAll());
-            model.addAttribute("measurements", measurementCategoryRepository.findAll());
+            model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+            model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
             model.addAttribute("products", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
             model.addAttribute("searchOverride", true);
@@ -163,8 +176,8 @@ public String searchProduct(@Param("info") String info
                 newProduct.getProductDetails().setPicture(filePath);
             }catch(IOException | RuntimeException e){
                 model.addAttribute("title", "Add Product");
-                model.addAttribute("productType", productCategoryRepository.findAll());
-                model.addAttribute("measurements", measurementCategoryRepository.findAll());
+                model.addAttribute("productType", productCategoryRepository.findProductsTypetById(user.getId()));
+                model.addAttribute("measurements", measurementCategoryRepository.findMeasurementById(user.getId()));
                 model.addAttribute("products", productRepository.findProductById(user.getId()));
                 model.addAttribute("pictureError", "There was something wrong with the picture you uploaded please try another smaller picture, up to 2MB");
                 model.addAttribute("loggedIn", user != null);

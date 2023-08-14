@@ -19,18 +19,18 @@ public class ProductDetails  extends AbstractEntity{
 
 //    Need integer amount field that will paired with MeasurementCategory to show how much we have: 1 dozen
 
-    @NotNull(message="price is required")
+    @NotNull(message="Price is required.")
     private BigDecimal price;
-    @NotNull(message="quantity is required")
-    private int quantity;
+    @NotNull(message="Quantity is required.")
+    private Integer quantity=null;
     //    I think it would be better to not require the status so that a farmer can create a product that is not yet avilable
-    @NotNull(message="status is required")
+    @NotNull(message="Status is required.")
     private Boolean status;
 
 
     private String picture;
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -52,9 +52,7 @@ public class ProductDetails  extends AbstractEntity{
             this.status=false;
 
         }
-//        else if ( (quantity<=0) && status==false) {
-//            this.status=false;
-//        }
+
         else {
             this.status = status;}
 
@@ -72,7 +70,7 @@ public class ProductDetails  extends AbstractEntity{
     public ProductDetails() {
     }
 
-    public ProductDetails(String description, BigDecimal price, Boolean status,int quantity) {
+    public ProductDetails(String description, BigDecimal price, Boolean status,Integer quantity) {
         this.description = description;
         this.price = price;
         this.status = status;
@@ -96,7 +94,7 @@ public class ProductDetails  extends AbstractEntity{
     }
 
 
-    public void checkAmount(int quantity, boolean stat){
+    public void checkAmount(Integer quantity, boolean stat){
         if( (quantity<=0)){
             stat=false;
 
@@ -104,7 +102,7 @@ public class ProductDetails  extends AbstractEntity{
 
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }

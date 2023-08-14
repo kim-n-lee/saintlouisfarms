@@ -138,7 +138,6 @@ public class OrderController {
     model.addAttribute("client", client);
     return"order/confirm";
 }
-
     @PostMapping("confirmed")
     public String handleOrderConfirmed(@RequestParam int basketId,
                                        @RequestParam int orderId,
