@@ -137,6 +137,22 @@
         </script>
     </div>
 </div>
+<ul class="pagination justify-content-center">
+    <li class="page-item" th:class="${page.first ? 'disabled' : ''}">
+        <a class="page-link" href="#" th:if="${!page.first}" th:href="@{${baseUrl}(page=0, size=${page.size}, sort=${page.sort})}">First</a>
+    </li>
+    <li class="page-item" th:class="${page.first ? 'disabled' : ''}">
+        <a class="page-link" href="#" th:if="${!page.first}" th:href="@{${baseUrl}(page=${page.number - 1}, size=${page.size}, sort=${page.sort})}">Previous</a>
+    </li>
+    <li class="page-item" th:class="${page.last ? 'disabled' : ''}">
+        <a class="page-link" href="#" th:if="${!page.last}" th:href="@{${baseUrl}(page=${page.number + 1}, size=${page.size}, sort=${page.sort})}">Next</a>
+    </li>
+    <li class="page-item" th:class="${page.last ? 'disabled' : ''}">
+        <a class="page-link" href="#" th:if="${!page.last}" th:href="@{${baseUrl}(page=${page.totalPages - 1}, size=${page.size}, sort=${page.sort})}">Last</a>
+    </li>
+
+
+</ul>
 <footer th:replace="fragments :: footer">
 </footer>
 </body>

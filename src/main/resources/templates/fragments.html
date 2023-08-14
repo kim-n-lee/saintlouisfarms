@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description"
-          content="Final Project for LaunchCode's Liftoff program. Created by: Jood Alzqaili, Maisa Salahaldin, Emily Chassin, Tudor Seserman, and Mike Wilson." />
+          content="Final Project for LaunchCode's Liftoff program. Created by: Jood Alzqaili, Maisa Salahaldin, Tudor Seserman, and Mike Wilson." />
     <meta name="author" content="Mike Wilson and Tudor Seserman" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" th:href="@{../../../assets/favicon.ico}" />
@@ -47,7 +47,7 @@
 
 
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
-                <li th:if="${clientLoggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/store">View All Farms</a></li>
+                <li th:if="${clientLoggedIn == true or loggedIn == false}" class="nav-item navbar-brand"><a class="nav-link" href="/store">View All Farms</a></li>
                 <li th:if="${clientLoggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/order/all">View All Orders</a></li>
                 <li class="nav-item navbar-brand"><a class="nav-link" href="../../../../about">About Us</a></li>
 
