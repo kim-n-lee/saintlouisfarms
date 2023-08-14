@@ -30,12 +30,8 @@
 
             <h6 class="text-center"><br>Don't have an account? Looking to:<br>
                 <div class="btn-group btn-group-sm" role="group" aria-label="Registration buttons">
-                    <form method="get" th:action="@{/registerClient}">
-                        <button class="btn btn-primary" aria-label="Register as Client">Buy</button>
-                    </form>
-                    <form method="get" th:action="@{/register}">
-                        <button class="btn btn-primary " aria-label="Register as Farmer">Sell</button>
-                    </form>
+                    <button class="btn btn-primary" onclick="window.location.href='/registerClient'" aria-label="Register as Client">Buy</button>
+                    <button class="btn btn-primary"  onclick="window.location.href='/register'" aria-label="Register as Farmer">Sell</button>
                 </div>
             </h6>
 
