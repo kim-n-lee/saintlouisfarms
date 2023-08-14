@@ -68,5 +68,52 @@ List<Product>findNameOfProductBy(String name);
             " or measurementcategory.name like %?1% " +
             " or productdetails.price like %?1% " +
             " or productdetails.description  like %?1% )and user.farmName=?2 and productdetails.status=1",nativeQuery = true)
+
     List<Product> searchByFarm(String info, String farmName);
+
+    @Query(value = "SELECT * FROM product " +
+            "LEFT JOIN productcategory ON product.productCategory_id = productcategory.id " +
+            "LEFT JOIN measurementcategory ON product.measurementCategory_id = measurementcategory.id " +
+            "LEFT JOIN productdetails ON product.productDetails_id = productdetails.id " +
+            "LEFT JOIN user ON product.user_id = user.id " +
+            "WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1% " +
+            "OR measurementcategory.name LIKE %?1% " +
+            "OR productdetails.price LIKE %?1% " +
+            "OR productdetails.description LIKE %?1%) " +
+            "AND user.farmName = ?2 AND productdetails.status = 1",
+            countQuery = "SELECT COUNT(*) FROM product " +
+                    "LEFT JOIN productcategory ON product.productCategory_id = productcategory.id " +
+                    "LEFT JOIN measurementcategory ON product.measurementCategory_id = measurementcategory.id " +
+                    "LEFT JOIN productdetails ON product.productDetails_id = productdetails.id " +
+                    "LEFT JOIN user ON product.user_id = user.id " +
+                    "WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1% " +
+                    "OR measurementcategory.name LIKE %?1% " +
+                    "OR productdetails.price LIKE %?1% " +
+                    "OR productdetails.description LIKE %?1%) " +
+                    "AND user.farmName = ?2 AND productdetails.status = 1",
+            nativeQuery = true)
+    Page<Product> searchByFarmm(String info, String farmName, Pageable pageable);
+
+    @Query(value = "SELECT * FROM product" +
+            " LEFT JOIN productcategory ON product.productCategory_id=productcategory.id" +
+            " LEFT JOIN measurementcategory ON product.measurementCategory_id=measurementcategory.id" +
+            " LEFT JOIN productdetails ON product.productDetails_id=productdetails.id" +
+            " WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1%" +
+            " OR measurementcategory.name LIKE %?1%" +
+            " OR productdetails.price LIKE %?1%" +
+            " OR productdetails.quantity LIKE %?1%" +
+            " OR productdetails.description LIKE %?1%)" +
+            " AND product.user_id=?2 AND productdetails.status=1",
+            countQuery = "SELECT COUNT(*) FROM product" +
+                    " LEFT JOIN productcategory ON product.productCategory_id=productcategory.id" +
+                    " LEFT JOIN measurementcategory ON product.measurementCategory_id=measurementcategory.id" +
+                    " LEFT JOIN productdetails ON product.productDetails_id=productdetails.id" +
+                    " WHERE (product.name LIKE %?1% OR productcategory.name LIKE %?1%" +
+                    " OR measurementcategory.name LIKE %?1%" +
+                    " OR productdetails.price LIKE %?1%" +
+                    " OR productdetails.quantity LIKE %?1%" +
+                    " OR productdetails.description LIKE %?1%)" +
+                    " AND product.user_id=?2 AND productdetails.status=1",
+            nativeQuery = true)
+    Page<Product> searchOnAvailableProducts(String name, int userId, Pageable pageable);
 }

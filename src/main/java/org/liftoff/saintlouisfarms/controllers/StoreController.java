@@ -73,13 +73,13 @@ public class StoreController {
     //display the product associated with farmName
     @GetMapping("/{farmName}")
     public  String displaySpecificFarmNameWithProduct(Model model,
-                                                      //@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "0") int page,
                                                       HttpServletRequest request,
                                                       @PathVariable String farmName,
-                                                      @Param("info") String info){
+                                                      @Param("info") String info) {
 
 //        If farm does not exist they are taken to the home page.
-        if (!userRepository.existsByFarmName(farmName)){
+        if (!userRepository.existsByFarmName(farmName)) {
             return "redirect:../";
         }
 
@@ -90,28 +90,29 @@ public class StoreController {
         List<BasketItem> shoppingBasketItems;
 
 //      If logged in client
-        if(authenticationController.clientInSession(session)){
-            Client client= authenticationController.getClientFromSession(session);
+        if (authenticationController.clientInSession(session)) {
+            Client client = authenticationController.getClientFromSession(session);
 
 //          Creates basket if client does not have an active basket
-            if(shoppingBasketRepository.findAboutClientCart(client.getId(),farmName) == null){
+            if (shoppingBasketRepository.findAboutClientCart(client.getId(), farmName) == null) {
                 shoppingBasket = new ShoppingBasket(client, LocalDateTime.now());
-            }
-            else{
-                shoppingBasket=shoppingBasketRepository.findAboutClientCart(client.getId(),farmName);
+            } else {
+                shoppingBasket = shoppingBasketRepository.findAboutClientCart(client.getId(), farmName);
             }
 
 
 //          Removes items that are no longer in stock
-            if(shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())){
+            if (shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())) {
 //                If there are items that went out of stock, it deletes them from db as well
                 List<BasketItem> basketItemsToDelete = new ArrayList<>();
                 List<BasketItem> allItemsAssociatedWithOrder = basketItemRepository.findByShoppingBasket(shoppingBasket);
-                for(BasketItem item : allItemsAssociatedWithOrder){
-                    if(!shoppingBasket.getBasketItems().contains(item)){basketItemsToDelete.add(item);}
+                for (BasketItem item : allItemsAssociatedWithOrder) {
+                    if (!shoppingBasket.getBasketItems().contains(item)) {
+                        basketItemsToDelete.add(item);
+                    }
                 }
                 basketItemRepository.deleteAll(basketItemsToDelete);
-                BigDecimal totalAmount = calculateTotalAmount (shoppingBasket);
+                BigDecimal totalAmount = calculateTotalAmount(shoppingBasket);
                 shoppingBasket.setTotalAmount(totalAmount);
                 model.addAttribute("itemsRemoved", "Since you created your basket, the availability of some items has changed.");
             }
@@ -119,11 +120,43 @@ public class StoreController {
 
 //          Creates a list of products depending on whether client searched for something
             List<Product> products;
-            if(info != null){
-                products = productRepository.searchByFarm(info, farmName);
+            if (info != null) {
+
+
+                Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+                Page<Product> productsPage = productRepository.searchByFarmm(info, farmName, pageable);
+                products = productsPage.getContent();
+             //   products = productRepository.searchByFarm(info, farmName);
+
+                model.addAttribute("productsPage", productsPage);
+                model.addAttribute("currentPage", page);
+                model.addAttribute("totalPages", productsPage.getTotalPages());
+                model.addAttribute("totalItems", productsPage.getTotalElements());
+
+                model.addAttribute("title", farmName + " Store");
+                model.addAttribute("page", productsPage);
+
+                model.addAttribute("products", productsPage.getContent());
+
+
             } else {
-                products = productRepository.findByNameOfFarmNames(farmName);
+                Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+                Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+                products = productsPage.getContent();
+              //  products = productRepository.findByNameOfFarmNames(farmName);
+
+                model.addAttribute("productsPage", productsPage);
+                model.addAttribute("currentPage", page);
+                model.addAttribute("totalPages", productsPage.getTotalPages());
+                model.addAttribute("totalItems", productsPage.getTotalElements());
+
+                model.addAttribute("title", farmName + " Store");
+                model.addAttribute("page", productsPage);
+
+                model.addAttribute("products", productsPage.getContent());
+
             }
+
 
 //          Makes sure that the ShoppingBasketDTO has the all the current Products, and if it does not, creates one
             Integer clientId = client.getId();
@@ -132,7 +165,7 @@ public class StoreController {
                     BasketItem basketItem = new BasketItem(value, 0, shoppingBasket);
                     shoppingBasketDTO.addBasketItem(basketItem);
                     shoppingBasket.addBasketItem(basketItem);
-                }else {
+                } else {
                     BasketItem basketItem = basketItemRepository.findBasketForProduct(value.getId(), clientId);
                     shoppingBasketDTO.addBasketItem(basketItem);
                 }
@@ -150,40 +183,54 @@ public class StoreController {
 //          Lists items that have set quantity as the active shopping basket
             shoppingBasketItems = shoppingBasket.getBasketItems().stream().filter(item -> item.getQuantity() > 0).collect(Collectors.toList());
             model.addAttribute("clientLoggedIn", client != null);
+
         }
 ////// If not logged in cart that is not saved anywhere.
-        else
-        {
+        else {
+
+
             shoppingBasket = new ShoppingBasket();
             //          Creates a list of products depending on whether client searched for something
             List<Product> products;
-            if(info != null){
+            if (info != null) {
+
                 products = productRepository.searchByFarm(info, farmName);
             } else {
                 products = productRepository.findByNameOfFarmNames(farmName);
+
             }
 
 //          Makes sure that the ShoppingBasketDTO has the all products or those that were returned by search
             for (Product value : products) {
-                    BasketItem basketItem = new BasketItem(value, 0, shoppingBasket);
-                    shoppingBasketDTO.addBasketItem(basketItem);
-                }
+                BasketItem basketItem = new BasketItem(value, 0, shoppingBasket);
+                shoppingBasketDTO.addBasketItem(basketItem);
+            }
 
             shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
             shoppingBasketItems = new ArrayList<>();
         }
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+        List<Product> products = productsPage.getContent();
 
         model.addAttribute("currentShoppingBasketItems", shoppingBasketItems);
         model.addAttribute("currentShoppingBasket", shoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("farmName", farmName);
-        model.addAttribute("title", farmName+" Store");
+        model.addAttribute("title", farmName + " Store");
+        model.addAttribute("page", productsPage);
+        String baseUrl = "/store/" + farmName;
+        model.addAttribute("baseUrl", baseUrl);
+
+
         return "store/clientStore";
     }
+
 
     @PostMapping("/{farmName}")
     public  String displaySpecificFarmNameWithProductFormHandel(Model model,
                                                                 RedirectAttributes redirectAttrs,
+                                                                @RequestParam(defaultValue = "0") int page,
                                                                 HttpServletRequest request,
                                                                 @PathVariable String farmName,
                                                                 @RequestParam int basketId,
@@ -239,9 +286,10 @@ public class StoreController {
             }
         }
 
-//        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-//        Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
-//        List<Product> products = productsPage.getContent();
+       Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+       Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+       List<Product> products = productsPage.getContent();
+
         model.addAttribute("farmName", farmName);
         BigDecimal totalAmount = calculateTotalAmount (currentShoppingBasket);
         currentShoppingBasket.setTotalAmount(totalAmount);
@@ -259,9 +307,9 @@ public class StoreController {
         model.addAttribute("currentShoppingBasket", currentShoppingBasket);
         model.addAttribute("shoppingBasket", shoppingBasketDTO);
         model.addAttribute("title", farmName+" Store");
-//        model.addAttribute("page", productsPage);
-//        String baseUrl = "/store/" + farmName;
-//        model.addAttribute("baseUrl", baseUrl);
+      model.addAttribute("page", productsPage);
+       String baseUrl = "/store/" + farmName;
+      model.addAttribute("baseUrl", baseUrl);
         return "store/clientStore";
     }
 

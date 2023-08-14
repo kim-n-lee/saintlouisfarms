@@ -102,12 +102,27 @@ public String searchProduct(@Param("info") String info,
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
         if(info!=null){
-          List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+            Page<Product> products = productRepository.searchOnAvailableProducts(info, user.getId(), pageable);
 
-            model.addAttribute("products",searchResult);}
+            model.addAttribute("productsPage", products);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", products.getTotalPages());
+            model.addAttribute("totalItems", products.getTotalElements());
+
+            model.addAttribute("products", products.getContent());
+
+
+        //  List<Product> searchResult=productRepository.searchOnAvailableProducts(info,user.getId());
+
+           model.addAttribute("products",products);}
         else {
             Page<Product> products = productRepository.findProductByStatus(user.getId(), pageable);
             model.addAttribute("products", products);
+            model.addAttribute("productsPage", products);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", products.getTotalPages());
+            model.addAttribute("totalItems", products.getTotalElements());
+
         }
 
         model.addAttribute("loggedIn", user != null);
