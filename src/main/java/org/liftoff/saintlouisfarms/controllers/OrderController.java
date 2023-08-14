@@ -214,7 +214,7 @@ public class OrderController {
 
         model.addAttribute("title", "Order #"+orderId+" Details");
         model.addAttribute("order", order);
-        model.addAttribute("loggedIn", client != null);
+        model.addAttribute("clientLoggedIn", client != null);
         return "order/order";
     }
 }
