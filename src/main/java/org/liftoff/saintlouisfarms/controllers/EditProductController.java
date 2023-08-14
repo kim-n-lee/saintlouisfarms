@@ -27,7 +27,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("farmer/edit")
 public class EditProductController {
-    private static final int PAGE_SIZE = 15;
+    private static final int PAGE_SIZE = 20;
 
     // edit product name,Category,Measurement ,and all details of it .
     @Autowired
