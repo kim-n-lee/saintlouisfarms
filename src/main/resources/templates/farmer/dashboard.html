@@ -17,7 +17,7 @@
                         <h1 class="nf nf-md-order_bool_ascending_variant"></h1>
                         <h5 class="card-title">Orders</h5>
                         <p class="card-text">See Current Orders</p>
-                        <a th:href="@{/orders/{farmName}/Open(farmName=${farmName})}" class="btn btn-primary">See Your Orders</a>
+                        <a th:href="@{/orders/{farmName}/Open(farmName=${farmName})}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         <h1 class="nf nf-fa-shopping_bag"></h1>
                         <h5 class="card-title">Products</h5>
                         <p class="card-text">Quickly create and edit your products</p>
-                        <a th:href="@{/farmer/add}" class="btn btn-primary">All Your Products</a>
+                        <a th:href="@{/farmer/add}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                         <h1 class="nf nf-md-store_outline"></h1>
                         <h5 class="card-title">Store</h5>
                         <p class="card-text">See what customers see</p>
-                        <a th:href="@{/farmer/products}" class="btn btn-primary">Go To Your Store</a>
+                        <a th:href="@{/farmer/products}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
@@ -50,33 +50,25 @@
                         <h1 class="nf nf-md-store_search_outline"></h1>
                         <h5 class="card-title">Search</h5>
                         <p class="card-text">Search through all of your submitted products</p>
-                        <a th:href="@{/farmer/search}" class="btn btn-primary">Search</a>
+                        <a th:href="@{/farmer/search}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 class="nf nf-fa-user"></h1>
-                        <h5 class="card-title">Profile</h5>
-                        <p class="card-text">Edit your Information</p>
-                        <a th:href="@{/farmer/profile}" class="btn btn-primary">Profile</a>
-                    </div>
-                </div>
-            </div>
+            <div class="col"></div>
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="nf nf-cod-settings_gear"></h1>
                         <h5 class="card-title">Settings</h5>
                         <p class="card-text">Customize user settings</p>
-                        <a th:href="@{/farmer/settings}" class="btn btn-primary">Settings</a>
+                        <a th:href="@{/farmer/settings}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
+            <div class="col"></div>
         </div>
     </div>
 </div>
