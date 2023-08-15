@@ -14,7 +14,7 @@ public interface ProductCategoryRepository extends CrudRepository<ProductCategor
     @Query(value = "select * from productcategory left join user on productcategory.user_id=user.id where   user.id= ?1", nativeQuery = true)
     List<ProductCategory> findProductsTypetById(int id);
     ProductCategory findByName(String name);
-    @Query(value = "select * from product p left join productcategory c on p.productCategory_id=c.id  where  p.user_id= ?1 and p.productCategory_id= ?2",nativeQuery = true)
+    @Query(value = "select * from product p left join productcategory c on p.productCategory_id=c.id  where  p.user_id= ?1 and p.productCategory_id= ?2 and product.isDeleted=0 ",nativeQuery = true)
     Iterable<Product> findAllProductAssignedToProductCategory(int id, int CategoryId);
 }
 

@@ -102,7 +102,8 @@ public class StoreController {
 
 
 //          Removes items that are no longer in stock
-            if (shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())) {
+            if (shoppingBasket.getBasketItems().removeIf(basketItem -> !basketItem.getProduct().getProductDetails().getStatus())  ||
+                    shoppingBasket.getBasketItems().removeIf(basketItem -> basketItem.getProduct().isDeleted())) {
 //                If there are items that went out of stock, it deletes them from db as well
                 List<BasketItem> basketItemsToDelete = new ArrayList<>();
                 List<BasketItem> allItemsAssociatedWithOrder = basketItemRepository.findByShoppingBasket(shoppingBasket);
