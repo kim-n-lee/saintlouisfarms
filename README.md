@@ -2,7 +2,7 @@
 ![Logo](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/bg-masthead.jpg?raw=true)
 
 
-# Saint Louis Farms 
+# Saint Louis Farms
 
 Final project for LaunchCode's 2023 Liftoff Program.
 
@@ -42,25 +42,6 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 **Back-end:** Spring Boot, Thymeleaf, MySQL, Hibernate
 
-
-## Screenshots
-
-![Homepage](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/homepage.png?raw=true)
-
-![All Farms](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/all-farms.png?raw=true)
-
-![Storefront](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/storefront.png?raw=true)
-
-![New Item with Preview](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/new-item-with-preview.png?raw=true)
-
-![Confirm Order](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/confirm-order.png?raw=true)
-
-![Farmer Product View](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/farmer-product-view.png?raw=true)
-
-![Client Order Log](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/client-order-log.png?raw=true)
-
-![Farmer Order Log](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/farmer-order-log.png?raw=true)
-
 ## Run Locally
 
 Clone the project
@@ -96,3 +77,21 @@ Start the server
  - Nerd Fonts: [https://www.nerdfonts.com/](https://www.nerdfonts.com/)
  - Spring: [https://spring.io/](https://spring.io/)
  - Thymeleaf: [https://www.thymeleaf.org/](https://www.thymeleaf.org/)
+
+## Screenshots
+
+![Homepage](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/homepage.png?raw=true)
+
+![All Farms](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/all-farms.png?raw=true)
+
+![Storefront](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/storefront.png?raw=true)
+
+![New Item with Preview](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/new-item-with-preview.png?raw=true)
+
+![Confirm Order](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/confirm-order.png?raw=true)
+
+![Farmer Product View](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/farmer-product-view.png?raw=true)
+
+![Client Order Log](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/client-order-log.png?raw=true)
+
+![Farmer Order Log](https://github.com/kim-n-lee/saintlouisfarms/blob/readme-resources/src/main/resources/static/assets/img/screenshots/farmer-order-log.png?raw=true)
