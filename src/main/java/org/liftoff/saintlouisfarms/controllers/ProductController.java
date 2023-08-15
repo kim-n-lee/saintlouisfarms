@@ -230,6 +230,8 @@ public String searchProduct(@Param("info") String info,
 
         Product productToDelete = optProductToDelete.get();
         productToDelete.setDeleted(true);
+        productToDelete.setProductCategory(new ProductCategory());
+        productToDelete.setMeasurementCategory(new MeasurementCategory());
         productRepository.save(productToDelete);
         //productRepository.delete(productToDelete);
         return "redirect:add";
