@@ -42,11 +42,10 @@
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/dashboard">Dashboard</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/products">Store</a></li>
                 <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add">Products</a></li>
-                <li th:if="${loggedIn == true and searchOverride != true}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/search">Search </a></li>
+                <li th:if="${loggedIn == true and searchOverride != true}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/add/#search">Search </a></li>
                 <li th:if="${searchOverride}" class="nav-item navbar-brand"><a class="nav-link" href="#search">Search </a></li>
 
 
-                <li th:if="${loggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/farmer/profile">Profile</a></li>
                 <li th:if="${clientLoggedIn == true or loggedIn == false}" class="nav-item navbar-brand"><a class="nav-link" href="/store">View All Farms</a></li>
                 <li th:if="${clientLoggedIn}" class="nav-item navbar-brand"><a class="nav-link" href="/order/all">View All Orders</a></li>
                 <li class="nav-item navbar-brand"><a class="nav-link" href="../../../../about">About Us</a></li>

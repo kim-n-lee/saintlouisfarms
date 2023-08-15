@@ -50,14 +50,23 @@
                         <h1 class="nf nf-md-store_search_outline"></h1>
                         <h5 class="card-title">Search</h5>
                         <p class="card-text">Search through all of your submitted products</p>
-                        <a th:href="@{/farmer/search}" class="stretched-link"></a>
+                        <a th:href="@{/farmer/add/#search}" class="stretched-link"></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col"></div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="nf nf-fa-user"></h1>
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">Edit your Information</p>
+                        <a th:href="@{/farmer/profile}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
@@ -67,9 +76,7 @@
                         <a th:href="@{/farmer/settings}" class="stretched-link"></a>
                     </div>
                 </div>
-            </div>
-            <div class="col"></div>
-        </div>
+            </div></div>
     </div>
 </div>
 
