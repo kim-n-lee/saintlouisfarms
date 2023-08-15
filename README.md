@@ -2,7 +2,7 @@
 ![Logo](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/bg-masthead.jpg?raw=true)
 
 
-# Saint Louis Farms
+# Saint Louis Farms 
 
 Final project for LaunchCode's 2023 Liftoff Program.
 
