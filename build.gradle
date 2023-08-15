@@ -46,3 +46,16 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+
+	manifest {
+		attributes "Main-Class": "org.liftoff.saintlouisfarms"
+	}
+
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
