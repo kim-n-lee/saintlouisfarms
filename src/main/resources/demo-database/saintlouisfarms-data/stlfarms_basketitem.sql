@@ -1,0 +1,57 @@
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+--
+-- Host: localhost    Database: stlfarms
+-- ------------------------------------------------------
+-- Server version	8.0.33
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `basketitem`
+--
+
+DROP TABLE IF EXISTS `basketitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `basketitem` (
+  `id` int NOT NULL,
+  `quantity` int DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
+  `shoppingBasket_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK8lqxfdk0yv9r6sib2ehubfxin` (`product_id`),
+  KEY `FKq0im0s8m67168n69yx1acitoa` (`shoppingBasket_id`),
+  CONSTRAINT `FK8lqxfdk0yv9r6sib2ehubfxin` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  CONSTRAINT `FKq0im0s8m67168n69yx1acitoa` FOREIGN KEY (`shoppingBasket_id`) REFERENCES `shoppingbasket` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `basketitem`
+--
+
+LOCK TABLES `basketitem` WRITE;
+/*!40000 ALTER TABLE `basketitem` DISABLE KEYS */;
+INSERT INTO `basketitem` VALUES (122,0,34,121),(123,45,36,121),(124,0,38,121),(125,0,40,121),(126,0,42,121),(134,3,54,133),(135,0,56,133),(136,0,58,133),(137,55,60,133),(138,0,62,133),(140,0,74,139),(141,0,76,139),(142,0,78,139),(143,0,80,139),(144,0,82,139),(147,0,12,146),(148,0,14,146),(149,0,17,146),(150,0,20,146),(151,0,22,146),(153,0,34,152),(154,0,36,152),(155,0,38,152),(156,0,40,152),(157,0,42,152),(253,0,248,252),(255,0,250,254),(321,0,12,320),(322,0,14,320),(323,0,17,320),(324,0,20,320),(325,0,22,320),(326,0,166,320),(327,0,170,320),(328,0,172,320),(329,0,174,320),(330,0,176,320),(331,0,178,320),(332,0,180,320),(333,0,182,320),(334,0,184,320),(335,0,186,320),(336,0,188,320),(337,0,190,320),(338,0,192,320),(339,0,194,320),(340,0,196,320);
+/*!40000 ALTER TABLE `basketitem` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-08-15 18:00:12
