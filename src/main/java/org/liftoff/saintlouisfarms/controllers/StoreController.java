@@ -192,13 +192,16 @@ public class StoreController {
             shoppingBasket = new ShoppingBasket();
             //          Creates a list of products depending on whether client searched for something
             List<Product> products;
+            Pageable pageable = PageRequest.of(page, PAGE_SIZE);
             if (info != null) {
 
-                products = productRepository.searchByFarm(info, farmName);
+                Page<Product> productsPage = productRepository.searchByFarmm(info, farmName, pageable);
+                products = productsPage.getContent();
             } else {
-                products = productRepository.findByNameOfFarmNames(farmName);
-
+                Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+                products = productsPage.getContent();
             }
+
 
 //          Makes sure that the ShoppingBasketDTO has the all products or those that were returned by search
             for (Product value : products) {
@@ -208,6 +211,17 @@ public class StoreController {
 
             shoppingBasket.setBasketItems(shoppingBasketDTO.getBasketItemsAvailable());
             shoppingBasketItems = new ArrayList<>();
+            Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
+
+            model.addAttribute("productsPage", productsPage);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", productsPage.getTotalPages());
+            model.addAttribute("totalItems", productsPage.getTotalElements());
+
+            model.addAttribute("title", farmName + " Store");
+            model.addAttribute("page", productsPage);
+
+            model.addAttribute("products", productsPage.getContent());
         }
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Page<Product> productsPage = productRepository.findByNameOfFarmName(farmName, pageable);
