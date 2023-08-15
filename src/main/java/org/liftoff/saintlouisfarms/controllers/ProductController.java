@@ -217,14 +217,21 @@ public String searchProduct(@Param("info") String info,
         HttpSession session = request.getSession();
         User user = authenticationController.getUserFromSession(session);
         Optional<Product> optProductToDelete = productRepository.findById(productToDeleteId);
+
         if (optProductToDelete.isEmpty()) {
+
             model.addAttribute("title", "Current Products");
             model.addAttribute("currentProducts", productRepository.findProductById(user.getId()));
             model.addAttribute("loggedIn", user != null);
             return "farmer/add";
         }
+
+
+
         Product productToDelete = optProductToDelete.get();
-        productRepository.delete(productToDelete);
+        productToDelete.setDeleted(true);
+        productRepository.save(productToDelete);
+        //productRepository.delete(productToDelete);
         return "redirect:add";
     }
 

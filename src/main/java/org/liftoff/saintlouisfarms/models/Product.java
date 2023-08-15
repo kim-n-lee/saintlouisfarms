@@ -22,7 +22,7 @@ public class Product extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
     private final List<BasketItem> basketItems = new ArrayList<>();
 
-
+private boolean isDeleted;
 //    @ManyToOne
 //    ShoppingBasket shoppingBasket;
     @OneToOne(cascade = CascadeType.ALL)
@@ -53,6 +53,24 @@ public class Product extends AbstractEntity {
         this.user = user;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Product(@Size(min = 3, max = 45, message = "Name must be between 3 and 45 characters.") String name, ProductCategory productCategory, ProductDetails productDetails, MeasurementCategory measurementCategory, User user, Boolean isDeleted) {
+        this.name = name;
+
+        this.measurementCategory = measurementCategory;
+        this.productCategory = productCategory;
+        this.productDetails=productDetails;
+//        this.shoppingBasket=shoppingBasket;
+        this.user = user;
+        this.isDeleted=isDeleted;
+    }
     public Product() {
     }
 
