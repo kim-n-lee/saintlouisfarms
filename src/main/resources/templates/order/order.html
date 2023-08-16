@@ -30,9 +30,9 @@
                     <th>Amount</th>
                 </tr>
             <tr th:each="productOrdered : *{orderItems}" th:object="${productOrdered}">
-                <td th:text="*{product.name}"></td>
-                <td th:text="'$'+*{product.ProductDetails.price*quantity}"></td>
-                <td> <p th:text="*{quantity + ' ' + product.measurementCategory.name}"></p></td>
+                <td th:text="*{name}"></td>
+                <td th:text="'$'+*{price*quantity}"></td>
+                <td> <p th:text="*{quantity + ' ' + measurement}"></p></td>
             </tr>
             <tr>
                 <td colspan="2" th:text="${'Total Amount $'+order.totalAmount}" class="font-weight-bold"></td>
