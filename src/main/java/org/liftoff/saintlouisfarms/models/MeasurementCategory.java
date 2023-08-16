@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class MeasurementCategory extends AbstractEntity{
 
-    @NotBlank
+
     @Size(min = 1, max = 45, message="name must be between 1 and 45 character")
     private String name;
     @ManyToOne()
