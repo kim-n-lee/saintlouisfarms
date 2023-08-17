@@ -44,16 +44,18 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 ## Run Locally
 
-### ==== this section is not figured out yet. just a placeholder ====
-Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+1. Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) and 
+[create a new MySQL connection](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html).
 
-Import the [demo database]() SQL file (correct URL won't be available until this pull request is merged)
 
-(create a user with dbUserName and dbPassword?)
+2. Right-click and save the [demo database](https://raw.githubusercontent.com/kim-n-lee/saintlouisfarms/main/src/main/resources/demo-database/saintlouisfarms-data.sql).
 
-(start the local SQL server)
 
-Clone the project
+3.  [import the demo database SQL file](https://dev.mysql.com/downloads/workbench/).
+
+4. (create a user with dbUserName and dbPassword?)
+
+4. Clone the project
 
 ```bash
   git clone https://github.com/kim-n-lee/saintlouisfarms.git
