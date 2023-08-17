@@ -10,7 +10,7 @@ Saint Louis Farms is a full-stack web application that enables farmers to sell t
 
 The application was designed with three types of users in mind: farmers, clients, and non-authenticated users.
 
-Farmers have the ability to set up a store. They can manage their inventory by uploading, deleting, and updating items. Farmers can customize their store settings according to their needs. They have access to a dashboard that provides real-time updates on past and current orders well as a profile section. Two different product views are available for farmers: a condensed table view for inventory management and a store preview option that allows them to see how products will appear for clients.
+Farmers have the ability to set up a store. They can manage their inventory by uploading, deleting, and updating items. Farmers can customize their store settings according to their needs. They have access to a dashboard that provides real-time updates on past and current orders well as a customizable farmer profile. Two different product views are available for farmers: a condensed table view for inventory management and a store preview option that allows them to see how products will appear for clients.
 
 Clients can conveniently place orders from farms using a shopping cart feature. They can also track the live status of their orders in through three stages: unconfirmed, confirmed, and fulfilled. The system will automatically adjust the inventory of ordered items to ensure availability. Additionally, clients have access to a comprehensive order history log where they can review all of their purchases.
 
