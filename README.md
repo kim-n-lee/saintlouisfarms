@@ -10,7 +10,7 @@ Saint Louis Farms is a full-stack web application that enables farmers to sell t
 
 The application was designed with three types of users in mind: farmers, clients, and non-authenticated users.
 
-Farmers have the ability to set up a store. They can manage their inventory by uploading, deleting, and updating items. Farmers can customize their store settings according to their needs. They have access to a dashboard that provides real-time updates on past orders well as a profile section. Two different product views are available for farmers: a condensed table view for inventory management and a store preview option that allows them to see how products will appear for clients.
+Farmers have the ability to set up a store. They can manage their inventory by uploading, deleting, and updating items. Farmers can customize their store settings according to their needs. They have access to a dashboard that provides real-time updates on past and current orders well as a customizable farmer profile. Two different product views are available for farmers: a condensed table view for inventory management and a store preview option that allows them to see how products will appear for clients.
 
 Clients can conveniently place orders from farms using a shopping cart feature. They can also track the live status of their orders in through three stages: unconfirmed, confirmed, and fulfilled. The system will automatically adjust the inventory of ordered items to ensure availability. Additionally, clients have access to a comprehensive order history log where they can review all of their purchases.
 
@@ -42,28 +42,65 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 **Back-end:** Spring Boot, Thymeleaf, MySQL, Hibernate
 
-## Run Locally
+## Run Locally 
+### Note: This project requires Java 11 
 
-### ==== this section is not figured out yet. just a placeholder ====
-Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
+1. Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) and 
+[create a new MySQL connection](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html).
 
-Import the [demo database]() SQL file (correct URL won't be available until this pull request is merged)
 
-(create a user with dbUserName and dbPassword?)
+2. Right-click and save this [demo database](https://raw.githubusercontent.com/kim-n-lee/saintlouisfarms/main/src/main/resources/demo-database/saintlouisfarms-data.sql).
 
-(start the local SQL server)
 
-Clone the project
+3.  [Import the demo database](https://help.umbler.com/hc/en-us/articles/202385865-MySQL-Importing-Exporting-a-database)
+into MySQL Workbench.
+
+
+4. [Create a user](https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-navigator-management-users-and-privileges.html) named ``stlfarms`` with a password of 
+``3f6398041156215b`` and give the user all permissions.
+
+
+4. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+
+
+5. Clone the project.
 
 ```bash
-  git clone https://github.com/kim-n-lee/saintlouisfarms.git
+git clone https://github.com/kim-n-lee/saintlouisfarms.git
 ```
 
-Go to the project directory
-
+7. Open the project in IntelliJ.
 ```bash
-  cd saintlouisfarms
+idea64.exe saintlouisfarms
 ```
+
+8. Find and click the ![Gradle icon](https://resources.jetbrains.com/help/img/idea/2023.2/gradle.icons.gradle_dark.svg)
+ gradle icon.
+
+
+9. In the Gradle menu, find ``bootRun`` in ``saint-louis-farms`` > ``tasks`` > ``application`` > ``bootRun``.
+ 
+(add screenshot here)
+
+
+10. Right-click ``bootRun`` and select ``Modify Run Configuration...``.
+
+(add screenshot here)
+
+11. Find the "Environment Variables" field and paste the following string then hit "Apply".
+```
+dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
+```
+
+(add screenshot here)
+
+12. Double click "bootRun" in the Gradle menu. After about 15 seconds, everything should
+have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` near the bottom of the run pane.
+
+(add screenshot here)
+
+
+13. Finally, open your browser of choice and go to [http://localhost:2020/](http://localhost:2020/).
 
 
 ## Acknowledgements
