@@ -43,6 +43,7 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 **Back-end:** Spring Boot, Thymeleaf, MySQL, Hibernate
 
 ## Run Locally
+### Note: This project requires Java 11 
 
 1. Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) and 
 [create a new MySQL connection](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html).
@@ -51,21 +52,29 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 2. Right-click and save the [demo database](https://raw.githubusercontent.com/kim-n-lee/saintlouisfarms/main/src/main/resources/demo-database/saintlouisfarms-data.sql).
 
 
-3.  [import the demo database SQL file](https://dev.mysql.com/downloads/workbench/).
+3.  [Import the demo database SQL file](https://dev.mysql.com/downloads/workbench/).
 
-4. (create a user with dbUserName and dbPassword?)
 
-4. Clone the project
+4. Create a user named "stlfarms" with a password of 
+"3f6398041156215b" and give them all permissions.
+
+
+4. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+
+
+5. Clone the project
 
 ```bash
   git clone https://github.com/kim-n-lee/saintlouisfarms.git
 ```
 
-Go to the project directory
-
+7. Open the project in IntelliJ
 ```bash
-  cd saintlouisfarms
+    idea64.exe saintlouisfarms
 ```
+
+8. Click the ![Gradle icon](https://resources.jetbrains.com/help/img/idea/2023.2/gradle.icons.gradle_dark.svg)
+ gradle icon
 
 
 ## Acknowledgements
