@@ -80,25 +80,23 @@ idea64.exe saintlouisfarms
 
 9. In the Gradle menu, find ``bootRun`` in ``saint-louis-farms`` > ``tasks`` > ``application`` > ``bootRun``.
  
-(add screenshot here)
+![Gradle pane](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/screenshots/gradle-pane.png?raw=true)
 
 
 10. Right-click ``bootRun`` and select ``Modify Run Configuration...``.
 
-(add screenshot here)
+![Modify run configuration](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/screenshots/gradle-modify-run-configuration.png?raw=true)
 
 11. Find the "Environment Variables" field and paste the following string then hit "Apply".
 ```
 dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
 ```
-
-(add screenshot here)
+![Gradle database credentials](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/screenshots/gradle-database-credentials.png?raw=true)
 
 12. Double click "bootRun" in the Gradle menu. After about 15 seconds, everything should
 have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` near the bottom of the run pane.
 
-(add screenshot here)
-
+![Tomcat serving on 2020](https://github.com/kim-n-lee/saintlouisfarms/blob/main/src/main/resources/static/assets/img/screenshots/tomcat-serving-on-2020.png?raw=true)
 
 13. Finally, open your browser of choice and go to [http://localhost:2020/](http://localhost:2020/).
 
