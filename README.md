@@ -56,8 +56,8 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 into MySQL Workbench.
 
 
-4. Create a user named "stlfarms" with a password of 
-"3f6398041156215b" and give the user all permissions.
+4. Create a user named ``stlfarms`` with a password of 
+``3f6398041156215b`` and give the user all permissions.
 
 
 4. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
@@ -78,20 +78,27 @@ idea64.exe saintlouisfarms
  gradle icon.
 
 
-9. In the Gradle menu, find "bootRun" in saint-louis-farms > tasks > application > bootRun.
-   (add screenshot here)
+9. In the Gradle menu, find ``bootRun`` in ``saint-louis-farms`` > ``tasks`` > ``application`` > ``bootRun``.
+ 
+(add screenshot here)
 
 
-10. Right-click "bootRun" and select "Modify Run Configuration...".
-    (add screenshot here)
+10. Right-click ``bootRun`` and select ``Modify Run Configuration...``.
+
+(add screenshot here)
 
 11. Find the "Environment Variables" field and paste the following string then hit "Apply".
 > dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
 
 (add screenshot here)
 
-12. Finally double click "bootRun" in the Gradle menu.
+12. Double click "bootRun" in the Gradle menu. After about 15 seconds, everything should
+have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` near the bottom of the run pane.
 
+(add screenshot here)
+
+
+13. Finally, open your browser of choice and go to ```http://localhost:2020/```.
 
 
 ## Acknowledgements
