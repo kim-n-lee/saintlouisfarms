@@ -100,7 +100,7 @@ have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` 
 (add screenshot here)
 
 
-13. Finally, open your browser of choice and go to ```http://localhost:2020/```.
+13. Finally, open your browser of choice and go to [http://localhost:2020/](http://localhost:2020/).
 
 
 ## Acknowledgements
