@@ -49,10 +49,11 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 [create a new MySQL connection](https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html).
 
 
-2. Right-click and save the [demo database](https://raw.githubusercontent.com/kim-n-lee/saintlouisfarms/main/src/main/resources/demo-database/saintlouisfarms-data.sql).
+2. Right-click and save this [demo database](https://raw.githubusercontent.com/kim-n-lee/saintlouisfarms/main/src/main/resources/demo-database/saintlouisfarms-data.sql).
 
 
-3.  [Import the demo database SQL file](https://dev.mysql.com/downloads/workbench/).
+3.  [Import the demo database](https://help.umbler.com/hc/en-us/articles/202385865-MySQL-Importing-Exporting-a-database)
+into MySQL Workbench.
 
 
 4. Create a user named "stlfarms" with a password of 
@@ -62,19 +63,35 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 4. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
 
 
-5. Clone the project
+5. Clone the project.
 
 ```bash
-  git clone https://github.com/kim-n-lee/saintlouisfarms.git
+git clone https://github.com/kim-n-lee/saintlouisfarms.git
 ```
 
-7. Open the project in IntelliJ
+7. Open the project in IntelliJ.
 ```bash
-    idea64.exe saintlouisfarms
+idea64.exe saintlouisfarms
 ```
 
-8. Click the ![Gradle icon](https://resources.jetbrains.com/help/img/idea/2023.2/gradle.icons.gradle_dark.svg)
- gradle icon
+8. Find and click the ![Gradle icon](https://resources.jetbrains.com/help/img/idea/2023.2/gradle.icons.gradle_dark.svg)
+ gradle icon.
+
+
+9. In the Gradle menu, find "bootRun" in saint-louis-farms > tasks > application > bootRun.
+   (add screenshot here)
+
+
+10. Right-click "bootRun" and select "Modify Run Configuration...".
+    (add screenshot here)
+
+11. Find the "Environment Variables" field and paste the following string then hit "Apply".
+> dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
+
+(add screenshot here)
+
+12. Finally double click "bootRun" in the Gradle menu.
+
 
 
 ## Acknowledgements
