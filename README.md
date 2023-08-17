@@ -42,7 +42,7 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 **Back-end:** Spring Boot, Thymeleaf, MySQL, Hibernate
 
-## Run Locally
+## Run Locally 
 ### Note: This project requires Java 11 
 
 1. Install [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) and 
