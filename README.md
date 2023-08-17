@@ -56,7 +56,7 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 into MySQL Workbench.
 
 
-4. Create a user named ``stlfarms`` with a password of 
+4. [Create a user](https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-navigator-management-users-and-privileges.html) named ``stlfarms`` with a password of 
 ``3f6398041156215b`` and give the user all permissions.
 
 
