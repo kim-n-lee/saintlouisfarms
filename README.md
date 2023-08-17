@@ -56,7 +56,7 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 
 4. Create a user named "stlfarms" with a password of 
-"3f6398041156215b" and give them all permissions.
+"3f6398041156215b" and give the user all permissions.
 
 
 4. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
