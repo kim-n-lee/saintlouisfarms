@@ -88,7 +88,9 @@ idea64.exe saintlouisfarms
 (add screenshot here)
 
 11. Find the "Environment Variables" field and paste the following string then hit "Apply".
-> dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
+```
+dbUserName=stlfarms;db=stlfarms;dbPassword=3f6398041156215b
+```
 
 (add screenshot here)
 
