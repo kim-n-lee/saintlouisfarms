@@ -40,7 +40,7 @@ Non-authenticated users are able to browse all farms but cannot place orders. An
 
 **Front-end:** Bootstrap, JavaScript, Nerd Fonts
 
-**Back-end:** Spring Boot, Thymeleaf, MySQL, Hibernate
+**Back-end:** Java, Spring Boot, Thymeleaf, MySQL, Hibernate
 
 ## Run Locally 
 ### Note: This project requires Java 11 
