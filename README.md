@@ -100,6 +100,26 @@ have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` 
 
 13. Finally, open your browser of choice and go to [http://localhost:2020/](http://localhost:2020/).
 
+### Demo Users:
+
+#### Farmers:
+
+| Username           | Password |
+|--------------------|----------|
+| farmer1@farmer.com | password |
+| farmer2@farmer.com | password |
+| farmer3@farmer.com | password |
+| farmer4@farmer.com | password |
+| farmer5@farmer.com | password |
+| farmer6@farmer.com | password |
+
+#### Clients
+
+| Username          | Password |
+|-------------------|----------|
+| client@client.com | password |
+
+
 
 ## Acknowledgements
 
