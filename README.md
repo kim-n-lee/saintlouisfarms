@@ -106,18 +106,18 @@ have loaded correctly  and you should see ```Tomcat started on port(s): 2020``` 
 
 | Username           | Password |
 |--------------------|----------|
-| farmer1@farmer.com | password |
-| farmer2@farmer.com | password |
-| farmer3@farmer.com | password |
-| farmer4@farmer.com | password |
-| farmer5@farmer.com | password |
-| farmer6@farmer.com | password |
+| ``farmer1@farmer.com`` | ``password`` |
+| ``farmer2@farmer.com`` | ``password`` |
+| ``farmer3@farmer.com`` | ``password`` |
+| ``farmer4@farmer.com`` | ``password`` |
+| ``farmer5@farmer.com`` | ``password`` |
+| ``farmer6@farmer.com`` | ``password`` |
 
 #### Clients
 
 | Username          | Password |
 |-------------------|----------|
-| client@client.com | password |
+| ``client@client.com`` | ``password`` |
 
 
 
